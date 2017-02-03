@@ -44,6 +44,10 @@ class resources_model extends CI_Model {
 		 	'object_type'	=> 'resource',
 		);
 		$this->db->insert('master',$master_data);
+
+		
+		$this->load->model('social_model');
+		$this->social_model->post_tweet($status_data['status']);
 	}
 	
 	function get_resource($id)

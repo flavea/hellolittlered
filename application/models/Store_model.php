@@ -52,6 +52,10 @@ class store_model extends CI_Model {
 		 	'status'		=> 'Added a new store item: "'.$name.'" check it out here '.base_url().'shop/',
 		);
 		$this->db->insert('statuses',$status_data);
+
+
+		$this->load->model('social_model');
+		$this->social_model->post_tweet($status_data['status']);
 	}
 
 	function delete_design($id) {
@@ -75,6 +79,10 @@ class store_model extends CI_Model {
 		 	'status'		=> 'Updated a store item: "'.$name.'" check it out here '.base_url().'shop/',
 		);
 		$this->db->insert('statuses',$status_data);
+
+		
+		$this->load->model('social_model');
+		$this->social_model->post_tweet($status_data['status']);
 	}
 
 	

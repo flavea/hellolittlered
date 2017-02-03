@@ -24,9 +24,8 @@ class contact_model extends CI_Model {
 		return $posts->result(); // return an array of post object
 	}
 
-	function get_questions($flag=false, $limit, $start) 
+	function get_questions($flag = false) 
 	{
-      	$this->db->limit($limit, $start);
 		if($flag==true) {
 			$this->db->where('answer !=','');
 		}
@@ -77,6 +76,10 @@ class contact_model extends CI_Model {
 		 	'status'		=> 'Just answered a questions. Check it out here '.base_url().'contact/q',
 		);
 		$this->db->insert('statuses',$status_data);
+
+		
+		$this->load->model('social_model');
+		$this->social_model->post_tweet($status_data['status']);
 	}
 }
 

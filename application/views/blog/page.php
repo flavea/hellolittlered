@@ -1,12 +1,12 @@
-
+<div id="bg" class="content-real">
+	<div id="blog">
 			
 			<?php if( $query ): foreach($query as $post): ?>
 
-			<article class="post">
+			<article class="post featured">
 			<header>
 				<div class="title">
 					<h2><a href="<?php echo base_url().'post/'.$post->page_id;?>"><?php echo ucwords($post->page_title);?></a></h2>
-					<p>A blog post</p>
 				</div>
 				<div class="meta">
 					<time class="published" datetime="2015-11-01"><?php echo mdate('%n %M %Y %H:%i:%s',human_to_unix($post->page_date));?></time>
@@ -25,3 +25,4 @@
 
 	<!-- footer starts here -->	
 	<?php $this->load->view('blog/sidebar');?>
+</div>

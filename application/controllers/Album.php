@@ -12,6 +12,7 @@ class album extends MY_Controller
 		$this->load->model('photo_model');
 		$this->load->model('look_model');
 		$this->load->model('site_model');
+		$this->load->model('social_model');
 		$this->load->library('ion_auth');
 	}
 
@@ -19,25 +20,18 @@ class album extends MY_Controller
 	{
 		$this->data['title'] = 'Albums - ' . $this->config->item('site_title', 'ion_auth');
 
-		// set current menu highlight
+		$this->data['current'] = 'photos';
+		$this->data['explanation'] = 'Personal photos that I took and saved on flickr and instagram.';
+		$this->data['image'] = '';
+		$this->data['keywords'] = 'photography';
 
-		$this->data['current'] = 'HOME';
-		$this->data['pagetitle'] = 'Photo Albums';
-		$this->data['albums'] = $this->photo_model->get_albums();
 
-		// render view
+		$this->data['flickr'] = $this->social_model->get_latest_flickr();
+		$response = $this->social_model->get_latest_instagram();
+		$this->data['instagram'] = $response['data'];
+
 
 		$this->render('blog/album', 'public_master');
 	}
 
-	function photos($id)
-	{
-		$this->data['title'] = 'Photos - ' . $this->config->item('site_title', 'ion_auth');
-
-		// set current menu highlight
-
-		$this->data['albums'] = $this->photo_model->get_album($id);
-		$this->data['pagetitle'] = '';
-		$this->render('blog/photos', 'public_master');
-	}
 }

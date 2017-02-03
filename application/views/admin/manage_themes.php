@@ -12,13 +12,13 @@ function delete_post($id) {
 
 function edit_post($id) {
 	var id = $id;
-    window.location.href = "update_theme/".concat(id);
+    window.location.href = "/update_theme/".concat(id);
 }
 </script>
 <div class="container" style="margin-top:60px;">
   	<div class="row">
   		<h2>Manage Blog Entries</h2>
-			<table class="table table-striped table-hover">
+			<table id="table" class="table table-striped table-hover">
 				<thead>
 					<tr>
 						<th width="10%">Theme ID</th>
@@ -27,8 +27,9 @@ function edit_post($id) {
 						<th width="30%">Action</th>
 					</tr>
 				</thead>
+				<tbody>
 				<tr>
-			<?php if( $posts ): foreach($posts as $post): ?>
+				<?php if( $posts ): foreach($posts as $post): ?>
 				<td><?php echo $post->theme_id ?></td>
 				<td><?php echo $post->theme_name ?></td>
 				<td>
@@ -39,6 +40,7 @@ function edit_post($id) {
 					<button class="button" onclick="edit_post('<?php echo $post->theme_id ?>')">edit</button>
 				</td>
 			</tr>
+		</tbody>
 			<?php endforeach; else: ?>
 				<td colspan="3">No theme yet!</h2>
 			<?php endif ;?>
@@ -50,4 +52,11 @@ function edit_post($id) {
 			
 		</div>
 	</div>
+<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css">
+<script type="text/javascript">
+$(document).ready(function(){
+    $('#table').DataTable();
+});
+</script>
 		

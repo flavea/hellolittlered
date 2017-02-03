@@ -1,4 +1,6 @@
-<article class="post">
+<div id="bg" class="content-real">
+	<div id="blog">
+<article class="post featured">
 			<header>
 				<div class="title">
 					<h2>Commission</h2>
@@ -71,3 +73,5 @@
 	<!-- footer starts here -->	
 	<?php $this->load->view('blog/sidebar');?>
 	<!-- footer ends here -->
+</div>
+</div>

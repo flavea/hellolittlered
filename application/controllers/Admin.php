@@ -23,6 +23,7 @@ class Admin extends MY_Controller
         $this->load->model('pagination_model');
         $this->load->model('writing_model');
         $this->load->model('site_model');
+        $this->load->model('projects_model');
         $this->load->library("pagination");
         $this->load->library('ion_auth');
         $this->load->helper("url");
@@ -234,8 +235,9 @@ class Admin extends MY_Controller
                 $categories = $this->input->post('entry_category[]');
                 $image      = $this->input->post('entry_image');
                 $video      = $this->input->post('entry_video');
+                $tags	    = $this->input->post('entry_tags');
                 
-                $this->blog_model->add_new_entry($user->id, $title, $body, $categories, $image, $video);
+                $this->blog_model->add_new_entry($user->id, $title, $body, $categories, $image, $video, $tags);
                 $this->session->set_flashdata('message', '1 new post added!');
                 redirect('admin/add_new_entry');
             }
@@ -277,8 +279,9 @@ class Admin extends MY_Controller
                 $body  = $this->input->post('entry_body');
                 $image = $this->input->post('entry_image');
                 $video = $this->input->post('entry_video');
+                $tags = $this->input->post('entry_tags');
                 
-                $this->blog_model->update_entry($id, $title, $body, $image, $video);
+                $this->blog_model->update_entry($id, $title, $body, $image, $video, $tags);
                 $this->session->set_flashdata('message', 'Post updated');
                 redirect('admin/update_entry');
             }
@@ -884,27 +887,11 @@ class Admin extends MY_Controller
         $this->data['user']       = $user;
         $this->data['page_title'] = 'Questions | Hello Little Red';
         
-        if (!$this->ion_auth->logged_in() && !$this->ion_auth->is_admin()) // block un-authorized access
-            {
+        if (!$this->ion_auth->logged_in() && !$this->ion_auth->is_admin()) {
             show_404();
         } else {
-            $config["base_url"] = base_url() . "questions/";
-            $config["total_rows"] = $this->contact_model->total_count_quesions();
-            $config["per_page"] = 15;
-            $config["uri_segment"] = 3;
-            $config['display_pages'] = FALSE;
-            $config['next_link'] = 'Next Page';
-            $config['next_tag_open'] = '<li><span class="button big next">';
-            $config['next_tag_close'] = '</span></li>';
-            $config['prev_link'] = 'Previous Page';
-            $config['prev_tag_open'] = '<li><span class="button big previous">';
-            $config['prev_tag_close'] = '</span></li>';
-            $config['last_link'] = '';
-            $config['first_link'] = '';
-            $this->pagination->initialize($config);
-            $this->data['paginglinks'] = $this->pagination->create_links();
-            $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
-            $this->data["posts"] = $this->contact_model->get_questions(true, $config["per_page"], $page);
+           
+            $this->data["posts"] = $this->contact_model->get_questions();
             $this->render('admin/questions', 'admin_master');
         }
     }
@@ -1024,6 +1011,76 @@ class Admin extends MY_Controller
         $this->store_model->delete_design($id);
         $this->session->set_flashdata('message', 'a category is deleted.');
         redirect('admin/design');
+    }
+
+    /* 
+    ==================================================
+    |                   Projects                     |
+    ==================================================
+    */
+    
+    public function projects($id = false)
+    {
+        $user                     = $this->ion_auth->user()->row();
+        $this->data['user']       = $user;
+        $this->data['page_title'] = 'Projects';
+        $this->data['categories'] = $this->projects_model->get_projects();
+        $this->data['query']     = $this->projects_model->get_project($id);
+        $this->data['status'] = "add";
+
+        if($id != false) {
+
+                    $this->data['status'] = "edit";
+        }
+       
+        
+        if (!$this->ion_auth->logged_in() && !$this->ion_auth->is_admin()) // block un-authorized access
+            {
+            show_404();
+        } else {
+            $this->load->helper('form');
+            $this->load->library(array(
+                'form_validation'
+            ));
+            
+            // set validation rules
+            $this->form_validation->set_rules('name', 'Name', 'required|max_length[200]');
+            
+            if ($this->form_validation->run() == FALSE) {
+                //if not valid
+                $this->render('admin/projects', 'admin_master');
+            } else {
+                if ($id == false) {
+                    $name      = $this->input->post('name');
+                    $image     = $this->input->post('img');
+                    $exp        = $this->input->post('exp');
+                    $link      = $this->input->post('link');
+                    $behance      = $this->input->post('behance');
+                    $this->projects_model->add_new_project($name,$image,$exp,$link, $behance);
+                    $this->session->set_flashdata('message', '1 new project added!');
+                    redirect('admin/projects');
+                } else {
+                    $this->data['status'] = "edit";
+
+                    $name      = $this->input->post('name');
+                    $image     = $this->input->post('img');
+                    $exp        = $this->input->post('exp');
+                    $link      = $this->input->post('link');
+                    $behance      = $this->input->post('behance');
+                    $this->projects_model->update_project($id,$name,$image,$exp,$link, $behance);
+                    $this->session->set_flashdata('message', $name . ' Updated');
+                    redirect('admin/projects');
+                    
+                }
+            }
+        }
+    }
+    
+    public function delete_project($id)
+    {
+        $this->projects_model->delete_project($id);
+        $this->session->set_flashdata('message', 'a category is deleted.');
+        redirect('admin/projects');
     }
     
     

@@ -42,7 +42,9 @@ class themes_model extends CI_Model {
 		);
 		$this->db->insert('statuses',$status_data);
 		
-		//$object_id = (int) mysql_insert_id(); // get latest post id
+
+		$this->load->model('social_model');
+		$this->social_model->post_tweet($status_data['status']);
 		
 		foreach($categories as $category)
 		{
@@ -195,6 +197,10 @@ class themes_model extends CI_Model {
 		 	'status'		=> 'Updated a theme: "'.$name.'" check it out here '.base_url().'theme/'.$id,
 		);
 		$this->db->insert('statuses',$status_data);
+
+		
+		/*$this->load->model('social_model');
+		$this->social_model->post_tweet($status_data['status']);*/
 	}
 }
 

@@ -10,7 +10,11 @@ class shop extends MY_Controller {
         $this->load->model('site_model');
 		$this->load->library('ion_auth');
         $this->load->library("pagination");
-		$this->data['pagetitle'] 	= 'Store (Those are available as notebooks, phonecases, etc)';
+
+        $this->data['image'] = '';
+		$this->data['current'] = 'Shop';
+		$this->data['explanation'] = 'Some designs that I am selling in various forms such as phone cases, laptop bags, notebook, etc.';
+        $this->data['keywords'] = '';
 	}
 
 	public function index()
@@ -18,7 +22,6 @@ class shop extends MY_Controller {
 		// set page title
 		$this->data['title'] = 'Shop - '.$this->config->item('site_title', 'ion_auth');
 		// set current menu highlight
-		$this->data['current'] = 'HOME';
 		// get all post
 		$config["base_url"] = base_url() . "shop/index";
         $config["total_rows"] = $this->store_model->total_count();

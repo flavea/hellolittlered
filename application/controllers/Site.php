@@ -8,23 +8,25 @@ class Site extends MY_Controller {
         $this->load->model('look_model');
         $this->load->model('site_model');
         $this->load->model('blog_model');
+        $this->load->model('projects_model');
+        $this->load->model('themes_model');
 		$this->load->library('ion_auth');
+        $this->data['image'] = '';
+        $this->data['keywords'] = '';
 	}
 
 	public function index() {
 		// set page title
 		$this->data['title'] = 'Home - '.$this->config->item('site_title', 'ion_auth');
-		$this->data['pagetitle'] = 'Latest Updates';
-		// set current menu highlight
-		$this->data['current'] = 'HOME';
-		// get all post
-		// get all categories for sidebar menu
-		
-        $this->data["posts"] = $this->site_model->get_updates();
+        $this->data["posts"] = $this->blog_model->get_posts(3, 0);
+        $this->data["themes"] = $this->themes_model->get_themes(4, 0);
+        $this->data["projects"] = $this->projects_model->get_latest_project();
+        $this->data["current"] = "home";
+        $this->data["explanation"] = "The front page";
 		$this->render('blog/site','public_master');
 	}
 
-	public function page($slug) // get a post based on id
+	public function page($slug)
 	{
 		$this->data['title'] = 'Hello Little Red';
 		$this->data['query'] 			= $this->page_model->get_page($slug);
@@ -32,7 +34,7 @@ class Site extends MY_Controller {
 		$this->data['pagetitle'] 		= '';
 		
 		if( $this->ion_auth->logged_in() )
-		$this->data['user'] = $this->ion_auth->user()->row(); // get current user login details
+		$this->data['user'] = $this->ion_auth->user()->row();
 		
 		$this->render('blog/page','public_master');
 	}

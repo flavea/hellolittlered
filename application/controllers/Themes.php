@@ -11,7 +11,11 @@ class themes extends MY_Controller {
 		$this->load->library('ion_auth');
         $this->load->library("pagination");
         $this->load->helper("url");
+        $this->data['current'] = "";
         $this->data['pagetitle'] = "";
+        $this->data['image'] = "";
+		$this->data['explanation'] = 'Free themes.';
+        $this->data['keywords'] = '';
 	}
 
 	public function index()
@@ -19,14 +23,15 @@ class themes extends MY_Controller {
 		// set page title
 		$this->data['title'] = 'Themes - '.$this->config->item('site_title', 'ion_auth');
 		// set current menu highlight
-		$this->data['current'] = 'HOME';
-		// get all post
-		// get all categories for sidebar menu
+		$this->data['current'] = 'themes';
+		$this->data['explanation'] = 'Free themes and templates that I made for various platforms.<br>';
+
 		$this->data['categories'] = $this->themes_model->get_categories();
 		// render view
+		$this->data['test'] = "";
 		foreach ($this->data['categories'] as $category ) {
 			$link = '<a href="'.base_url().'themes/'.$category->slug.'">'.$category->slug."</a> - ";
-			$this->data['pagetitle'] 	= $this->data['pagetitle'].$link; 
+			$this->data['test'] = $this->data['test'] .$link; 
 		}
 		$config["base_url"] = base_url() . "themes/index";
         $config["total_rows"] = $this->themes_model->total_count();
@@ -34,11 +39,11 @@ class themes extends MY_Controller {
         $config["uri_segment"] = 3;
 	    $config['display_pages'] = FALSE;
 	    $config['next_link'] = 'Next Page';
-		$config['next_tag_open'] = '<li><span class="button big next">';
-		$config['next_tag_close'] = '</span></li>';
+		$config['next_tag_open'] = '<span class="button big next">';
+		$config['next_tag_close'] = '</span>';
 	    $config['prev_link'] = 'Previous Page';
-		$config['prev_tag_open'] = '<li><span class="button big previous">';
-		$config['prev_tag_close'] = '</span></li>';
+		$config['prev_tag_open'] = '<span class="button big previous">';
+		$config['prev_tag_close'] = '</span>';
 		$config['last_link'] = '';
 		$config['first_link'] = '';
         $this->pagination->initialize($config);
@@ -49,7 +54,24 @@ class themes extends MY_Controller {
             get_themes($config["per_page"], $page);
 		$this->render('blog/themes','public_master');
 	}
-	
+
+	public function shorten_string($string, $wordsreturned)
+	{
+		$retval = $string;
+		$string = preg_replace('/(?<=\S,)(?=\S)/', ' ', $string);
+		$string = str_replace("\n", " ", $string);
+		$array = explode(" ", $string);
+		if (count($array)<=$wordsreturned)
+		{
+			$retval = $string;
+		}
+		else
+		{
+			array_splice($array, $wordsreturned);
+			$retval = implode(" ", $array)." ...";
+		}
+		return $retval;
+	}
 	
 	
 	public function theme($id, $preview='') // get a post based on id
@@ -57,7 +79,7 @@ class themes extends MY_Controller {
 		$this->data['pagetitle'] 			= '';
 		$this->data['query'] 			= $this->themes_model->get_theme($id);
 		$this->data['theme_id'] 		= $id;
-		$this->data['categories'] 	= $this->themes_model->get_categories();
+		$this->data['categories'] = $this->themes_model->get_categories();
 		
 		if( $this->ion_auth->logged_in() )
 			$this->data['user'] = $this->ion_auth->user()->row(); // get current user login details
@@ -65,14 +87,18 @@ class themes extends MY_Controller {
 		$this->load->helper('form');
 		$this->load->library(array('form_validation'));
 		
+
 		
 		if($preview=='') {
 			if($this->themes_model->get_theme($id))
 			{
-				foreach($this->themes_model->get_theme($id) as $row)
+				foreach($this->data['query'] as $row)
 				{
-					//set page title
 					$this->data['title'] = $row->theme_name.' - '.$this->config->item('site_title', 'ion_auth');
+					$this->data['explanation'] = substr($row->theme_body, 1, 200);
+					$this->data['image'] = $row->theme_image;
+
+
 				}
 				
 				$this->render('blog/theme','public_master');
@@ -89,7 +115,14 @@ class themes extends MY_Controller {
 		$this->data['title'] = $slug.' - '.$this->config->item('site_title', 'ion_auth');
 		$this->data['pagetitle'] = $slug;
 		$this->data['categories'] = $this->themes_model->get_categories();
+		$this->data['current'] = 'themes/'.$slug;
 		
+		$this->data['test'] = "";
+		foreach ($this->data['categories'] as $category ) {
+			$link = '<a href="'.base_url().'themes/'.$category->slug.'">'.$category->slug."</a> - ";
+			$this->data['test'] = $this->data['test'] .$link; 
+		}
+
 		if( $slug == FALSE )
 			redirect(themes);
 		else
@@ -101,11 +134,11 @@ class themes extends MY_Controller {
 	        $config["uri_segment"] = 4;
 		    $config['display_pages'] = FALSE;
 		    $config['next_link'] = 'Next Page';
-			$config['next_tag_open'] = '<li><span class="button big next">';
-			$config['next_tag_close'] = '</span></li>';
+			$config['next_tag_open'] = '<span class="button big next">';
+			$config['next_tag_close'] = '</span>';
 		    $config['prev_link'] = 'Previous Page';
-			$config['prev_tag_open'] = '<li><span class="button big previous">';
-			$config['prev_tag_close'] = '</span></li>';
+			$config['prev_tag_open'] = '<span class="button big previous">';
+			$config['prev_tag_close'] = '</span>';
 			$config['last_link'] = '';
 			$config['first_link'] = '';
 	        $this->pagination->initialize($config);

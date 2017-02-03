@@ -1,18 +1,19 @@
-
-			<article class="post">
+<div id="bg" class="content-real">
+	<div id="blog">
+		<article class="post featured">
 			<?php if( isset($categories) && $categories ): ?>
 			<p><ul>
-			<?php foreach($categories as $cat):?>
+				<?php foreach($categories as $cat):?>
 				<li><a href="<?php echo base_url().'p/'.$cat->slug;?>"><?php echo $cat->page_title?></a></li>
 			<?php endforeach; ?>
-			</ul></p>
-				
-			<?php else: ?>
-			<h3>No pages yet!</h3>
-			<?php endif;?>
-			</article>
-			</div>
+		</ul></p>
 
-		
-	<?php $this->load->view('blog/sidebar');?>
-	
+	<?php else: ?>
+	<h3>No pages yet!</h3>
+<?php endif;?>
+</article>
+</div>
+
+
+<?php $this->load->view('blog/sidebar');?>
+</div>

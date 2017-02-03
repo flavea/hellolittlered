@@ -19,10 +19,7 @@
 				echo '<td>'.$post->name.'</td>';
 				echo '<td>'.$post->message.'</td>';
 				echo '<td>'.$post->answer.'</td>';
-				echo '<td>
-					<button class="button" onclick="answer('.$post->id.')">delete</button>
-					</td>';
-				
+				echo '<td><a class="button" href="answer/'.$post->id.'">answer</a></td>';
 			?>
 			</tr>
 			<?php endforeach; else: ?>

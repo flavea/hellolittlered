@@ -4,6 +4,7 @@ class contact extends MY_Controller {
 	function __construct()
 	{
 		parent::__construct();
+		$this->load->model('blog_model');
 		$this->load->model('contact_model');
         	$this->load->model('look_model');
         	$this->load->model('site_model');
@@ -14,13 +15,18 @@ class contact extends MY_Controller {
 		$this->load->helper('url');
 		$this->load->helper('form');
 		$this->load->library('email');
+		$this->data['current'] = '';
+		$this->data['explanation'] = '';
+		$this->data['image'] = '';
+
+		$this->data['categories'] = $this->blog_model->get_categories();
+        $this->data['keywords'] = '';
 	}
 
 	public function index() {
 		$this->data['title'] = 'Contact Us - '.$this->config->item('site_title', 'ion_auth');
 		$this->data['pagetitle'] = '';
 		// set current menu highlight
-		$this->data['current'] = 'HOME';
 
 		$this->form_validation->set_rules('name', 'Name', 'trim|required|callback_alpha_space_only');
 	        $this->form_validation->set_rules('email', 'Emaid ID', 'trim|required|valid_email');
@@ -32,6 +38,10 @@ class contact extends MY_Controller {
 	        }
 	        else
 	        {
+	         if($this->input->post('spamer') != "") {
+	                $this->session->set_flashdata('message','Your mail has been sent successfully!');
+	                redirect('contact');
+	         } else {
 	            $name = $this->input->post('name');
 	            $from_email = $this->input->post('email');
 	            $subject= $this->input->post('subject');
@@ -88,6 +98,7 @@ class contact extends MY_Controller {
 	                $this->session->set_flashdata('message','There is error in sending mail! Please try again later');
 	                redirect('contact');
 	            }
+	            }
 
 	        }
 
@@ -96,8 +107,6 @@ class contact extends MY_Controller {
 	public function q() {
 		$this->data['title'] = 'Questions - '.$this->config->item('site_title', 'ion_auth');
 		$this->data['pagetitle'] = '';
-		// set current menu highlight
-		$this->data['current'] = 'HOME';
 		$this->form_validation->set_rules('name', 'Name', 'trim|required|callback_alpha_space_only');
         $this->form_validation->set_rules('message', 'Message', 'trim|required');
         $config["base_url"] = base_url() . "contact/q/index";
@@ -173,19 +182,6 @@ class contact extends MY_Controller {
             $this->email->subject('[HELLO LITTLE RED] A new question!');
             $this->email->message($message); 
             $this->contact_model->add_new_question($name, $message);
-
-           if ($this->email->send())
-            {
-                // mail sent
-                $this->session->set_flashdata('message','Your mail has been sent successfully!');
-                redirect('contact');
-            }
-            else
-            {
-                //error
-                $this->session->set_flashdata('message','There is error in sending mail! Please try again later');
-                redirect('contact');
-            }
 
         }
 	}

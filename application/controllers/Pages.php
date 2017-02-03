@@ -11,18 +11,17 @@ class pages extends MY_Controller {
         $this->load->model('site_model');
 		$this->load->library('ion_auth');
         $this->load->helper("url");
-		$this->data['pagetitle'] = '';
+		$this->data['current'] = '';
+		$this->data['explanation'] = '';
+		$this->data['image'] = '';
+        $this->data['keywords'] = '';
 	}
 
 	public function index($offset = 0)
 	{
-		// set page title
 		$this->data['title'] = 'Pages - '.$this->config->item('site_title', 'ion_auth');
 		$this->data['pagetitle'] = 'All Pages';
-		// set current menu highlight
-		$this->data['current'] = 'About';
-		// get all post
-		// get all categories for sidebar menu
+		$this->data['current'] = 'pages';
 		$this->data['categories'] = $this->page_model->get_pages();
 		
 		$this->render('blog/pages','public_master');
@@ -31,18 +30,23 @@ class pages extends MY_Controller {
 	
 	
 	
-	public function page($slug) // get a post based on id
+	public function page($slug)
 	{
-		$this->data['query'] 			= $this->page_model->get_page($slug);
+		$this->data['query'] = $this->page_model->get_page($slug);
 		$this->data['pagetitle'] = '';
 		$this->data['title'] = $slug." - Hello Little Red";
+		$this->data['current'] = "";
 		
 		if( $this->ion_auth->logged_in() )
-			$this->data['user'] = $this->ion_auth->user()->row(); // get current user login details
+			$this->data['user'] = $this->ion_auth->user()->row(); 
 		
-		
-		if($this->page_model->get_page($slug))
+		if($this->data['query'])
 		{
+			foreach ($this->data['query'] as $row) {
+				$this->data['title'] = $row->page_title;
+				$this->data['explanation'] = substr($row->page_body, 1, 200);
+				$this->data['image'] = '';
+			}
 			$this->render('blog/page','public_master');
 		}
 		else

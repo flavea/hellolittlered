@@ -13,13 +13,16 @@ class commission extends MY_Controller {
 		$this->load->helper('url');
 		$this->load->helper('form');
 		$this->load->library('email');
+
+
+        $this->data['current'] = '';
+        $this->data['explanation'] = 'Commission page for tumblr, wordpress, zetaboards themes, and etc.';
+        $this->data['image'] = '';
+        $this->data['keywords'] = 'tumblr themes price, buy tumblr themes';
 	}
 
 	public function index() {
 		$this->data['title'] = 'Commission - '.$this->config->item('site_title', 'ion_auth');
-		$this->data['pagetitle'] = '';
-		// set current menu highlight
-		$this->data['current'] = 'HOME';
         $this->data['categories'] = $this->commission_model->get_categories();
 
 		$this->form_validation->set_rules('name', 'Name', 'trim|required|callback_alpha_space_only');

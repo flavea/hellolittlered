@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="<?=base_url();?>assets/css/form-elements.css">
     <link rel="stylesheet" href="<?=base_url();?>assets/css/style.css">
     <link rel="stylesheet" href="<?=base_url();?>assets/css/style2.css">
+<script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.1.1.js"></script>
     <?php echo $before_closing_head;?>
 </head>
 <body>
@@ -75,7 +76,7 @@
             <li><a href="<?=base_url();?>admin/website">Websites</a></li>
           </ul>
         </li>
-        <li><a href="<?=base_url();?>admin/add_new_photo_album">Photos</a></li>
+        <li><a href="<?=base_url();?>admin/projects">Projects</a></li>
         <li><a href="<?=base_url();?>admin/design">Designs</a></li>
         <li><a href="<?=base_url();?>admin/writing">Writing</a></li>
         </li>

@@ -13,32 +13,33 @@ class Blog extends MY_Controller {
         $this->load->library("pagination");
 		$this->load->library('ion_auth');
         $this->load->helper("url");
-		$this->data['pagetitle'] = '';
+		$this->data['current'] = '';
+		$this->data['explanation'] = '';
+		$this->data['image'] = '';
+		$this->data['keywords'] = 'blog';
 	}
 
 	public function index($offset = 0)
 	{
-		// set page title
+
 		$this->data['title'] = 'Blog - '.$this->config->item('site_title', 'ion_auth');
 		$this->data['pagetitle'] = 'Latest Blog Posts';
-		// set current menu highlight
 		$this->data['current'] = 'Blog';
-		// get all post
-		// get all categories for sidebar menu
+		$this->data['explanation'] = 'Thoughts and rants about anything and everything. (Yes, I know I rarely updated the blog.)';
+
 		$this->data['categories'] = $this->blog_model->get_categories();
-		// render view
 		$config = array();
         $config["base_url"] = base_url() . "blog/index";
         $config["total_rows"] = $this->pagination_model->total_count();
-        $config["per_page"] = 10;
+        $config["per_page"] = 9;
         $config["uri_segment"] = 3;
 	    $config['display_pages'] = FALSE;
 	    $config['next_link'] = 'Next Page';
-		$config['next_tag_open'] = '<li><span class="button big next">';
-		$config['next_tag_close'] = '</span></li>';
+		$config['next_tag_open'] = '<span class="button big next">';
+		$config['next_tag_close'] = '</span>';
 	    $config['prev_link'] = 'Previous Page';
-		$config['prev_tag_open'] = '<li><span class="button big previous">';
-		$config['prev_tag_close'] = '</span></li>';
+		$config['prev_tag_open'] = '<span class="button big previous">';
+		$config['prev_tag_close'] = '</span>';
 		$config['last_link'] = '';
 		$config['first_link'] = '';
         $this->pagination->initialize($config);
@@ -55,8 +56,7 @@ class Blog extends MY_Controller {
 	
 	public function post($id) // get a post based on id
 	{
-		$this->data['query'] 			= $this->blog_model->get_post($id);
-		$this->data['comments'] 		= $this->blog_model->get_post_comment($id); // get comments related to the post
+		$this->data['query'] 	= $this->blog_model->get_post($id);
 		$this->data['post_id'] 		= $id;
 		$this->data['categories'] = $this->blog_model->get_categories();
 		$this->data['pagetitle'] = '';
@@ -72,12 +72,14 @@ class Blog extends MY_Controller {
 		$this->form_validation->set_rules('email', 'Email', 'required|valid_email');
 		$this->form_validation->set_rules('comment', 'Comment', 'required');
 		
-		if($this->blog_model->get_post($id))
+		if($this->data['query'])
 		{
-			foreach($this->blog_model->get_post($id) as $row)
+			foreach($this->data['query'] as $row)
 			{
-				//set page title
 				$this->data['title'] = $row->entry_name.' - '.$this->config->item('site_title', 'ion_auth');
+				$this->data['explanation'] = substr($row->entry_body, 1, 200);
+				$this->data['image'] = $row->entry_image;
+				$this->data['keywords'] = $row->entry_tags;
 			}
 			
 			if ($this->form_validation->run() == FALSE)

@@ -24,7 +24,7 @@ class Blog_model extends CI_Model {
        return $this->db->count_all("entry");
     }
 	
-	function add_new_entry($author,$name,$body,$categories,$image,$video)
+	function add_new_entry($author,$name,$body,$categories,$image,$video,$tags)
 	{
 		$data = array(
 			'author_id'		=> $author,
@@ -32,6 +32,7 @@ class Blog_model extends CI_Model {
 		 	'entry_body'	=> $body,
 		 	'entry_image'	=> $image,
 		 	'entry_video'	=> $video,
+		 	'entry_tags'	=> $tags
 		);
 		$this->db->insert('entry',$data);
 
@@ -51,7 +52,8 @@ class Blog_model extends CI_Model {
 		);
 		$this->db->insert('statuses',$status_data);
 		
-		//$object_id = (int) mysql_insert_id(); // get latest post id
+		$this->load->model('social_model');
+		$this->social_model->post_tweet($status_data['status']);
 		
 		foreach($categories as $category)
 		{
@@ -218,13 +220,14 @@ class Blog_model extends CI_Model {
 	    $this->db->delete('entry_relationships', array('category_id' => $id));
 	}
 
-	function update_entry($id, $name, $body, $image, $video)
+	function update_entry($id, $name, $body, $image, $video, $tags)
 	{
 		$data = array(
 		 	'entry_name'	=> $name,
 		 	'entry_body'	=> $body,
 		 	'entry_image'	=> $image,
 		 	'entry_video'	=> $video,
+		 	'entry_tags'	=> $tags
 		);
 
 		$this->db->where('entry_id', $id);
@@ -235,6 +238,10 @@ class Blog_model extends CI_Model {
 		 	'status'		=> 'Updated a blog post: "'.$name.'" check it out here '.base_url().'post/'.$id,
 		);
 		$this->db->insert('statuses',$status_data);
+
+		
+		$this->load->model('social_model');
+		$this->social_model->post_tweet($status_data['status']);
 	}
 }
 

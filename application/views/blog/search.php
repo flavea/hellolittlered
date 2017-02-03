@@ -1,8 +1,7 @@
-
-			
-			<header>
-			<article class="post">
-			
+<div id="bg" class="content-real">
+	<div id="blog">
+			<article class="post featured">
+			<h2><?php echo $explanation; ?></h2>
 			<?php if( isset($posts) && $posts ): ?>
 			<p><ul>
 			<?php foreach($posts as $post):?>
@@ -14,8 +13,8 @@
 			<h3>Not Found</h3>
 			<?php endif;?>
 			</article>
-			</div>
+		</div>
 
 		
 	<?php $this->load->view('blog/sidebar');?>
-	
+	</div>

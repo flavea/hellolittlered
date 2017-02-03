@@ -10,6 +10,9 @@ class resource extends MY_Controller {
         $this->load->model('site_model');
 		$this->load->library('ion_auth');
 		$this->data['pagetitle'] 	= '';
+		$this->data['explanation'] = 'Graphic resources that I made. Feel free to use.';
+        $this->data['image'] = '';
+        $this->data['keywords'] = '';
 	}
 
 	public function index()
@@ -17,7 +20,7 @@ class resource extends MY_Controller {
 		// set page title
 		$this->data['title'] = 'Resources - '.$this->config->item('site_title', 'ion_auth');
 		// set current menu highlight
-		$this->data['current'] = 'HOME';
+		$this->data['current'] = 'Resources';
 		// get all post
 		$this->data['posts'] = $this->resources_model->get_resources();
 		// get all categories for sidebar menu
@@ -55,6 +58,8 @@ class resource extends MY_Controller {
 		$this->data['title'] = $slug.' - '.$this->config->item('site_title', 'ion_auth');
 		$this->data['pagetitle'] = $slug;
 		$this->data['categories'] = $this->resources_model->get_type(NULL,$slug);
+
+		$this->data['current'] = 'Resources/'.$slug;
 		
 		if( $slug == FALSE )
 			redirect(themes);

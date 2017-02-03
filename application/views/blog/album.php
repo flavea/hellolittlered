@@ -1,24 +1,62 @@
-<style>
-.header {
-	display:none;
-}
+<script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
+<script>
 
-#wrapper {
-	padding:0px;
-	margin:0px;
-}
-</style>
-<?php if( $albums ): foreach($albums as $post): ?>
-			<article class="album" style="background:url(<?php echo $post->album_cover; ?>) bottom; ">
-			<header id="album-info">
-				<div class="title">
-					<h2><a href="<?php echo base_url().'album/'.$post->album_id;?>"><?php echo ucwords($post->album_name);?></a></h2>
-				</div>
-				<?php echo $post->album_location; ?>
-				<?php echo '<br>'.$post->album_date; ?>
-			</header>
-			</article>
-<?php endforeach; endif; ?>
+$('.content-real').masonry({
+  itemSelector: '.photo'
+});
+</script>
+<div class="content-real">
+<center>
+<h2><a href="http://flickr.com/photos/113411780@N03">Latest Photos on Flickr</a></h2>
+	<div class="album flickr">
+<?php  if($flickr) {
+	foreach ($flickr as $single_photo) {
+		$farm_id = $single_photo->farm;
+		$server_id = $single_photo->server;
+		$photo_id = $single_photo->id;
+		$secret_id = $single_photo->secret;
+		$size = 'm';
+		 
+		$title = $single_photo->title;
+		 
+		$photo_url = 'http://farm'.$farm_id.'.staticflickr.com/'.$server_id.'/'.$photo_id.'_'.$secret_id.'.'.'jpg';
+		print "<div class='photo'><img title='".$title."' src='".$photo_url."' /></div>";
+	}?>
+			
+<?php } ?>
 </div>
+
+<h2><a href="http://instagram.com/l.ifnt">Latest Photos on Instagram</a></h2>
+<div class="album instagram">
+<?php  if($instagram) {
+	foreach ($instagram as $data) {
+		$link = $data['link'];
+        $id = $data['id'];
+        $caption = $data['caption']['text'];
+        $author = $data['caption']['from']['username'];
+        $thumbnail = $data['images']['standard_resolution']['url'];
+	?>
 	
-	<?php $this->load->view('blog/footer');?>
+    <div class="photo">
+        <a href="<?php echo $link ?>" target="_blank"><img src="<?= $thumbnail ?>" title="<?= htmlentities($caption) ?>" alt="<?= htmlentities($caption) ?>" /></a>
+    </div>
+<?php 
+}
+} ?>
+<center>
+</div>
+</div>
+</div>
+
+<script src='https://cdnjs.cloudflare.com/ajax/libs/masonry/4.1.1/masonry.pkgd.js'></script>
+<script src='https://npmcdn.com/imagesloaded@4.1/imagesloaded.pkgd.js'></script>
+<script>
+var $grid = $('.album').masonry({
+  itemSelector: '.photo',
+  percentPosition: true
+});
+
+$grid.imagesLoaded().progress( function() {
+  $grid.masonry();
+});
+</script>

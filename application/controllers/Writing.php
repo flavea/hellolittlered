@@ -11,6 +11,8 @@ class writing extends MY_Controller {
 		$this->load->library('ion_auth');
         $this->load->library("pagination");
         $this->load->helper("url");
+        $this->data['image'] = '';
+        $this->data['keywords'] = '';
 	}
 
 	public function index()
@@ -18,8 +20,10 @@ class writing extends MY_Controller {
 		// set page title
 		$this->data['title'] = 'Stories - '.$this->config->item('site_title', 'ion_auth');
 		// set current menu highlight
-		$this->data['current'] = 'HOME';
-		$this->data['pagetitle'] 	= 'Stories'; 
+		$this->data['current'] = 'Stories';
+
+		$this->data['explanation'] = "Fictions and fanfictions that I made.";
+ 
 		
         $this->data["posts"] = $this->writing_model->get_stories();
         $this->data["total"] = $this->writing_model->total_count();
