@@ -235,7 +235,7 @@ class Ion_auth_model extends CI_Model
 		if ($this->hash_method == 'bcrypt') {
 			if ($this->random_rounds)
 			{
-				$rand = rand($this->min_rounds,$this->max_rounds);
+				$rand = rand($this->min_rounds, $this->max_rounds);
 				$params = array('rounds' => $rand);
 			}
 			else
@@ -244,7 +244,7 @@ class Ion_auth_model extends CI_Model
 			}
 
 			$params['salt_prefix'] = $this->config->item('salt_prefix', 'ion_auth');
-			$this->load->library('bcrypt',$params);
+			$this->load->library('bcrypt', $params);
 		}
 
 		$this->trigger_events('model_constructor');
@@ -324,7 +324,7 @@ class Ion_auth_model extends CI_Model
 		// bcrypt
 		if ($use_sha1_override === FALSE && $this->hash_method == 'bcrypt')
 		{
-			if ($this->bcrypt->verify($password,$hash_password_db->password))
+			if ($this->bcrypt->verify($password, $hash_password_db->password))
 			{
 				return TRUE;
 			}

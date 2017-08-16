@@ -5,14 +5,10 @@ class Site extends MY_Controller {
 	{
 		parent::__construct();
 		$this->load->model('page_model');
-        $this->load->model('look_model');
-        $this->load->model('site_model');
         $this->load->model('blog_model');
         $this->load->model('projects_model');
         $this->load->model('themes_model');
 		$this->load->library('ion_auth');
-        $this->data['image'] = '';
-        $this->data['keywords'] = '';
 	}
 
 	public function index() {
@@ -21,6 +17,7 @@ class Site extends MY_Controller {
         $this->data["posts"] = $this->blog_model->get_posts(3, 0);
         $this->data["themes"] = $this->themes_model->get_themes(4, 0);
         $this->data["projects"] = $this->projects_model->get_latest_project();
+        $this->data["experiments"] = $this->projects_model->get_latest_experiment();
         $this->data["current"] = "home";
         $this->data["explanation"] = "The front page";
 		$this->render('blog/site','public_master');

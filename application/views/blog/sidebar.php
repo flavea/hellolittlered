@@ -2,13 +2,14 @@
 
 	<!-- Intro -->
 	<section id="intro">
-		<a href="#" class="logo"><img src="<?=base_url();?>main-assets/img/logo.jpg" alt="" /></a>
+		<a href="#" class="logo"><img src="http://i.imgur.com/PhoyaMp.png" alt="" /></a>
 			<?php $item = $this->site_model->get_data(); 
 			foreach($item as $header): ?>
 			<h2><?php echo $header->title;?></h2>
 			<?php echo $header->description; endforeach;?>
 	</section>
 	<?php 
+	
 	$item = $this->look_model->get_sidebars(); 
 	foreach($item as $sidebar): ?>
 	<section class="blurb">
@@ -18,15 +19,19 @@
 
 <section>
 	<div class="websites">
+	<b>Blog Categories:</b><br>
+	<ul>
 		<?php 
 		foreach($categories as $category):?>
-		<h5><a href="category/<?php echo $category->slug ?>"><?php echo $category->category_name ?></a></h5>
+		<li><a href="category/<?php echo $category->slug ?>"><?php echo $category->category_name ?></a></li>
 	<?php endforeach;?>
+	</ul>
 </div>
 </section>
 <section>
 	<div class="websites">
 		<?php 
+
 		$item = $this->look_model->get_websites(); 
 		foreach($item as $website): ?>
 		<div>
@@ -35,6 +40,15 @@
 		</div>
 	<?php endforeach;?>
 </div>
+</section>
+
+<section id="stat">
+<p><b>Last Song Listened:</b><br>
+<?php echo $music; ?></p>
+<p><b>Last Book Read:</b><br>
+<?php echo $read; ?></p>
+<p><b>Currently Watching:</b><br>
+<?php echo $watch; ?></p>
 </section>
 
 <!-- Footer -->

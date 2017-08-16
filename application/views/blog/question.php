@@ -3,7 +3,7 @@
 			<article class="post featured">
 			<header>
 				<div class="title">
-					<h2>Ask A Questions</h2>
+					<h2><span>Ask A Questions</span></h2>
 					<p>For simple and theme questions. Please note that all of the questions asked here will be published. Please check whether your questions have been answered or not.</p>
 				</div>
 			</header>
@@ -14,10 +14,13 @@
             <?php if($this->session->flashdata('message')){echo '<p class="success">'.$this->session->flashdata('message').'</p>';}?>		
 	
 			<p><label>Name</label>
-			<input name="name" value="Your Name" type="text" size="30" /></p>
+			<input name="name" value="Your Name" type="text" size="30" required="" /></p>
 			
 			<p><label>Your Question</label>
-			<textarea rows="3" cols="80%" name="message" style="resize:none;" id="textarea"></textarea></p>
+			<textarea rows="3" cols="80%" name="message" style="resize:none;" id="textarea" required=""></textarea></p>
+			
+			<p><label>[Fill in The Blanks] Hello, Little ___</label>
+			<input name="validate" type="text" size="30" required/></p>
 			
 			<input class="button" type="submit" value="Submit"/>
 			<input class="button" type="reset" value="Reset"/>	

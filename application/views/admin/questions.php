@@ -1,31 +1,39 @@
-<div class="container" style="margin-top:60px;">
-  	<div class="row">
-  		<h2>Commissions</h2>
-			<?php if( $posts ): ?>
-			<table class="table table-striped table-hover">
-				<thead>
-					<tr>
-						<th width="10%">ID</th>
-						<th width="15%">Name</th>
-						<th width="30%">Question</th>
-						<th width="30%">Answer</th>
-						<th width="15%">Action</th>
-					</tr>
-				</thead>
-				<tr>
-			<?php foreach($posts as $post): ?>
-			<?php 
-				echo '<td>'.$post->id.'</td>';
-				echo '<td>'.$post->name.'</td>';
-				echo '<td>'.$post->message.'</td>';
-				echo '<td>'.$post->answer.'</td>';
-				echo '<td><a class="button" href="answer/'.$post->id.'">answer</a></td>';
-			?>
-			</tr>
-			<?php endforeach; else: ?>
-				<h2>No post yet!</h2>
-			<?php endif;?>
+<?php if( $posts ): ?>
+	<?php foreach($posts as $post): ?>
+		<div class="card-panel white">
+			<?php echo form_open('admin/answer/'.$post->id);?>
 			
-		</div>
+			<input type="hidden" name="id" value="<?php echo $post->id ?>" readonly>
+
+			<div class="input-field">
+				<label>Name</label>
+				<input type="text" name="name" value="<?php echo $post->name ?>">
+			</div>
+
+			<label>Question</label>
+			<textarea rows="16" cols="100%" name="question" class="materialize-textarea"><?php echo $post->message ?></textarea>
+
+			<label>Answer</label>
+			<textarea rows="16" cols="100%" name="answer" class="materialize-textarea"><?php echo $post->answer ?></textarea>
+
+			<div class="switch">
+				<label>
+					<input type="checkbox" name="tweet" value="1"  />
+					<span class="lever"></span>
+					Tweet?
+				</label>
+			</div>
+
+			<input class="waves-effect waves-light btn red darken-4" type="submit" value="Submit"/>
+			<input class="waves-effect waves-light btn red darken-4" type="reset" value="Reset"/>	
+
+		</form>
+
 	</div>
-		
+
+
+<?php endforeach; endif;?>
+
+	<ul class="actions pagination">
+		<?php echo $paginglinks; ?>
+	</ul>

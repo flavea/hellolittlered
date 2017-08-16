@@ -1,35 +1,33 @@
-
-	<!-- content starts -->
-	<div class="container" style="margin-top:60px;">
-  	<div class="row">
-			<?php if( $posts ): ?>
-			<?php foreach($posts as $post): ?>
-			<h2>Edit Entry</h2>
+<?php if( $posts ): ?>
+	<?php foreach($posts as $post): ?>
+		<div class="card-panel white">
 			<?php echo form_open('admin/answer/'.$post->id);?>
+			
+			<input type="hidden" name="id" value="<?php echo $post->id ?>" readonly>
 
-			<?php if(validation_errors()){echo validation_errors('<p class="error">','</p>');} ?>
-            <?php if($this->session->flashdata('message')){echo '<p class="success">'.$this->session->flashdata('message').'</p>';}?>
-			
-			
-			<p><label>ID</label><br>
-			<input type="text" name="id" style="display:block;width:100%"/ value="<?php echo $post->id ?>" readonly></p>
+			<div class="input-field">
+				<label>Name</label>
+				<input type="text" name="name" value="<?php echo $post->name ?>" readonly>
+			</div>
 
-			<p><label>Name</label><br>
-			<input type="text" name="name" style="display:block;width:100%"/ value="<?php echo $post->name ?>" readonly></p>
-			
-			<p><label>Question</label><br>
-			<textarea rows="16" cols="100%" name="question" style="height:100px" readonly><?php echo $post->message ?></textarea></p>
-			
-			<p><label>Answer</label><br>
-			<textarea rows="16" cols="100%" name="answer" style="height:100px"><?php echo $post->answer ?></textarea></p>
-			
-			<br />	
-			
-			<input class="button" type="submit" value="Submit"/>
-			<input class="button" type="reset" value="Reset"/>	
-			
-			</form>
-			<?php endforeach; endif;?>
-			
+			<label>Question</label>
+			<textarea rows="16" cols="100%" name="question" class="materialize-textarea" readonly><?php echo $post->message ?></textarea>
+
+			<label>Answer</label>
+			<textarea rows="16" cols="100%" name="answer" class="materialize-textarea"><?php echo $post->answer ?></textarea>
+
+			<div class="switch">
+				<label>
+					<input type="checkbox" name="tweet" value="1"  />
+					<span class="lever"></span>
+					Tweet?
+				</label>
+			</div>
+
+			<input class="waves-effect waves-light btn red darken-4" type="submit" value="Submit"/>
+			<input class="waves-effect waves-light btn red darken-4" type="reset" value="Reset"/>	
+
+		</form>
+
 	</div>
-</div>
+<?php endforeach; endif;?>

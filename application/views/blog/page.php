@@ -6,11 +6,7 @@
 			<article class="post featured">
 			<header>
 				<div class="title">
-					<h2><a href="<?php echo base_url().'post/'.$post->page_id;?>"><?php echo ucwords($post->page_title);?></a></h2>
-				</div>
-				<div class="meta">
-					<time class="published" datetime="2015-11-01"><?php echo mdate('%n %M %Y %H:%i:%s',human_to_unix($post->page_date));?></time>
-					<a href="#" class="author"><?php $author = $this->ion_auth->user($post->author_id)->row(); echo ucfirst($author->username);?></a>
+					<h2><span><?php echo ucwords($post->page_title);?></span></h2>
 				</div>
 			</header>
             <?php echo $post->page_body;

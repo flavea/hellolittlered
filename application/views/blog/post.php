@@ -5,11 +5,13 @@
 		<article class="post featured onpage">
 			<header>
 				<div class="title">
-					<h2><a href="<?php echo base_url().'post/'.$post->entry_id;?>"><?php echo ucwords($post->entry_name);?></a></h2>
+					<h2><?php echo ucwords($post->entry_name);?></h2>
 				</div>
 				<div class="meta">
-					<time class="published" datetime="2015-11-01"><?php echo mdate('%n %M %Y %H:%i:%s',human_to_unix($post->entry_date));?></time>
-					<a href="#" class="author"><?php $author = $this->ion_auth->user($post->author_id)->row(); echo ucfirst($author->username);?></a>
+					Posted on <time class="published"><?php
+$date = date_create($post->entry_date);
+echo date_format($date, 'F dS Y H:i');
+?></time> by <a href="/p/aboutme" class="author"><?php $author = $this->ion_auth->user($post->author_id)->row(); echo ucfirst($author->first_name);?></a>
 				</div>
 			</header>
 			

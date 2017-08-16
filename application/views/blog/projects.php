@@ -2,22 +2,23 @@
 
 	<div id="projects-real">
 
-		<?php foreach($projects as $project): ?>
-
+		<?php 
+		$i = 1;
+		foreach($projects as $project): ?>
+		
+    
 		<section>
-			<div id="image">
-				<img src="<?php echo $project->img ?>">
-			</div>
-			<div id="explanation">
-				<h2><?php echo $project->name ?></h2>
-				<p><?php echo $project->exp ?></p>
-				<center>
-					<a href="<?php echo $project->link ?>" class="button">Visit Website</a>
-					<a href="<?php echo $project->behance ?>" class="button">On Behance</a>
-				</center>
-			</div>
+		    <div class="number">0<?php echo $i ?></div>
+    		<h3><a href="<?php echo $project->link ?>" target="_blank"><?php echo $project->name ?></a></h3>
+    		<span><?php echo $project->link ?></span>
 		</section>
-	<?php endforeach; ?>
+		
+		<!--<div id="image" class="<?php echo $project->name ?>">
+		    <img src="<?php echo $project->img ?>">
+		</div>-->
+	<?php 
+	    $i++;
+	endforeach; ?>
 </div>
 
 </div>

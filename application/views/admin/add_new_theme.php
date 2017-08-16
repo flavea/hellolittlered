@@ -1,93 +1,120 @@
-<script type="text/javascript" src="<?=base_url();?>assets/js/tinymce/tinymce.min.js"></script>
-<script type="text/javascript">
-tinymce.init({
-    selector: "#textarea",
-    height:200,
-plugins: [
-    "advlist autolink lists link image charmap print preview anchor",
-    "searchreplace visualblocks code fullscreen",
-    "insertdatetime media table contextmenu paste "
-],
-toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter      alignright alignjustify | bullist numlist outdent indent | link image"
-});
-</script>
-	<!-- content starts -->
-	<div class="container" style="margin-top:60px;">
-  	<div class="row">
-			<?php if( $query != '' ): foreach($query as $post): ?>
-			<h2>Edit Theme</h2>
-			<?php echo form_open_multipart('admin/update-theme');?>
-			
-			<?php if(validation_errors()){echo validation_errors('<p class="error">','</p>');} ?>
-            <?php if($this->session->flashdata('message')){echo '<p class="success">'.$this->session->flashdata('message').'</p>';}?>
-			
-			<p><label>Theme ID</label><br>
-			<input type="text" name="theme_id" style="display:block;width:100%" value="<?php echo $post->theme_id ?>" disable/></p>
+<script src="//cdn.ckeditor.com/4.6.2/full/ckeditor.js"></script>
 
-			<p><label>Theme Name</label><br>
-			<input type="text" name="theme_name" style="display:block;width:100%" value="<?php echo $post->theme_name ?>"/></p>
+<div class="card-panel white">
+	<?php if( $query != '' ): foreach($query as $post): ?>
+		<h2 style="margin: .2em 0 1em 0" class="red-text text-darken-4">Edit Theme</h2>
+		<?php echo form_open_multipart('admin/update-theme');?>
 
-			<p><label>Image Preview</label><br>
-			<input type="text" name="theme_image" style="display:block;width:100%"  value="<?php echo $post->theme_image ?>"/></p>
+		<input type="hidden" name="theme_id" value="<?php echo $post->theme_id ?>"/>
+		<div class="input-field">
+			<label>Theme Name</label>
+			<input type="text" name="theme_name" value="<?php echo $post->theme_name ?>" required/>
+		</div>
 
-			<p><label>Preview Link</label><br>
-			<textarea rows="16" cols="80%" name="theme_preview" style="resize:none;height:500px"> <?php echo $post->theme_preview ?></textarea></p>
-			
-			<p><label>Code Link</label><br>
-			<input type="text" name="theme_code"  style="display:block;width:100%"  value="<?php echo $post->theme_code ?>"/></p>
+		<p>
+			<label>Status</label><br>
 
-			<p><label>Descriptions/Features</label>
-			<textarea rows="16" cols="80%" name="theme_body" style="resize:none;height:500px" id="textarea"> <?php echo $post->theme_body ?></textarea></p>
-			
-			<br />	
-			
-			<input class="button" type="submit" value="Submit"/>
-			<input class="button" type="reset" value="Reset"/>	
-			
-			</form>
+			<?php if( isset($statuses) && $statuses): foreach($statuses as $status): ?>
+				<input name="status" type="radio" id="status-<?php echo $status->id;?>" value="<?php echo $status->id;?>" <?php if($post->status == $status->id) echo 'checked';?>/>
+				<label for="status-<?php echo $status->id;?>" style="margin-right:1em"><?php echo $status->name;?></label>
+			<?php endforeach;endif; ?>
+		</p>
 
-			<?php endforeach; else:?>
+		<div class="input-field">
+			<label>Image Preview</label>
+			<input type="url" name="theme_image"value="<?php echo $post->theme_image ?>" required/>
+		</div>
 
-			<h2>Add New Theme</h2>
-			<?php echo form_open_multipart('admin/add-new-theme');?>
-			
-			<?php if(validation_errors()){echo validation_errors('<p class="error">','</p>');} ?>
-            <?php if($this->session->flashdata('message')){echo '<p class="success">'.$this->session->flashdata('message').'</p>';}?>
-			
-			<p><label>Theme Name</label><br>
-			<input type="text" name="theme_name"  style="display:block;width:100%"/></p>
-			
-			
-			<p><label>Theme Type</label><br>
-				<?php if( isset($categories) && $categories): foreach($categories as $category): ?>
-				<label><input class="checkbox" type="checkbox" name="theme_category[]" value="<?php echo $category->category_id;?>"><?php echo $category->category_name;?></label><br>
-				<?php endforeach; else:?>
-				Please add your category first!
-				<?php endif; ?>
-			</p>
+		<div class="input-field">
+			<label>Preview Code</label>
+			<textarea rows="16" cols="80%" name="theme_preview" style="resize:none;max-height:300px;overflow: auto;" class="materialize-textarea"> <?php echo $post->theme_preview ?></textarea>
+		</div>
 
-			<p><label>Image Preview</label><br>
-			<input type="text" name="theme_image" style="display:block;width:100%" /></p>
+		<div class="input-field">
+			<label>Code Link</label>
+			<input type="url" name="theme_code" value="<?php echo $post->theme_code ?>"/>
+		</div>
 
-			<p><label>Preview Link</label><br>
-			<textarea rows="16" cols="80%" name="theme_preview" style="resize:none;height:500px"></textarea></p>
+		<label>Descriptions/Features</label>
+		<textarea rows="16" cols="80%" name="theme_body" id="textarea"> <?php echo $post->theme_body ?></textarea>
 
-			<p><label>Code Link</label><br>
-			<input type="text" name="theme_code"  style="display:block;width:100%" /></p>
+		<div class="switch">
+			<label>
+				<input type="checkbox" name="tweet" value="1"  />
+				<span class="lever"></span>
+				Tweet?
+			</label>
+		</div>
 
-			<p><label>Descriptions/Features</label>
-			<textarea rows="16" cols="80%" name="theme_body" style="resize:none;height:500px" id="textarea"></textarea></p>
-			
-			<br />	
-			
-			<input class="button" type="submit" value="Submit"/>
-			<input class="button" type="reset" value="Reset"/>	
-			
-			</form>
-			
-			<?php endif;?>
 
-			
-			
+		<input class="waves-effect waves-light btn red darken-4" type="submit" value="Submit"/>
+		<input class="waves-effect waves-light btn red darken-4" type="reset" value="Reset"/>	
+
+	</form>
+
+<?php endforeach; else:?>
+
+	<h2>Add New Theme</h2>
+	<?php echo form_open_multipart('admin/add-new-theme');?>
+
+	<div class="input-field">
+		<label>Theme Name</label>
+		<input type="text" name="theme_name" required />
 	</div>
+
+	<p>
+		<label>Status</label><br>
+
+		<?php if( isset($statuses) && $statuses): foreach($statuses as $status): ?>
+			<input name="status" type="radio" id="status-<?php echo $status->id;?>" value="<?php echo $status->id;?>" />
+			<label for="status-<?php echo $status->id;?>" style="margin-right:1em"><?php echo $status->name;?></label>
+		<?php endforeach;endif; ?>
+	</p>
+
+	<p>
+		<label>Status</label>
+		<?php if( isset($categories) && $categories): foreach($categories as $category): ?>
+			<input class="checkbox" type="checkbox" name="theme_category[]" id="cat-<?php echo $category->category_id;?>" value="<?php echo $category->category_id;?>">
+			<label for="cat-<?php echo $category->category_id;?>" style="margin-right:1em"><?php echo $category->category_name;?></label>
+		<?php endforeach; else:?>
+		Please add your category first!
+	<?php endif; ?>
+</p>
+
+<div class="input-field">
+	<label>Image Preview</label>
+	<input type="url" name="theme_image"  required/>
 </div>
+
+<div class="input-field">
+	<label>Preview Code</label>
+	<textarea rows="16" cols="80%" name="theme_preview" style="resize:none;max-height:300px;overflow: auto;" class="materialize-textarea"></textarea></div>
+
+	<div class="input-field">
+		<label>Code Link</label>
+		<input type="url" name="theme_code"/>
+	</div>
+
+	<label>Descriptions/Features</label>
+	<textarea rows="16" cols="80%" name="theme_body" style="resize:none;height:500px" id="textarea"></textarea>
+
+	<div class="switch">
+		<label>
+			<input type="checkbox" name="tweet" value="1"  />
+			<span class="lever"></span>
+			Tweet?
+		</label>
+	</div>
+
+
+	<input class="waves-effect waves-light btn red darken-4" type="submit" value="Submit"/>
+	<input class="waves-effect waves-light btn red darken-4" type="reset" value="Reset"/>	
+
+</form>
+
+<?php endif;?>
+
+</div>
+<script>
+	CKEDITOR.replace( 'theme_body' );
+</script>

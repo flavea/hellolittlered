@@ -17,12 +17,12 @@ $(window).load(function () {
 	<div class="post featured">
 
 
-		<div class="title"><h2>Themes</h2></div>
+		<div class="title"><h2><span>Themes</span></h2></div>
 
 		<p style="text-align:center">;
 			<?php echo $test; ?>
 		</p>
-		<div class="title"><h2>Term of Use</h2></div>
+		<div class="title"><h2><span>Term of Use</span></h2></div>
 
 		<ol>
 			<li>Do not remove the credit completely or make them invisible, you may replace it to a visible place.</li>

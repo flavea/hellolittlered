@@ -3,7 +3,7 @@
 <article class="post featured">
 			<header>
 				<div class="title">
-					<h2>Commission</h2>
+					<h2><span>Commission</span></h2>
 				</div>
 			</header>
 
@@ -31,18 +31,18 @@
             <?php if($this->session->flashdata('message')){echo '<p class="success">'.$this->session->flashdata('message').'</p>';}?>
 	
 			<p><label>Your Name</label>
-			<input type="text" name="name"  style="display:block;width:100%"/></p>
+			<input type="text" name="name" placeholder="Your Name" style="display:block;width:100%" required /></p>
 
 			<p><label>Your Email</label>
-			<input type="text" name="email"  style="display:block;width:100%"/></p>
+			<input type="text" name="email" placeholder="Your Real Email" style="display:block;width:100%"/ required></p>
 			
 			<label>What you want</label>
 				<?php if( isset($categories) && $categories): foreach($categories as $category): ?>
 					<input type="checkbox" name="category[]" value="<?php echo $category->category_id;?>">
 					<?php echo $category->category_name;?> (Base Price: USD <?php echo $category->base_price;?>)<br>
 					<?php 
-					if($category->description!=NULL) {
-						echo $category->description.'<br>';
+					if($category->description!=NULL || $category->description!="") {
+						echo '<small>'.$category->description.'</small><br><br>';
 					}
 					?>
 				<?php endforeach; else:?>
@@ -58,6 +58,9 @@
 			<p><label>Your message</label>
 			<textarea rows="6" cols="80%" name="message" style="resize:none;" id="textarea"></textarea></p>
 			
+			<p><label>[Fill in The Blanks] Bond. James ____</label>
+			<input name="validate" type="text" size="30" required/></p>
+			
 			
 			
 			<input class="button" type="submit" value="Submit"/>
@@ -70,8 +73,5 @@
 			
 			
 		</div>
-	<!-- footer starts here -->	
-	<?php $this->load->view('blog/sidebar');?>
-	<!-- footer ends here -->
 </div>
 </div>

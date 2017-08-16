@@ -1,4 +1,6 @@
-<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+
 /*
 | -------------------------------------------------------------------------
 | URI ROUTING
@@ -17,13 +19,13 @@
 |
 | Please see the user guide for complete details:
 |
-|	http://codeigniter.com/user_guide/general/routing.html
+|	https://codeigniter.com/user_guide/general/routing.html
 |
 | -------------------------------------------------------------------------
 | RESERVED ROUTES
 | -------------------------------------------------------------------------
 |
-| There area two reserved routes:
+| There are three reserved routes:
 |
 |	$route['default_controller'] = 'welcome';
 |
@@ -33,20 +35,31 @@
 |
 |	$route['404_override'] = 'errors/page_missing';
 |
-| This route will tell the Router what URI segments to use if those provided
-| in the URL cannot be matched to a valid route.
+| This route will tell the Router which controller/method to use if those
+| provided in the URL cannot be matched to a valid route.
 |
+|	$route['translate_uri_dashes'] = FALSE;
+|
+| This is not exactly a route, but allows you to automatically route
+| controller and method names that contain dashes. '-' isn't a valid
+| class or method name character, so it requires translation.
+| When you set this option to TRUE, it will replace ALL dashes in the
+| controller and method URI segments.
+|
+| Examples:	my-controller/index	-> my_controller/index
+|		my-controller/my-method	-> my_controller/my_method
 */
+$route['default_controller'] = 'site';
+$route['translate_uri_dashes'] = TRUE;
+$route['admin'] = 'admin/login';
+$route['p/(:any)'] = 'pages/page/$1';
+$route['themes/(:any)'] = 'themes/type/$1';
+$route['resource/(:any)'] = 'resource/type/$1';
+$route['post/(:any)'] = 'blog/post/$1';
+$route['theme/(:any)'] = 'themes/theme/$1';
+$route['theme/(:any)/preview'] = 'themes/theme/$1/preview';
+$route['album/(:any)'] = 'album/photos/$1';
+$route['category/(:any)'] = 'blog/category/$1';
+$route['project'] = 'projects';
 
-$route['default_controller'] = "blog";
-$route['404_override'] = '';
-
-$route['about'] = 'blog/about';
-$route['add-new-entry'] = 'blog/add_new_entry';
-$route['add-new-category'] = 'blog/add_new_category';
-$route['category/(:any)'] = "blog/category/$1";
-$route['post/(:num)'] = 'blog/post/$1';
-$route['page/(:num)'] = 'pages/page/$1';
-
-/* End of file routes.php */
-/* Location: ./application/config/routes.php */
+$route['projects/(:any)'] = 'projects';

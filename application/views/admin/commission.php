@@ -1,26 +1,33 @@
-<div class="container" style="margin-top:60px;">
-  	<div class="row">
-  		<h2>Commissions</h2>
-			<table class="table table-striped table-hover">
-				<thead>
-					<tr>
-						<th width="10%">ID</th>
-						<th>Name</th>
-					</tr>
-				</thead>
-				<tr>
-			<?php if( $posts ): ?>
-			<?php foreach($posts as $post): ?>
-			<?php 
-				echo '<td>'.$post->commission_id.'</td>';
-				echo '<td><a href="'.base_url().'admin/commissions/'.$post->commission_id.'">'.$post->name.'</a></td>';
-				
-			?>
-			</tr>
-			<?php endforeach; else: ?>
-				<h2>No post yet!</h2>
-			<?php endif;?>
+<?php if( $posts ): ?>
+	<?php foreach($posts as $post): ?>
+		<div class="card-panel white">
+			<?php echo form_open('admin/answer/'.$post->id);?>
 			
-		</div>
+			<input type="hidden" name="id" value="<?php echo $post->id ?>" readonly>
+
+			<div class="input-field">
+				<label>Name</label>
+				<input type="text" name="name" value="<?php echo $post->name ?>" readonly>
+			</div>
+
+			<label>Question</label>
+			<textarea rows="16" cols="100%" name="question" class="materialize-textarea" readonly><?php echo $post->message ?></textarea>
+
+			<label>Answer</label>
+			<textarea rows="16" cols="100%" name="answer" class="materialize-textarea"><?php echo $post->answer ?></textarea>
+
+			<div class="switch">
+				<label>
+					<input type="checkbox" name="tweet" value="1"  />
+					<span class="lever"></span>
+					Tweet?
+				</label>
+			</div>
+
+			<input class="waves-effect waves-light btn red darken-4 red darken-4" type="submit" value="Submit"/>
+			<input class="waves-effect waves-light btn red darken-4 red darken-4" type="reset" value="Reset"/>	
+
+		</form>
+
 	</div>
-		
+<?php endforeach; endif;?>

@@ -9,8 +9,6 @@ class notfound extends MY_Controller
 	function __construct()
 	{
 		parent::__construct();
-		$this->load->model('look_model');
-		$this->load->model('site_model');
 		$this->load->library('ion_auth');
 	}
 

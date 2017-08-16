@@ -33,14 +33,14 @@ class Register extends MY_Controller
         else
         {
             $first_name = $this->input->post('first_name');
-            $last_name = $this->input->post('last_name');
-            $username = $this->input->post('username');
-            $email = $this->input->post('email');
-            $password = $this->input->post('password');
+            $last_name  = $this->input->post('last_name');
+            $username   = $this->input->post('username');
+            $email      = $this->input->post('email');
+            $password   = $this->input->post('password');
 
             $additional_data = array(
                 'first_name' => $first_name,
-                'last_name' => $last_name
+                'last_name'  => $last_name
             );
 
             $this->load->library('ion_auth');

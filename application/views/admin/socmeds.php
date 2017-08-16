@@ -1,72 +1,90 @@
 <script>
-function delete_category($id) {
-	var check = confirm('Are you sure you want to delete?');
-	var id = $id;
-	 if (check == true) {
-          window.location.href = "delete_category/".concat(id);
-        }
-        else {
-            return false;
-        }
-}
+	function delete_category($id) {
+		var check = confirm('Are you sure you want to delete?');
+		var id = $id;
+		if (check == true) {
+			window.location.href = "<?=base_url()?>admin/delete_category/".concat(id);
+		}
+		else {
+			return false;
+		}
+	}
 </script>
 
-<div class="container" style="margin-top:60px;">
-  	<div class="row">
-		
-			<?php if( $query  ): foreach($query as $post): ?>
-			<h2>Add New Category</h2>
-			<?php echo form_open('admin/socmeds');?>
 
-			<?php if(validation_errors()){echo validation_errors('<p class="error">','</p>');} ?>
-            <?php if($this->session->flashdata('message')){echo '<p class="success">'.$this->session->flashdata('message').'</p>';}?>
-			
-			<p><label>ID</label><br>
-			<input type="text" name="id" style="display:block;width:100%" value="<?php echo $post->id ?>" readonly/><p>
+<div class="card-panel white">
+	
+	<?php if( $query  ): foreach($query as $post): ?>
+		<h2 style="margin: .2em 0 1em 0" class="red-text text-darken-4">Social Medias</h2>
+		<?php echo form_open('admin/socmeds');?>
 
-			<p><label>Codepen</label><br>
-			<input type="text" name="codepen" style="display:block;width:100%" value="<?php echo $post->codepen ?>" /><p>
+		<input type="hidden" name="id"  value="<?php echo $post->id ?>" readonly/>
 
-			<p><label>Deviantart</label><br>
-			<input type="text" name="deviantart" style="display:block;width:100%" value="<?php echo $post->deviantart ?>" /><p>
-
-			<p><label>Facebook</label><br>
-			<input type="text" name="facebook" style="display:block;width:100%" value="<?php echo $post->facebook ?>" /><p>
-
-			<p><label>Flickr</label><br>
-			<input type="text" name="flickr" style="display:block;width:100%" value="<?php echo $post->flickr ?>" /><p>
-
-			<p><label>Instagram</label><br>
-			<input type="text" name="instagram" style="display:block;width:100%" value="<?php echo $post->instagram ?>" /><p>
-
-			<p><label>Linkedin</label><br>
-			<input type="text" name="linkedin" style="display:block;width:100%" value="<?php echo $post->linkedin ?>" /><p>
-
-			<p><label>Soundcloud</label><br>
-			<input type="text" name="soundcloud" style="display:block;width:100%" value="<?php echo $post->soundcloud ?>" /><p>
-
-			<p><label>Twitter</label><br>
-			<input type="text" name="twitter" style="display:block;width:100%" value="<?php echo $post->twitter ?>" /><p>
-
-			<p><label>Tumblr</label><br>
-			<input type="text" name="tumblr" style="display:block;width:100%" value="<?php echo $post->tumblr ?>" /><p>
-
-			<p><label>Youtube</label><br>
-			<input type="text" name="youtube" style="display:block;width:100%" value="<?php echo $post->youtube ?>" /><p>
-
-			<p><label>Behance</label><br>
-			<input type="text" name="behance" style="display:block;width:100%" value="<?php echo $post->behance ?>" /><p>
-
-			<p><label>Github</label><br>
-			<input type="text" name="github" style="display:block;width:100%" value="<?php echo $post->github ?>" /><p>
-			
-			<br />	
-			
-			<input class="button" type="submit" value="Submit"/>
-			<input class="button" type="reset" value="Reset"/>	
-			
-			</form>
-		<?php endforeach; endif;?>
-
+		<div class="input-field">
+			<label>Codepen</label>
+			<input type="text" name="codepen"  value="<?php echo $post->codepen ?>" />
 		</div>
-	</div>
+
+		<div class="input-field">
+			<label>Deviantart</label>
+			<input type="text" name="deviantart"  value="<?php echo $post->deviantart ?>" />
+		</div>
+
+		<div class="input-field">
+			<label>Facebook</label>
+			<input type="text" name="facebook"  value="<?php echo $post->facebook ?>" />
+		</div>
+
+		<div class="input-field">
+			<label>Flickr</label>
+			<input type="text" name="flickr"  value="<?php echo $post->flickr ?>" />
+		</div>
+
+		<div class="input-field">
+			<label>Instagram</label>
+			<input type="text" name="instagram"  value="<?php echo $post->instagram ?>" />
+		</div>
+
+		<div class="input-field">
+			<label>Linkedin</label>
+			<input type="text" name="linkedin"  value="<?php echo $post->linkedin ?>" />
+		</div>
+
+		<div class="input-field">
+			<label>Soundcloud</label>
+			<input type="text" name="soundcloud"  value="<?php echo $post->soundcloud ?>" />
+		</div>
+
+		<div class="input-field">
+			<label>Twitter</label>
+			<input type="text" name="twitter"  value="<?php echo $post->twitter ?>" />
+		</div>
+
+		<div class="input-field">
+			<label>Tumblr</label>
+			<input type="text" name="tumblr"  value="<?php echo $post->tumblr ?>" />
+		</div>
+
+		<div class="input-field">
+			<label>Youtube</label>
+			<input type="text" name="youtube"  value="<?php echo $post->youtube ?>" />
+		</div>
+
+		<div class="input-field">
+			<label>Behance</label>
+			<input type="text" name="behance"  value="<?php echo $post->behance ?>" />
+		</div>
+
+		<div class="input-field">
+			<label>Github</label>
+			<input type="text" name="github"  value="<?php echo $post->github ?>" />
+		</div>
+		
+		
+		<input class="waves-effect waves-light btn red darken-4" type="submit" value="Submit"/>
+		<input class="waves-effect waves-light btn red darken-4" type="reset" value="Reset"/>	
+		
+	</form>
+<?php endforeach; endif;?>
+
+</div>

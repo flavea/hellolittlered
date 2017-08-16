@@ -44,13 +44,20 @@ $( "pagination li span a" ).addClass( "button big" );
 					<h2><a href="<?php echo base_url().'post/'.$post->entry_id;?>"><?php echo ucwords($post->entry_name);?></a></h2>
 				</div>
 				<div class="meta">
-					By <a href="/p/about" class="author"><?php $author = $this->ion_auth->user($post->author_id)->row(); echo ucfirst($author->first_name).' '.ucfirst($author->last_name);?></a>
+					By <a href="/p/aboutme" class="author"><?php $author = $this->ion_auth->user($post->author_id)->row(); echo ucfirst($author->first_name).' '.ucfirst($author->last_name);?></a> on <?php
+$date = date_create($post->entry_date);
+echo date_format($date, 'F dS Y H:i');
+?>
 				</div>
 
 			<?php 
 
-			echo shorten_string($post->entry_body, 50);
-			?></p></span></pre>
+			echo shorten_string($post->entry_body, 300);
+			?>
+			
+			<p>
+			<a href="<?php echo base_url().'post/'.$post->entry_id;?>" class="button">Read More</a>
+			</p>
 		</div>
 		
 	</article>
@@ -62,13 +69,15 @@ endforeach; else: ?>
 <?php endif;?>
 
 
-<ul class="actions pagination">
-	<?php echo $paginglinks; ?>
-</ul>
-
 </div>
 <?php $this->load->view('blog/sidebar');?>
 </div>
 
-</div>
 
+<ul class="actions pagination">
+<center>
+	<?php echo $paginglinks; ?>
+</center>
+</ul>
+
+</div>

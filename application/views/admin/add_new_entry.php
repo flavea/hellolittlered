@@ -1,84 +1,91 @@
-<script type="text/javascript" src="<?=base_url();?>assets/js/tinymce/tinymce.min.js"></script>
-<script type="text/javascript">
-tinymce.init({
-    selector: "#textarea",
-    height:200,
-plugins: [
-    "advlist autolink lists link image charmap print preview anchor",
-    "searchreplace visualblocks code fullscreen",
-    "insertdatetime media table contextmenu paste "
-],
-toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter      alignright alignjustify | bullist numlist outdent indent | link image"
-});
-</script>
-	<!-- content starts -->
-	<div class="container" style="margin-top:60px;">
-  	<div class="row">
-			<?php if( $query != '' ): foreach($query as $post): ?>
-			<h2>Edit Entry</h2>
-			<?php echo form_open('admin/update_entry/'.$post->entry_id);?>
-			
-			<p><label>ID</label><br>
-			<input type="text" name="entry_id" style="display:block;width:100%"/ value="<?php echo $post->entry_id ?>" readonly></p>
+<script src="//cdn.ckeditor.com/4.6.2/full/ckeditor.js"></script>
 
-			<p><label>Title</label><br>
-			<input type="text" name="entry_name" style="display:block;width:100%"/ value="<?php echo $post->entry_name ?>"></p>
-			
-			<p><label>Image</label><br>
-			<input type="text" name="entry_image" style="display:block;width:100%"  value="<?php echo $post->entry_image ?>"/></p>
+<div class="card-panel white">
 
-			<p><label>Video</label><br>
-			<input type="text" name="entry_video" style="display:block;width:100%"  value="<?php echo $post->entry_video ?>"/></p>
+	<?php if( $query != ''): foreach($query as $post): ?>
+		<h2 style="margin: .2em 0 1em 0" class="red-text text-darken-4">Edit Page</h2>
+		<?php echo form_open('admin/update_page');?>
 
-			<p><label>Content:</label>
-			<textarea rows="16" cols="80%" name="entry_body" id="textarea"><?php echo $post->entry_body ?></textarea></p>
-			
-			<br />	
-			
-			<input class="button" type="submit" value="Submit"/>
-			<input class="button" type="reset" value="Reset"/>	
-			
-			</form>
+		<input type="hidden" name="page_id" value="<?php echo $post->page_id ?>"/>
 
-			<?php endforeach; else:?>
+		<div class="input-field">
+			<label>Title</label>
+			<input type="text" name="page_name" value="<?php echo $post->page_title ?>" required/>
+		</div>
+		<p>
+			<label>Status</label><br>
 
-			<h2>Add New Entry</h2>
-			<?php echo form_open('admin/add-new-entry');?>
-			
-			<?php if(validation_errors()){echo validation_errors('<p class="error">','</p>');} ?>
-            <?php if($this->session->flashdata('message')){echo '<p class="success">'.$this->session->flashdata('message').'</p>';}?>
-			
-			<p><label>Title</label><br>
-			<input type="text" name="entry_name"  style="display:block;width:100%"/></p>
-			
-			
-			<p><label>Label</label><br>
-				<?php if( isset($categories) && $categories): foreach($categories as $category): ?>
-				<label><input class="checkbox" type="checkbox" name="entry_category[]" value="<?php echo $category->category_id;?>"><?php echo $category->category_name;?></label><br>
-				<?php endforeach; else:?>
-				Please add your category first!
-				<?php endif; ?>
-			</p>
+			<?php if( isset($statuses) && $statuses): foreach($statuses as $status): ?>
+				<input name="status" type="radio" id="status-<?php echo $status->id;?>" value="<?php echo $status->id;?>" <?php if($post->status == $status->id) echo 'checked';?>/>
+				<label for="status-<?php echo $status->id;?>" style="margin-right:1em"><?php echo $status->name;?></label>
+			<?php endforeach;endif; ?>
+		</p>
 
-			<p><label>Image</label><br>
-			<input type="text" name="entry_image" style="display:block;width:100%" /></p>
+		<div class="input-field">
+			<label>Slug</label>
+			<input type="text" name="page_slug"  value="<?php echo $post->slug ?>" required/>
+		</div>
 
-			<p><label>Video</label><br>
-			<input type="text" name="entry_video"  style="display:block;width:100%" /></p>
+		<p>
+			<label>Content</label>
+			<textarea rows="16" cols="80%" name="page_body" style="resize:none;" id="textarea"><?php echo $post->page_body ?></textarea>
+		</p>
 
-			<p><label>Your Entry: (in html)</label>
-			<textarea rows="16" cols="80%" name="entry_body" style="resize:none;height:500px" id="textarea"></textarea></p>
-			
-			<br />	
-			
-			<input class="button" type="submit" value="Submit"/>
-			<input class="button" type="reset" value="Reset"/>	
-			
-			</form>
-			
-			<?php endif;?>
+		<div class="switch">
+			<label>
+				<input type="checkbox" name="tweet" value="1"  />
+				<span class="lever"></span>
+				Tweet?
+			</label>
+		</div>
 
-			
-			
+
+		<input class="waves-effect waves-light btn red darken-4" type="submit" value="Submit"/>
+		<input class="waves-effect waves-light btn red darken-4" type="reset" value="Reset"/>	
+
+	</form>
+<?php endforeach; else: ?>
+	<h2 style="margin: .2em 0 1em 0" class="red-text text-darken-4">Add New Page</h2>
+	<?php echo form_open('admin/add-new-page');?>
+
+	<div class="input-field"><label>Title</label>
+		<input type="text" name="page_name" required />
 	</div>
+	<p>
+		<label>Status</label><br>
+
+		<?php if( isset($statuses) && $statuses): foreach($statuses as $status): ?>
+			<input name="status" type="radio" id="status-<?php echo $status->id;?>" value="<?php echo $status->id;?>" />
+			<label for="status-<?php echo $status->id;?>" style="margin-right:1em"><?php echo $status->name;?></label>
+		<?php endforeach;endif; ?>
+	</p>
+
+	<div class="input-field">
+		<label>Slug</label>
+		<input type="text" name="page_slug" required="" />
+	</div>
+
+	<p>
+		<label>Content</label>
+		<textarea rows="16" cols="80%" name="page_body" style="resize:none;" id="textarea"></textarea>
+	</p>
+
+	<div class="switch">
+		<label>
+			<input type="checkbox" name="tweet" value="1"  />
+			<span class="lever"></span>
+			Tweet?
+		</label>
+	</div>
+
+	<input class="waves-effect waves-light btn red darken-4" type="submit" value="Submit"/>
+	<input class="waves-effect waves-light btn red darken-4" type="reset" value="Reset"/>	
+
+</form>
+<?php endif;?>
+
 </div>
+</div>
+<script>
+	CKEDITOR.replace( 'page_body' );
+</script>

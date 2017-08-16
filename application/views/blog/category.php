@@ -1,7 +1,7 @@
-
+<div id="bg" class="content-real">
+	<div id="blog">
+			<article class="post featured">
 			<?php foreach($category as $row):?>
-			<header>
-			<article class="post">
 			<h2><a href="<?php echo base_url().'category/'.$row->slug;?>"><?php echo ucwords($row->category_name);?></a> (<?php echo count($query);?>)</h2>
 			<?php endforeach;?>
 			
@@ -16,8 +16,8 @@
 			<h3>No post yet!</h3>
 			<?php endif;?>
 			</article>
-			</div>
+		</div>
 
 		
 	<?php $this->load->view('blog/sidebar');?>
-	
+	</div>

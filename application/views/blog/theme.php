@@ -5,7 +5,7 @@
 			<article class="post featured">
 			<header>
 				<div class="title">
-					<h2><?php echo ucwords($post->theme_name);?></h2>
+					<h2><span><?php echo ucwords($post->theme_name);?></span></h2>
 				</div>
 				<div class="meta">
 					<time class="published" datetime="2015-11-01"><?php echo mdate('%n %M %Y %H:%i:%s',human_to_unix($post->theme_date));?></time>
