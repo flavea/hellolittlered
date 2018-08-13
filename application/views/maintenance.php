@@ -26,25 +26,25 @@
                                     foreach($item as $socmed): ?>
                                         
                                         <?php if($socmed->facebook != '') { ?>
-                                        <a href="<?php echo $socmed->facebook ?>" class="fa fa-facebook"></a>
+                                        <a href="<?= $socmed->facebook ?>" class="fa fa-facebook"></a>
                                         <?php } ?>
                                         <?php if($socmed->flickr != '') { ?>
-                                        <a href="<?php echo $socmed->flickr ?>" class="fa fa-flickr"></a>
+                                        <a href="<?= $socmed->flickr ?>" class="fa fa-flickr"></a>
                                         <?php } ?>
                                         <?php if($socmed->instagram != '') { ?>
-                                        <a href="<?php echo $socmed->instagram ?>" class="fa fa-instagram"></a>
+                                        <a href="<?= $socmed->instagram ?>" class="fa fa-instagram"></a>
                                         <?php } ?>
                                         <?php if($socmed->linkedin != '') { ?>
-                                        <a href="<?php echo $socmed->linkedin ?>" class="fa fa-linkedin"></a>
+                                        <a href="<?= $socmed->linkedin ?>" class="fa fa-linkedin"></a>
                                         <?php } ?>
                                         <?php if($socmed->tumblr != '') { ?>
-                                        <a href="<?php echo $socmed->tumblr ?>" class="fa fa-tumblr"></a>
+                                        <a href="<?= $socmed->tumblr ?>" class="fa fa-tumblr"></a>
                                         <?php } ?>
                                         <?php if($socmed->twitter != '') { ?>
-                                        <a href="<?php echo $socmed->twitter ?>" class="fa fa-twitter"></a>
+                                        <a href="<?= $socmed->twitter ?>" class="fa fa-twitter"></a>
                                         <?php } ?>
                                         <?php if($socmed->youtube != '') { ?>
-                                        <a href="<?php echo $socmed->youtube ?>" class="fa fa-youtube"></a>
+                                        <a href="<?= $socmed->youtube ?>" class="fa fa-youtube"></a>
                                         <?php } ?>
                                     <?php endforeach; ?>
             </div>

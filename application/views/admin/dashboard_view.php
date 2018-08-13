@@ -11,19 +11,19 @@
 	<div class="card-panel white col s12 l7">
 		<h5 style="margin: .7em 0 1em 0" class="red-text text-darken-4">Update Site Information</h5>
 		<?php if( $site_data != '' ): foreach($site_data as $site): ?>
-			<?php echo form_open('admin/dashboard');?>
+			<?= form_open('admin/dashboard');?>
 			
 			<div class="input-field"><label>Site Title</label>
-				<input type="text" name="title" value="<?php echo $site->title ?>" required>
+				<input type="text" name="title" value="<?= $site->title ?>" required>
 			</div>
 			
 			<div class="input-field"><label>Site Keywords</label>
-				<textarea rows="36" cols="52%" name="keywords"  class="materialize-textarea" id="textarea" required><?php echo $site->keywords ?></textarea>
+				<textarea rows="36" cols="52%" name="keywords"  class="materialize-textarea" id="textarea" required><?= $site->keywords ?></textarea>
 			</div>
 
 			<div class="input-field">
 				<label>Site Description</label>
-				<textarea rows="36" cols="52%" name="description" class="materialize-textarea" id="textarea" required><?php echo $site->description ?></textarea>
+				<textarea rows="36" cols="52%" name="description" class="materialize-textarea" id="textarea" required><?= $site->description ?></textarea>
 			</div>
 			
 				<input type="submit" value="Submit" class="waves-effect waves-light btn red darken-4"/>

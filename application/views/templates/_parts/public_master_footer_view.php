@@ -2,7 +2,7 @@
 	<div class="foot-container">
 		<b>Affiliates</b>
 		<?php if($friends): foreach ($friends as $f): ?>
-			<a href="<?php echo $f->website; ?>" target="_blank"><?php echo $f->name; ?></a>
+			<a href="<?= $f->website; ?>" target="_blank"><?= $f->name; ?></a>
 		<?php endforeach; endif; ?>
 		<a href="<?= base_url() ?>friends">All Affiliates</a>
 		<a href="<?= base_url() ?>friends/apply">Apply?</a>
@@ -10,7 +10,7 @@
 	<div class="foot-container">
 		<b>Pages</b>
 		<?php if($pagess): foreach ($pagess as $f): ?>
-			<a href="<?= base_url() ?>p/<?php echo $f->slug; ?>" target="_blank"><?php echo $f->page_title; ?></a>
+			<a href="<?= base_url() ?>p/<?= $f->slug; ?>" target="_blank"><?= $f->page_title; ?></a>
 		<?php endforeach; endif; ?>
 	</div>
 	<div class="foot-container">
@@ -37,7 +37,7 @@
 	</div>
 	<div class="foot-container">
 		<b>Search</b>
-		<form id="search" method="get" action="<?php echo base_url().'search/' ?>">
+		<form id="search" method="get" action="<?= base_url().'search/' ?>">
 			<input type="text" name="query" placeholder="Search" />
 			<input type="submit" class="button fa-search">
 		</form>
@@ -47,7 +47,7 @@
 <footer>
 	
 	<center>
-		© hellolittlered 2013-<?php echo date("Y"); ?>
+		© hellolittlered 2013-<?= date("Y"); ?>
 	</center>
 </div>
 </footer>

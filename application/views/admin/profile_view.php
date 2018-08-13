@@ -1,6 +1,6 @@
     <div class="card-panel white">
       <h3 class="teal-text text-lighten-2">Profile page</h3>
-      <?php echo form_open('',array('class'=>'form-horizontal'));?>
+      <?= form_open('',array('class'=>'form-horizontal'));?>
         <div class="input-field">
           <?php
           echo form_label('First name','first_name');
@@ -57,6 +57,6 @@
           echo form_password('password_confirm','','class="form-control"');
           ?>
         </div>
-        <?php echo form_submit('submit', 'Save profile', 'class="btn red darken-4 btn-primary btn-lg btn-block"');?>
-      <?php echo form_close();?>
+        <?= form_submit('submit', 'Save profile', 'class="btn red darken-4 btn-primary btn-lg btn-block"');?>
+      <?= form_close();?>
     </div>

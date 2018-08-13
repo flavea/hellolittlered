@@ -3,9 +3,10 @@
 		<?php if( $query ): foreach($query as $post): ?>
 
 		<article class="post featured onpage">
+			<a href="<?=base_url('blog/update_entry/'.$post->entry_id)?>" class="button">Update</a>
 			<header>
 				<div class="title">
-					<h2><?php echo ucwords($post->entry_name);?></h2>
+					<h2><?= ucwords($post->entry_name);?></h2>
 				</div>
 				<div class="meta">
 					Posted on <time class="published"><?php
@@ -29,7 +30,7 @@ echo date_format($date, 'F dS Y H:i');
 
 				
 				<div class="stats">
-						<b>Category:</b> <?php $item = $this->blog_model->get_related_categories($post->entry_id); foreach($item as $category): ?><a href="<?php echo base_url().$category->slug;?>"><?php echo $category->category_name;?></a> <?php endforeach;?>
+						<b>Category:</b> <?php $item = $this->blog_model->get_related_categories($post->entry_id); foreach($item as $category): ?><a href="<?= base_url().$category->slug;?>"><?= $category->category_name;?></a> <?php endforeach;?>
 				</div>
 		</article>
 	<?php endforeach; ?>
@@ -42,7 +43,7 @@ echo date_format($date, 'F dS Y H:i');
      var disqus_config = function () {
      	<?php foreach($query as $post): ?>
         this.page.url = window.location.href;
-        this.page.identifier = "<?php echo 'news'.$post->entry_id;?>";
+        this.page.identifier = "<?= 'news'.$post->entry_id;?>";
         <?php endforeach; ?>
     };
     

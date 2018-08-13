@@ -5,15 +5,15 @@
 		<a href="#" class="logo"><img src="http://i.imgur.com/PhoyaMp.png" alt="" /></a>
 			<?php $item = $this->site_model->get_data(); 
 			foreach($item as $header): ?>
-			<h2><?php echo $header->title;?></h2>
-			<?php echo $header->description; endforeach;?>
+			<h2><?= $header->title;?></h2>
+			<?= $header->description; endforeach;?>
 	</section>
 	<?php 
 	
 	$item = $this->look_model->get_sidebars(); 
 	foreach($item as $sidebar): ?>
 	<section class="blurb">
-		<?php echo $sidebar->content?>
+		<?= $sidebar->content?>
 	</section>
 <?php endforeach;?>
 
@@ -23,7 +23,7 @@
 	<ul>
 		<?php 
 		foreach($categories as $category):?>
-		<li><a href="category/<?php echo $category->slug ?>"><?php echo $category->category_name ?></a></li>
+		<li><a href="category/<?= $category->slug ?>"><?= $category->category_name ?></a></li>
 	<?php endforeach;?>
 	</ul>
 </div>
@@ -35,8 +35,8 @@
 		$item = $this->look_model->get_websites(); 
 		foreach($item as $website): ?>
 		<div>
-			<h5><a href="category/<?php echo $website->link ?>"><?php echo $website->name ?></a></h5>
-			<span class="published"><?php echo $website->description ?></span>
+			<h5><a href="category/<?= $website->link ?>"><?= $website->name ?></a></h5>
+			<span class="published"><?= $website->description ?></span>
 		</div>
 	<?php endforeach;?>
 </div>
@@ -44,11 +44,11 @@
 
 <section id="stat">
 <p><b>Last Song Listened:</b><br>
-<?php echo $music; ?></p>
+<?= $music; ?></p>
 <p><b>Last Book Read:</b><br>
-<?php echo $read; ?></p>
+<?= $read; ?></p>
 <p><b>Currently Watching:</b><br>
-<?php echo $watch; ?></p>
+<?= $watch; ?></p>
 </section>
 
 <!-- Footer -->
@@ -59,40 +59,40 @@
 
 		foreach($item as $socmed): ?>
 		<?php if($socmed->codepen != '') { ?>
-		<a href="<?php echo $socmed->codepen ?>" class="fa fa-codepen"></a>
+		<a href="<?= $socmed->codepen ?>" class="fa fa-codepen"></a>
 		<?php } ?>
 		<?php if($socmed->deviantart != '') { ?>
-		<a href="<?php echo $socmed->deviantart ?>" class="fa fa-deviantart"></a>
+		<a href="<?= $socmed->deviantart ?>" class="fa fa-deviantart"></a>
 		<?php } ?>
 		<?php if($socmed->facebook != '') { ?>
-		<a href="<?php echo $socmed->facebook ?>" class="fa fa-facebook"></a>
+		<a href="<?= $socmed->facebook ?>" class="fa fa-facebook"></a>
 		<?php } ?>
 		<?php if($socmed->flickr != '') { ?>
-		<a href="<?php echo $socmed->flickr ?>" class="fa fa-flickr"></a>
+		<a href="<?= $socmed->flickr ?>" class="fa fa-flickr"></a>
 		<?php } ?>
 		<?php if($socmed->instagram != '') { ?>
-		<a href="<?php echo $socmed->instagram ?>" class="fa fa-instagram"></a>
+		<a href="<?= $socmed->instagram ?>" class="fa fa-instagram"></a>
 		<?php } ?>
 		<?php if($socmed->linkedin != '') { ?>
-		<a href="<?php echo $socmed->linkedin ?>" class="fa fa-linkedin"></a>
+		<a href="<?= $socmed->linkedin ?>" class="fa fa-linkedin"></a>
 		<?php } ?>
 		<?php if($socmed->soundcloud != '') { ?>
-		<a href="<?php echo $socmed->soundcloud ?>" class="fa fa-soundcloud"></a>
+		<a href="<?= $socmed->soundcloud ?>" class="fa fa-soundcloud"></a>
 		<?php } ?>
 		<?php if($socmed->tumblr != '') { ?>
-		<a href="<?php echo $socmed->tumblr ?>" class="fa fa-tumblr"></a>
+		<a href="<?= $socmed->tumblr ?>" class="fa fa-tumblr"></a>
 		<?php } ?>
 		<?php if($socmed->twitter != '') { ?>
-		<a href="<?php echo $socmed->twitter ?>" class="fa fa-twitter"></a>
+		<a href="<?= $socmed->twitter ?>" class="fa fa-twitter"></a>
 		<?php } ?>
 		<?php if($socmed->youtube != '') { ?>
-		<a href="<?php echo $socmed->youtube ?>" class="fa fa-youtube"></a>
+		<a href="<?= $socmed->youtube ?>" class="fa fa-youtube"></a>
 		<?php } ?>
 		<?php if($socmed->behance != '') { ?>
-		<a href="<?php echo $socmed->behance ?>" class="fa fa-behance"></a>
+		<a href="<?= $socmed->behance ?>" class="fa fa-behance"></a>
 		<?php } ?>
 		<?php if($socmed->github != '') { ?>
-		<a href="<?php echo $socmed->github ?>" class="fa fa-github"></a>
+		<a href="<?= $socmed->github ?>" class="fa fa-github"></a>
 		<?php } ?>
 	<?php endforeach; ?>
 </section>

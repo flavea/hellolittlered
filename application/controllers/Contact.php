@@ -28,7 +28,7 @@ class contact extends MY_Controller {
 		$this->form_validation->set_rules('subject', 'Subject', 'trim|required');
 		if ($this->form_validation->run() == FALSE)
 		{
-			$this->render('blog/contact','public_master');
+			$this->render('contact/index','public_master');
 		}
 		else
 		{
@@ -136,7 +136,7 @@ class contact extends MY_Controller {
 		}
 		if ($this->form_validation->run() == FALSE)
 		{
-			$this->render('blog/question','public_master');
+			$this->render('contact/question','public_master');
 		}
 		else
 		{
@@ -216,6 +216,135 @@ class contact extends MY_Controller {
     	{
     		return TRUE;
     	}
+    }public function contacts()
+    {
+
+        $this->load->model('contact_model');
+        $user                     = $this->ion_auth->user()->row();
+        $this->data['user']       = $user;
+        $this->data['page_title'] = 'Emails | Hello Little Red';
+
+        if (!$this->ion_auth->logged_in() && !$this->ion_auth->is_admin()) 
+        {
+            show_404();
+        } else {
+            $config                   = array();
+            $config["base_url"]       = base_url() . "contact/contacts/";
+            $config["total_rows"]     = $this->contact_model->total_count_emails();
+            $config["per_page"]       = 5;
+            $config["uri_segment"]    = 3;
+            $config['display_pages']  = TRUE;
+            $config['cur_tag_open']   ='<li class="active">';
+            $config['cur_tag_close']  = '</li>';
+            $config['num_tag_open']   = '<li class="waves-effect">';
+            $config['num_tag_close']  = '</li>';
+            $config['next_link']      = '<i class="material-icons">chevron_right</i>';
+            $config['next_tag_open']  = '<li class="waves-effect">';
+            $config['next_tag_close'] = '</li>';
+            $config['prev_link']      = '<i class="material-icons">chevron_left</i>';
+            $config['prev_tag_open']  = '<li class="waves-effect">';
+            $config['prev_tag_close'] = '</li>';
+            $config['last_link']      = '';
+            $config['first_link']     = '';
+            $this->pagination->initialize($config);
+            $this->data['paginglinks'] = $this->pagination->create_links();
+            $page                = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
+            $this->data['posts'] = $this->contact_model->get_emails($config["per_page"], $page);;
+            $this->render('contact/emails', 'admin_master');
+        }
+    }
+
+    public function email_mark($id = NULL)
+    {
+        $this->load->model('contact_model');
+        if (!$this->ion_auth->logged_in() && !$this->ion_auth->is_admin()) 
+        {
+            show_404();
+        }
+
+        if ($id == NULL) {
+            $this->data['posts'] = $this->contact_model->mark_read();
+            $this->session->set_flashdata('message', 'All emails are marked as read!');
+            redirect('contact/contacts');
+        } else {
+            $this->data['posts'] = $this->contact_model->mark_read($id);
+            $this->session->set_flashdata('message', 'Email Marked as Read!');
+            redirect('contact/contacts');
+        }
+    }
+
+    public function questions()
+    {
+
+        $this->load->model('contact_model');
+        $user                     = $this->ion_auth->user()->row();
+        $this->data['user']       = $user;
+        $this->data['page_title'] = 'Questions | Hello Little Red';
+
+        if (!$this->ion_auth->logged_in() && !$this->ion_auth->is_admin()) {
+            show_404();
+        } else {
+            $config                   = array();
+            $config["base_url"]       = base_url() . "contact/questions/";
+            $config["total_rows"]     = $this->contact_model->total_all_count_quesions();
+            $config["per_page"]       = 5;
+            $config["uri_segment"]    = 3;
+            $config['display_pages']  = TRUE;
+            $config['cur_tag_open']   ='<li class="active">';
+            $config['cur_tag_close']  = '</li>';
+            $config['num_tag_open']   = '<li class="waves-effect">';
+            $config['num_tag_close']  = '</li>';
+            $config['next_link']      = '<i class="material-icons">chevron_right</i>';
+            $config['next_tag_open']  = '<li class="waves-effect">';
+            $config['next_tag_close'] = '</li>';
+            $config['prev_link']      = '<i class="material-icons">chevron_left</i>';
+            $config['prev_tag_open']  = '<li class="waves-effect">';
+            $config['prev_tag_close'] = '</li>';
+            $config['last_link']      = '';
+            $config['first_link']     = '';
+            $this->pagination->initialize($config);
+            $this->data['paginglinks'] = $this->pagination->create_links();
+            $page                = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
+            $this->data['posts'] = $this->contact_model->get_questions(false, $config["per_page"], $page);;
+            $this->render('contact/questions', 'admin_master');
+        }
+    }
+
+    public function answer($id = '')
+    {
+
+        $this->load->model('contact_model');
+        $this->data['page_title'] = 'Answer | Hello Little Red';
+        $user                     = $this->ion_auth->user()->row();
+        $this->data['user']       = $user;
+        if (!$this->ion_auth->logged_in() && !$this->ion_auth->is_admin()) {
+            show_404();
+        } else {
+            $this->data['posts'] = $this->contact_model->get_question($id);
+
+            $this->load->helper('form');
+            $this->load->library(array(
+                'form_validation'
+                ));
+
+
+            $this->form_validation->set_rules('answer', 'answer', 'required');
+
+            if ($this->form_validation->run() == FALSE) {
+                $this->render('contact/answer', 'admin_master');
+            } else {
+
+                $id       = $this->input->post('id');
+                $name     = $this->input->post('name');
+                $question = $this->input->post('question');
+                $answer   = $this->input->post('answer');
+                $tweet    = $this->input->post('tweet');
+
+                $this->contact_model->answer_questions($id, $name, $question, $answer, $tweet);
+                $this->session->set_flashdata('message', 'Question from '.$name.' answered.');
+                redirect('contact/answer/' . $id);
+            }
+        }
     }
 
 

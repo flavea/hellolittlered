@@ -24,9 +24,18 @@ class MY_Controller extends CI_Controller {
         $this->data["friends"] = $this->look_model->get_friends(5);
         $this->data["pagess"] = $this->look_model->get_pages();
         $this->data["themes_categories"] = $this->look_model->get_theme_categories();
-	$this->data['music']     = $this->social_model->get_latest_lastfm();
-	$this->data['read']     = $this->social_model->get_latest_read();
-	$this->data['watch']     = 'Chief Kim';
+    	$this->data['music']     = $this->social_model->get_latest_lastfm();
+    	$this->data['read']     = $this->social_model->get_latest_read();
+    	$this->data['watch']     = 'Chief Kim';
+        $this->data['query']             = '';
+        $site_data                       = $this->site_model->get_data();
+        $this->data['site_data']         = $site_data;
+        $this->data['updates']           = $this->site_model->get_statuses();
+        $this->data['statuses']          = $this->site_model->get_data_statuses();
+        $this->data['commissions_count'] = $this->site_model->get_commissions_count();
+        $this->data['q_count']           = $this->site_model->get_questions_count();
+        $this->data['emails_count']      = $this->site_model->get_emails_count();
+        $this->data['friends_count']     = $this->site_model->get_friends_count();
 
     }
 

@@ -1,7 +1,7 @@
 <html>
 <head>
-	<title>Login &rarr; <?php echo $this->config->item('site_title', 'ion_auth')?></title>
-	<link rel="stylesheet" href="<?php echo base_url();?>assets/css/unbound.css" type="text/css" />
+	<title>Login &rarr; <?= $this->config->item('site_title', 'ion_auth')?></title>
+	<link rel="stylesheet" href="<?= base_url();?>assets/css/unbound.css" type="text/css" />
 </head>
 <body>
 	
@@ -17,30 +17,30 @@
 				<div class="pageTitleBorder"></div>
 				<p>Please login with your email and password below.</p>
 				
-				<div id="infoMessage"><?php echo $message;?></div>
+				<div id="infoMessage"><?= $message;?></div>
 				
-				<?php echo form_open("auth/login");?>
+				<?= form_open("auth/login");?>
 					
 				  <p>
 					<label for="identity">Email:</label>
-					<?php echo form_input($identity);?>
+					<?= form_input($identity);?>
 				  </p>
 				  
 				  <p>
 					<label for="password">Password:</label>
-					<?php echo form_input($password);?>
+					<?= form_input($password);?>
 				  </p>
 				  
 				  <p>
 					  <label for="remember">Remember Me:</label>
-					  <?php echo form_checkbox('remember', '1', FALSE);?>
+					  <?= form_checkbox('remember', '1', FALSE);?>
 				  </p>
 				  
 				  
-				  <p><?php echo form_submit('submit', 'Login');?></p>
+				  <p><?= form_submit('submit', 'Login');?></p>
 
 				  
-				<?php echo form_close();?>
+				<?= form_close();?>
 			</div>
 		</div></div>
 	</div></div>

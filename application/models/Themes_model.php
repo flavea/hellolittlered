@@ -236,7 +236,7 @@ class themes_model extends CI_Model {
 		
 		return $category;
 	}
-	function get_category_theme($slug, $limit, $start)
+	function get_category_theme($slug)
 	{
 		$list_post = array();
 		$this->db->where('slug', $slug);
@@ -246,7 +246,6 @@ class themes_model extends CI_Model {
 		
 		foreach($query->result() as $category)
 		{	
-			$this->db->limit($limit, $start);
 			$this->db->where('category_id', $category->category_id);
 			$this->db->order_by("relationship_id", "desc"); 
 			$query = $this->db->get('theme_relationships'); // get posts id which related the category
@@ -257,11 +256,11 @@ class themes_model extends CI_Model {
 		{
 			foreach($posts as $post)
 			{
-				$list_post = array_merge($list_post, $this->get_theme2($post->object_id)); // get posts and merge them into array
+				$list_post = array_merge($list_post, $this->get_theme2($post->object_id));
 			}		
 		}
 		
-		return $list_post; // return an array of post object
+		return $list_post;
 	}
 
 	function get_all_category_theme($slug, $limit, $start)

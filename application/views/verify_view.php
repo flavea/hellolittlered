@@ -33,7 +33,7 @@
     <tbody>
     <tr>
         <td>
-            <?php echo $environment; ?>
+            <?= $environment; ?>
         </td>
     </tr>
     </tbody>
@@ -92,103 +92,103 @@
         <tbody>
         <tr>
             <th>Base URL:</th>
-            <td><?php echo $config['base_url']; ?></td>
+            <td><?= $config['base_url']; ?></td>
         </tr>
         <tr>
             <th>Index page:</th>
-            <td><?php echo $config['index_page']; ?></td>
+            <td><?= $config['index_page']; ?></td>
         </tr>
         <tr>
             <th>Language:</th>
-            <td><?php echo $config['language']; ?></td>
+            <td><?= $config['language']; ?></td>
         </tr>
         <tr>
             <th>Charset:</th>
-            <td><?php echo $config['charset']; ?></td>
+            <td><?= $config['charset']; ?></td>
         </tr>
         <tr>
             <th>Enable Hooks:</th>
-            <td><?php echo(($config['enable_hooks']) ? 'TRUE' : '<span class="red">FALSE</span>'); ?></td>
+            <td><?=(($config['enable_hooks']) ? 'TRUE' : '<span class="red">FALSE</span>'); ?></td>
         </tr>
         <tr>
             <th>Subclass prefix:</th>
-            <td><?php echo $config['subclass_prefix']; ?></td>
+            <td><?= $config['subclass_prefix']; ?></td>
         </tr>
         <tr>
             <th>Composer autoload:</th>
-            <td><?php echo(($config['composer_autoload']) ? 'TRUE' : '<span class="red">FALSE</span>'); ?></td>
+            <td><?=(($config['composer_autoload']) ? 'TRUE' : '<span class="red">FALSE</span>'); ?></td>
         </tr>
         <tr>
             <th>Permited URI chars:</th>
-            <td><?php echo $config['permitted_uri_chars']; ?></td>
+            <td><?= $config['permitted_uri_chars']; ?></td>
         </tr>
         <tr>
             <th>Allow GET array:</th>
-            <td><?php echo(($config['allow_get_array']) ? 'TRUE' : '<span class="red">FALSE</span>'); ?></td>
+            <td><?=(($config['allow_get_array']) ? 'TRUE' : '<span class="red">FALSE</span>'); ?></td>
         </tr>
         <tr>
             <th>Enable query strings:</th>
-            <td><?php echo(($config['enable_query_strings']) ? 'TRUE' : '<span class="red">FALSE</span>'); ?></td>
+            <td><?=(($config['enable_query_strings']) ? 'TRUE' : '<span class="red">FALSE</span>'); ?></td>
         </tr>
         <tr>
             <th>Controller trigger:</th>
-            <td><?php echo $config['controller_trigger']; ?></td>
+            <td><?= $config['controller_trigger']; ?></td>
         </tr>
         <tr>
             <th>Function trigger:</th>
-            <td><?php echo $config['function_trigger']; ?></td>
+            <td><?= $config['function_trigger']; ?></td>
         </tr>
         <tr>
             <th>Directory trigger:</th>
-            <td><?php echo $config['directory_trigger']; ?></td>
+            <td><?= $config['directory_trigger']; ?></td>
         </tr>
         <tr>
             <th>Log threshold:</th>
-            <td><?php echo $config['log_threshold']; ?></td>
+            <td><?= $config['log_threshold']; ?></td>
         </tr>
         <tr>
             <th>Log path:</th>
-            <td><?php echo(($config['log_path']) ? $config['log_path'] : 'DEFAULT'); ?></td>
+            <td><?=(($config['log_path']) ? $config['log_path'] : 'DEFAULT'); ?></td>
         </tr>
         <tr>
             <th>Log file extension:</th>
-            <td><?php echo(($config['log_file_extension']) ? $config['log_file_extension'] : 'DEFAULT'); ?></td>
+            <td><?=(($config['log_file_extension']) ? $config['log_file_extension'] : 'DEFAULT'); ?></td>
         </tr>
         <tr>
             <th>Log file permissions:</th>
-            <td><?php echo $config['log_file_permissions']; ?></td>
+            <td><?= $config['log_file_permissions']; ?></td>
         </tr>
         <tr>
             <th>Log date format:</th>
-            <td><?php echo $config['log_date_format']; ?></td>
+            <td><?= $config['log_date_format']; ?></td>
         </tr>
         <tr>
             <th>Error views path:</th>
-            <td><?php echo(($config['error_views_path']) ? $config['error_views_path'] : 'DEFAULT'); ?></td>
+            <td><?=(($config['error_views_path']) ? $config['error_views_path'] : 'DEFAULT'); ?></td>
         </tr>
         <tr>
             <th>Cache path:</th>
-            <td><?php echo(($config['error_views_path']) ? $config['cache_path'] : 'DEFAULT'); ?></td>
+            <td><?=(($config['error_views_path']) ? $config['cache_path'] : 'DEFAULT'); ?></td>
         </tr>
         <tr>
             <th>Standardize new lines:</th>
-            <td><?php echo(($config['standardize_newlines']) ? 'TRUE' : '<span class="red">FALSE</span>'); ?></td>
+            <td><?=(($config['standardize_newlines']) ? 'TRUE' : '<span class="red">FALSE</span>'); ?></td>
         </tr>
         <tr>
             <th>Compress output:</th>
-            <td><?php echo(($config['compress_output']) ? 'TRUE' : '<span class="red">FALSE</span>'); ?></td>
+            <td><?=(($config['compress_output']) ? 'TRUE' : '<span class="red">FALSE</span>'); ?></td>
         </tr>
         <tr>
             <th>Time reference:</th>
-            <td><?php echo $config['time_reference']; ?></td>
+            <td><?= $config['time_reference']; ?></td>
         </tr>
         <tr>
             <th>Rewrite short tags:</th>
-            <td><?php echo $config['rewrite_short_tags'] ? 'TRUE' : '<span class="red">FALSE</span>'; ?></td>
+            <td><?= $config['rewrite_short_tags'] ? 'TRUE' : '<span class="red">FALSE</span>'; ?></td>
         </tr>
         <tr>
             <th>Reverse Proxy IPs:</th>
-            <td><?php echo $config['proxy_ips']; ?></td>
+            <td><?= $config['proxy_ips']; ?></td>
         </tr>
         </tbody>
     </table>
@@ -218,7 +218,7 @@
         <tbody>
         <tr>
             <th>Global XSS filter:</th>
-            <td><?php echo(($config['global_xss_filtering']) ? 'TRUE' : '<span class="red">FALSE</span>'); ?></td>
+            <td><?=(($config['global_xss_filtering']) ? 'TRUE' : '<span class="red">FALSE</span>'); ?></td>
         </tr>
         </tbody>
     </table>
@@ -231,23 +231,23 @@
         <tbody>
         <tr>
             <th>CSRF protection:</th>
-            <td><?php echo(($config['csrf_protection']) ? 'TRUE' : '<span class="red">FALSE</span>'); ?></td>
+            <td><?=(($config['csrf_protection']) ? 'TRUE' : '<span class="red">FALSE</span>'); ?></td>
         </tr>
         <tr>
             <th>CSRF token name:</th>
-            <td><?php echo $config['csrf_token_name']; ?></td>
+            <td><?= $config['csrf_token_name']; ?></td>
         </tr>
         <tr>
             <th>CSRF cookie name:</th>
-            <td><?php echo $config['csrf_cookie_name']; ?></td>
+            <td><?= $config['csrf_cookie_name']; ?></td>
         </tr>
         <tr>
             <th>CSRF expire:</th>
-            <td><?php echo $config['csrf_expire']; ?></td>
+            <td><?= $config['csrf_expire']; ?></td>
         </tr>
         <tr>
             <th>CSRF regenerate:</th>
-            <td><?php echo(($config['csrf_regenerate']) ? 'TRUE' : '<span class="red">FALSE</span>'); ?></td>
+            <td><?=(($config['csrf_regenerate']) ? 'TRUE' : '<span class="red">FALSE</span>'); ?></td>
         </tr>
         <tr>
             <th>CSRF exclude URIs:</th>
@@ -272,51 +272,51 @@
         <tbody>
         <tr>
             <th>Encryption key:</th>
-            <td><?php echo $config['encryption_key']; ?></td>
+            <td><?= $config['encryption_key']; ?></td>
         </tr>
         <tr>
             <th>Session driver:</th>
-            <td><?php echo $config['sess_driver']; ?></td>
+            <td><?= $config['sess_driver']; ?></td>
         </tr>
         <tr>
             <th>Session cookie name:</th>
-            <td><?php echo $config['sess_cookie_name']; ?></td>
+            <td><?= $config['sess_cookie_name']; ?></td>
         </tr>
         <tr>
             <th>Session expiration:</th>
-            <td><?php echo ($config['sess_expiration']==0) ? 'Expire on close' : $config['sess_expiration']; ?></td>
+            <td><?= ($config['sess_expiration']==0) ? 'Expire on close' : $config['sess_expiration']; ?></td>
         </tr>
         <tr>
             <th>Session encrypt cookie:</th>
-            <td><?php echo(($config['sess_encrypt_cookie']) ? 'TRUE' : '<span class="red">FALSE</span>'); ?></td>
+            <td><?=(($config['sess_encrypt_cookie']) ? 'TRUE' : '<span class="red">FALSE</span>'); ?></td>
         </tr>
         <tr>
             <th>Match IP for sessions:</th>
-            <td><?php echo(($config['sess_match_ip']) ? 'TRUE' : '<span class="red">FALSE</span>'); ?></td>
+            <td><?=(($config['sess_match_ip']) ? 'TRUE' : '<span class="red">FALSE</span>'); ?></td>
         </tr>
         <tr>
             <th>Session time to update:</th>
-            <td><?php echo $config['sess_time_to_update']; ?></td>
+            <td><?= $config['sess_time_to_update']; ?></td>
         </tr>
         <tr>
             <th>Cookie prefix:</th>
-            <td><?php echo(($config['cookie_prefix']) ? $config['cookie_prefix'] : 'DEFAULT'); ?></td>
+            <td><?=(($config['cookie_prefix']) ? $config['cookie_prefix'] : 'DEFAULT'); ?></td>
         </tr>
         <tr>
             <th>Cookie domain:</th>
-            <td><?php echo(($config['cookie_domain']) ? $config['cookie_prefix'] : 'DEFAULT'); ?></td>
+            <td><?=(($config['cookie_domain']) ? $config['cookie_prefix'] : 'DEFAULT'); ?></td>
         </tr>
         <tr>
             <th>Cookie path:</th>
-            <td><?php echo $config['cookie_path']; ?></td>
+            <td><?= $config['cookie_path']; ?></td>
         </tr>
         <tr>
             <th>Cookie secure:</th>
-            <td><?php echo(($config['cookie_secure']) ? 'TRUE' : '<span class="red">FALSE</span>'); ?></td>
+            <td><?=(($config['cookie_secure']) ? 'TRUE' : '<span class="red">FALSE</span>'); ?></td>
         </tr>
         <tr>
             <th>Cookie HTTP only:</th>
-            <td><?php echo(($config['cookie_httponly']) ? 'TRUE' : '<span class="red">FALSE</span>'); ?></td>
+            <td><?=(($config['cookie_httponly']) ? 'TRUE' : '<span class="red">FALSE</span>'); ?></td>
         </tr>
         </tbody>
     </table>
@@ -325,7 +325,7 @@
     <table>
         <thead>
         <tr>
-            <th colspan="2">Database:<br/><?php echo $loaded_database; ?></th>
+            <th colspan="2">Database:<br/><?= $loaded_database; ?></th>
         </tr>
         </thead>
         <?php
@@ -334,79 +334,79 @@
             <tbody>
             <tr>
                 <th>DSN:</th>
-                <td><?php echo $db_settings['dsn']; ?></td>
+                <td><?= $db_settings['dsn']; ?></td>
             </tr>
             <tr>
                 <th>Hostname:</th>
-                <td><?php echo $db_settings['hostname']; ?></td>
+                <td><?= $db_settings['hostname']; ?></td>
             </tr>
             <tr>
                 <th>Port:</th>
-                <td><?php echo $db_settings['port']; ?></td>
+                <td><?= $db_settings['port']; ?></td>
             </tr>
             <tr>
                 <th>Username:</th>
-                <td><?php echo $db_settings['username']; ?></td>
+                <td><?= $db_settings['username']; ?></td>
             </tr>
             <tr>
                 <th>Password:</th>
-                <td><?php echo $db_settings['password']; ?></td>
+                <td><?= $db_settings['password']; ?></td>
             </tr>
             <tr>
                 <th>Database:</th>
-                <td><?php echo $db_settings['database']; ?></td>
+                <td><?= $db_settings['database']; ?></td>
             </tr>
             <tr>
                 <th>DB Driver:</th>
-                <td><?php echo $db_settings['driver']; ?></td>
+                <td><?= $db_settings['driver']; ?></td>
             </tr>
             <tr>
                 <th>DB Prefix:</th>
-                <td><?php echo $db_settings['dbprefix']; ?></td>
+                <td><?= $db_settings['dbprefix']; ?></td>
             </tr>
             <tr>
                 <th>P Connect:</th>
-                <td><?php echo $db_settings['pconnect']; ?></td>
+                <td><?= $db_settings['pconnect']; ?></td>
             </tr>
             <tr>
                 <th>DB Debug:</th>
-                <td><?php echo $db_settings['db_debug']; ?></td>
+                <td><?= $db_settings['db_debug']; ?></td>
             </tr>
             <tr>
                 <th>Cache On:</th>
-                <td><?php echo $db_settings['cache_on']; ?></td>
+                <td><?= $db_settings['cache_on']; ?></td>
             </tr>
             <tr>
                 <th>Cache Dir:</th>
-                <td><?php echo $db_settings['cachedir']; ?></td>
+                <td><?= $db_settings['cachedir']; ?></td>
             </tr>
             <tr>
                 <th>Char Set:</th>
-                <td><?php echo $db_settings['char_set']; ?></td>
+                <td><?= $db_settings['char_set']; ?></td>
             </tr>
             <tr>
                 <th>DB Collation:</th>
-                <td><?php echo $db_settings['dbcollat']; ?></td>
+                <td><?= $db_settings['dbcollat']; ?></td>
             </tr>
             <tr>
                 <th>Swap pre:</th>
-                <td><?php echo $db_settings['swap_pre']; ?></td>
+                <td><?= $db_settings['swap_pre']; ?></td>
             </tr>
             <tr>
                 <th>Autoinit:</th>
-                <td><?php echo $db_settings['autoinit']; ?></td>
+                <td><?= $db_settings['autoinit']; ?></td>
             </tr>
             <tr>
                 <th>Encrypt:</th>
-                <td><?php echo $db_settings['encrypt']; ?></td>
+                <td><?= $db_settings['encrypt']; ?></td>
             </tr>
             <tr>
                 <th>Compress:</th>
-                <td><?php echo $db_settings['compress']; ?></td>
+                <td><?= $db_settings['compress']; ?></td>
             </tr>
             <tr>
                 <th>Stricton:</th>
-                <td><?php echo $db_settings['stricton']; ?></td>
+                <td><?= $db_settings['stricton']; ?></td>
             </tr>
             <tr>
                 <th>Failover:</th>
@@ -420,7 +420,7 @@
             </tr>
             <tr>
                 <th>Save queries:</th>
-                <td><?php echo $db_settings['save_queries']; ?></td>
+                <td><?= $db_settings['save_queries']; ?></td>
             </tr>
             </tbody>
         <?php

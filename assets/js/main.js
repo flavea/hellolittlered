@@ -1,3 +1,5 @@
+
+
 jQuery(document).scroll(function(event){
 
   
@@ -11,6 +13,25 @@ jQuery(document).scroll(function(event){
 });
 
 jQuery(document).ready(function(event){
+    
+    if (typeof(Storage) !== "undefined") {
+        var theme = localStorage.getItem("theme");
+        if(theme === null) {
+            localStorage.setItem("theme", "light");
+        } else {
+            if(theme == "light") {
+                $('#fs').attr('checked', false);
+                $('body').removeClass('dark');
+            } else if(theme == "dark") {
+                $('#fs').attr('checked', true);
+                $('body').addClass('dark');
+            }
+            
+        }
+    } else {
+        console.log("no local storage support.");
+    }
+
   var newloc;
 
   $('pre').addClass('prettyprint');
@@ -60,17 +81,28 @@ jQuery(document).ready(function(event){
     }
 
   $("body").niceScroll({
-    cursorcolor:"rgba(0,0,0,.3)",
+    cursorcolor:"#ffffff",
     cursorborderradius: "0px",
     zindex: "9999999999999999999999",
     autohidemode: false
   });
 
   $(".inside-project").niceScroll({
-    cursorcolor:"rgba(0,0,0,.3)",
+    cursorcolor:"#6d0000",
     cursorborderradius: "0px",
     zindex: "9999999999999999999999",
     autohidemode: false
   });
+  
+  $('#fs').change(function() { 
+    if (this.checked) {
+        localStorage.setItem("theme", "dark");
+        $('body').addClass('dark');
+    } else {
+        localStorage.setItem("theme", "light");
+        $('body').removeClass('dark');
+    }
+});
+
 
 });

@@ -5,15 +5,15 @@
 <div class="card-panel white">
 
 <?php if( $categories != '' ): foreach($categories as $update): ?>
-        <p><label><?php echo $update->date ?></label> <br>
-          <?php echo $update->status ?></p>
+        <p><label><?= $update->date ?></label> <br>
+          <?= $update->status ?></p>
           <hr>
         <?php endforeach;else: ?>
 		<h2>No status yet!</h2>
 	<?php endif;?>
 
 	<ul class="actions pagination">
-		<?php echo $paginglinks; ?>
+		<?= $paginglinks; ?>
 	</ul>
 
 </div>

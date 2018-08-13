@@ -31,7 +31,7 @@ class album extends MY_Controller
 		$this->data['instagram'] = $response['data'];
 
 
-		$this->render('blog/album', 'public_master');
+		$this->render('graphics/album', 'public_master');
 	}
 
 }

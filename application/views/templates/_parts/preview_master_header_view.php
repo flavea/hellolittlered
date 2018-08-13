@@ -37,11 +37,11 @@
 <?php if( $query ): foreach($query as $post): ?>
 <div id="preview_header">
 	<div style="float:left">
-		<b><?php echo $post->theme_name; ?></b>
+		<b><?= $post->theme_name; ?></b>
 	</div>
 	<div style="float:right">
-		<a href="<?php echo $post->theme_code; ?>">Code</a>
-		<a href="<?=base_url();?>theme/<?php echo $post->theme_id ?>">Back to Theme Post</a>
+		<a href="<?= $post->theme_code; ?>">Code</a>
+		<a href="<?=base_url();?>theme/<?= $post->theme_id ?>">Back to Theme Post</a>
 	</div>
 </div>
 <?php endforeach; ?>

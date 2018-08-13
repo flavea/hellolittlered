@@ -111,7 +111,7 @@
 		<img src="http://i.imgur.com/8VBSXs0.png">
 		<h4>Uh oh, it seems that you're lost.</h4>
 		It's okay, you can search for directions or <a href="/">go back to the beginning</a>.
-		<form id="search" method="get" action="<?php echo '/search/' ?>">
+		<form id="search" method="get" action="<?= '/search/' ?>">
 			<div class="row">
 				<div class="input-field col l9">
 					<label>Search by a keyword</label>

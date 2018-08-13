@@ -14,9 +14,6 @@ class maintenance extends MY_Controller
 	function index()
 	{
 		$data['title'] = $this->config->item('site_title', 'ion_auth');
-
 		$this->load->view('maintenance', $data);
 	}
-
-	
 }

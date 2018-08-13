@@ -19,7 +19,7 @@ class friends extends MY_Controller {
 		$this->form_validation->set_rules('name', 'Name', 'required|callback_alpha_space_only');
 		if ($this->form_validation->run() == FALSE)
 		{
-			$this->render('blog/affiliates-form','public_master');
+			$this->render('friends/affiliates-form','public_master');
 		}
 		else
 		{
@@ -95,7 +95,7 @@ class friends extends MY_Controller {
 		$this->data['pagetitle'] = '';
 		$this->data['current']   = 'friends';
 		$this->data['posts']     = $this->look_model->get_friends();
-		$this->render('blog/affiliates','public_master');
+		$this->render('friends/affiliates','public_master');
     }
 
     function alpha_space_only($str)
@@ -111,5 +111,59 @@ class friends extends MY_Controller {
     	}
     }
 
+    public function friends($id = false)
+    {
+
+        $this->load->model('look_model');
+        $user                     = $this->ion_auth->user()->row();
+        $this->data['user']       = $user;
+        $this->data['page_title'] = 'Add Website | Hello Little Red';
+        $this->data['categories'] = $this->look_model->get_all_friends();
+
+        if (!$this->ion_auth->logged_in() && !$this->ion_auth->is_admin()) 
+        {
+            show_404();
+        } else {
+            $this->load->helper('form');
+            $this->load->library(array(
+                'form_validation'
+                ));
+
+            $this->form_validation->set_rules('name', 'name', 'required');
+
+            if ($this->form_validation->run() == FALSE) {
+                if($id != false) $this->data['query']      = $this->look_model->get_friend($id);
+                $this->render('friends/friends', 'admin_master');
+            } else {
+
+
+                $name        = $this->input->post('name');
+                $website     = $this->input->post('website');
+                $description = $this->input->post('description');
+                $status      = $this->input->post('status');
+                $tweet      = $this->input->post('tweet');
+
+                if ($id == false) {
+                    //print_r($name);print_r($website);die();
+                    $this->look_model->add_new_friend($name, $website, $description, $status, $tweet);
+                    $this->session->set_flashdata('message', $name.' Added');
+                    redirect('friends/friends');
+                } else {
+                    $this->look_model->update_friend($id, $name, $website, $description, $status, $tweet);
+                    $this->session->set_flashdata('message', $name.' Updated');
+                    redirect('friends/friends');
+
+                }
+            }
+        }
+    }
+
+    public function delete_friend($id)
+    {
+        $this->load->model('look_model');
+        $this->look_model->delete_website($id);
+        $this->session->set_flashdata('message', 'a website is deleted.');
+        redirect('friends/website');
+    }
 
 }

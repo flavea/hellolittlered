@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 	<head>
-		<title><?php echo $title ?></title>
+		<title><?= $title ?></title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
@@ -18,12 +18,12 @@
 				<?php 
 				$item = $this->look_model->get_headers(); 
 				foreach($item as $header): ?>
-				<img src="<?php echo $header->link;?>">
+				<img src="<?= $header->link;?>">
 				<?php endforeach;?>
 		</section>
 		<?php if ($pagetitle != ''): ?>
 		<section class="post" style="padding-top:40px">
-		<h2><center><?php echo $pagetitle; ?></center></h2>
+		<h2><center><?= $pagetitle; ?></center></h2>
 		</section>
 		</article>
 

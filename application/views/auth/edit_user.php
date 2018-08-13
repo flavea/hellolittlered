@@ -3,37 +3,37 @@
 	<h1>Edit User</h1>
 	<p>Please enter the users information below.</p>
 	
-	<div id="infoMessage"><?php echo $message;?></div>
+	<div id="infoMessage"><?= $message;?></div>
 	
-    <?php echo form_open("admin/edit_user/".$this->uri->segment(3));?>
+    <?= form_open("admin/edit_user/".$this->uri->segment(3));?>
       <p>First Name:<br />
-      <?php echo form_input($firstName);?>
+      <?= form_input($firstName);?>
       </p>
       
       <p>Last Name:<br />
-      <?php echo form_input($lastName);?>
+      <?= form_input($lastName);?>
       </p>
       
       <p>Company Name:<br />
-      <?php echo form_input($company);?>
+      <?= form_input($company);?>
       </p>
       
       <p>Email:<br />
-      <?php echo form_input($email);?>
+      <?= form_input($email);?>
       </p>
       
       <p>Phone:<br />
-      <?php echo form_input($phone1);?>-<?php echo form_input($phone2);?>-<?php echo form_input($phone3);?>
+      <?= form_input($phone1);?>-<?= form_input($phone2);?>-<?= form_input($phone3);?>
       </p>
       
       <p>
       	<input type=checkbox name="reset_password"> <label for="reset_password">Reset Password</label>
       </p>
       
-      <?php echo form_input($user_id);?>
-      <p><?php echo form_submit('submit', 'Submit');?></p>
+      <?= form_input($user_id);?>
+      <p><?= form_submit('submit', 'Submit');?></p>
 
       
-    <?php echo form_close();?>
+    <?= form_close();?>
 
 </div>
