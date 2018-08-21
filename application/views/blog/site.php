@@ -22,7 +22,6 @@ echo date_format($date, 'F dS Y');
 	</div>
 </div>
 
-
 <div id="projects" class="content">
 	<center><h1><span>Latest Project</h1></span></center>
 
