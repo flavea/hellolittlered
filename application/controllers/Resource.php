@@ -7,6 +7,7 @@ class resource extends MY_Controller {
 		parent::__construct();
 		$this->load->model('resources_model');
 		$this->data['explanation'] = 'Graphic resources that I made. Feel free to use.';
+        $this->data['explanation_id'] = 'Bahan GFX.';
 	}
 
 	public function index()
@@ -43,7 +44,7 @@ class resource extends MY_Controller {
 		$this->data["posts"]       = $this->resources_model->get_resources($config["per_page"], $page);
 		// render view
 		$this->render('resource/index','public_master');
-	}
+    }
 	
 	public function type($slug = FALSE)
 	{
@@ -56,12 +57,17 @@ class resource extends MY_Controller {
 		if( $slug == FALSE )
 			redirect(themes);
 		else
-		{
-			$this->data['category'] = $this->resources_model->get_type(NULL,$slug); // get category details
-			$this->data['posts']    = $this->resources_model->get_category_resource($slug); // get post in the category
-		}
+		    $this->render('resource/index','public_master');
+    }
+    
+    public function get_resources_by_slug($slug = FALSE)
+	{
 		
-		$this->render('resource/index','public_master');
+		if( $slug == FALSE )
+			$data = array();
+		else
+            $data   = $this->resources_model->get_category_resource($slug);
+        echo json_encode($data);
 	}
 
 	public function add_new_resource()

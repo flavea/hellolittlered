@@ -1,101 +1,56 @@
 <section id="sidebar">
 
-	<!-- Intro -->
 	<section id="intro">
 		<a href="#" class="logo"><img src="http://i.imgur.com/PhoyaMp.png" alt="" /></a>
-			<?php $item = $this->site_model->get_data(); 
-			foreach($item as $header): ?>
-			<h2><?= $header->title;?></h2>
-			<?= $header->description; endforeach;?>
+		<h2></h2>
+		<p></p>
 	</section>
-	<?php 
-	
-	$item = $this->look_model->get_sidebars(); 
-	foreach($item as $sidebar): ?>
-	<section class="blurb">
-		<?= $sidebar->content?>
-	</section>
-<?php endforeach;?>
 
-<section>
-	<div class="websites">
-	<b>Blog Categories:</b><br>
-	<ul>
-		<?php 
-		foreach($categories as $category):?>
-		<li><a href="category/<?= $category->slug ?>"><?= $category->category_name ?></a></li>
-	<?php endforeach;?>
-	</ul>
-</div>
-</section>
-<section>
-	<div class="websites">
-		<?php 
-
-		$item = $this->look_model->get_websites(); 
-		foreach($item as $website): ?>
+	<div id="sidebars">
+		<section class="blurbTemp" style="display: none">
+		</section>
+	</div>
+	<section>
 		<div>
-			<h5><a href="category/<?= $website->link ?>"><?= $website->name ?></a></h5>
-			<span class="published"><?= $website->description ?></span>
+			<b>Blog Categories:</b><br>
+			<ul id="categories">
+			</ul>
 		</div>
-	<?php endforeach;?>
-</div>
-</section>
+	</section>
+	
+	<section>
+		<div class="websites">
+			<div class="webTemp" style="display: none">
+				<h5><a></a></h5>
+				<span class="published"></span>
+			</div>
+		</div>
+	</section>
 
-<section id="stat">
-<p><b>Last Song Listened:</b><br>
-<?= $music; ?></p>
-<p><b>Last Book Read:</b><br>
-<?= $read; ?></p>
-<p><b>Currently Watching:</b><br>
-<?= $watch; ?></p>
-</section>
+	<section id="stat">
+		<p><b>Last Song Listened:</b><br>
+		<span class="music"></span></p>
+		<p><b>Last Book Read:</b><br>
+		<span class="book"></span></p>
+	</section>
 
-<!-- Footer -->
-<section id="footer">
-	<center>
-		<?php 
-		$item = $this->look_model->get_socmeds(); 
-
-		foreach($item as $socmed): ?>
-		<?php if($socmed->codepen != '') { ?>
-		<a href="<?= $socmed->codepen ?>" class="fa fa-codepen"></a>
-		<?php } ?>
-		<?php if($socmed->deviantart != '') { ?>
-		<a href="<?= $socmed->deviantart ?>" class="fa fa-deviantart"></a>
-		<?php } ?>
-		<?php if($socmed->facebook != '') { ?>
-		<a href="<?= $socmed->facebook ?>" class="fa fa-facebook"></a>
-		<?php } ?>
-		<?php if($socmed->flickr != '') { ?>
-		<a href="<?= $socmed->flickr ?>" class="fa fa-flickr"></a>
-		<?php } ?>
-		<?php if($socmed->instagram != '') { ?>
-		<a href="<?= $socmed->instagram ?>" class="fa fa-instagram"></a>
-		<?php } ?>
-		<?php if($socmed->linkedin != '') { ?>
-		<a href="<?= $socmed->linkedin ?>" class="fa fa-linkedin"></a>
-		<?php } ?>
-		<?php if($socmed->soundcloud != '') { ?>
-		<a href="<?= $socmed->soundcloud ?>" class="fa fa-soundcloud"></a>
-		<?php } ?>
-		<?php if($socmed->tumblr != '') { ?>
-		<a href="<?= $socmed->tumblr ?>" class="fa fa-tumblr"></a>
-		<?php } ?>
-		<?php if($socmed->twitter != '') { ?>
-		<a href="<?= $socmed->twitter ?>" class="fa fa-twitter"></a>
-		<?php } ?>
-		<?php if($socmed->youtube != '') { ?>
-		<a href="<?= $socmed->youtube ?>" class="fa fa-youtube"></a>
-		<?php } ?>
-		<?php if($socmed->behance != '') { ?>
-		<a href="<?= $socmed->behance ?>" class="fa fa-behance"></a>
-		<?php } ?>
-		<?php if($socmed->github != '') { ?>
-		<a href="<?= $socmed->github ?>" class="fa fa-github"></a>
-		<?php } ?>
-	<?php endforeach; ?>
-</section>
-</center>
+	<section id="footer">
+		<center>
+			<a href="" class="fa fa-codepen"></a>
+			<a href="" class="fa fa-deviantart"></a>
+			<a href="" class="fa fa-facebook"></a>
+			<a href="" class="fa fa-flickr"></a>
+			<a href="" class="fa fa-instagram"></a>
+			<a href="" class="fa fa-linkedin"></a>
+			<a href="" class="fa fa-soundcloud"></a>
+			<a href="" class="fa fa-tumblr"></a>
+			<a href="" class="fa fa-twitter"></a>
+			<a href="" class="fa fa-youtube"></a>
+			<a href="" class="fa fa-behance"></a>
+			<a href="" class="fa fa-github"></a>
+		</center>
+	</section>
 
 </section>
+
+<script src="<?= base_url('application/views/blog/sidebar.js') ?>"></script>

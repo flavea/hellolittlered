@@ -1,28 +1,26 @@
 <div id="bg" class="content-real">
-	<div id="blog">
+	<div id="blog" style="float: none;margin: auto">
 		<article class="post featured">
 			<header>
 				<div class="title">
-					<h2><span>Affiliates</span></h2>
+					<h2>
+						<span>Affiliates</span>
+					</h2>
 				</div>
 			</header>
-			<p>Nice friends, very very nice friends. [<a href="friends/apply">Apply?</a>]</p>
-			<?php if($posts): 
-			    $i = 1;
-			foreach($posts as $post): ?>
-				<div class="affiliate">
-				    <div class="number">0<?= $i; ?>.</div>
-					<h3><a  href="<?= $post->website; ?>" target="_blank"><?= $post->name; ?></a></h3>
-					<span><?= $post->website; ?></span>
-					<!--<span><?= $post->description; ?></span>-->
-				</div>
-			<?php 
-			$i++;
-			endforeach;else:?>
-			There is no affiliates yet.
-		<?php endif; ?>
-	</article>
+			<p>Nice friends, very very nice friends. [<a href="<?= base_url('friends/apply') ?>">Apply?</a>]</p>
+			<div class="affiliate affTemp" style="display: none">
+				<div class="number"></div>
+				<h3>
+					<a target="_blank"></a>
+				</h3>
+				<span></span>
+			</div>
+			<div class="friends">
+			</div>
+		</article>
+	</div>
 </div>
-<?php $this->load->view('blog/sidebar');?>
-</div>
-</div>
+
+
+<script src="<?= base_url('application/views/friends/affiliates.js') ?>"></script>

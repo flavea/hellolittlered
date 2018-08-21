@@ -17,11 +17,16 @@ class lab extends MY_Controller
 		$this->data['title']       = 'Experiments - ' . $this->config->item('site_title', 'ion_auth');
 		$this->data['current']     = 'Experiments';
 		$this->data['explanation'] = 'My experiments in various programming language.';
+        $this->data['explanation_id'] = 'Percobaan dalam berbagai bahasa pemrograman.';
 		$this->data['posts']    = $this->projects_model->get_experiments();
 
 		$this->render('lab/index', 'public_master');
-	}
-
+    }
+    
+    function get_exps() {
+        $data    = $this->projects_model->get_experiments();
+        echo json_encode($data);
+    }
 	
     public function lab($id = false)
     {
@@ -61,15 +66,16 @@ class lab extends MY_Controller
                 $code        = $this->input->post('code');
                 $link        = $this->input->post('link');
                 $description = $this->input->post('exp');
+                $description_id = $this->input->post('exp_id');
                 $status      = $this->input->post('status');
                 $tweet       = $this->input->post('tweet');
                 if ($id == false) {
-                    $this->projects_model->add_new_experiment($name, $image, $link, $code, $description, $status, $tweet);
+                    $this->projects_model->add_new_experiment($name, $image, $link, $code, $description, $description_id, $status, $tweet);
                     $this->session->set_flashdata('message', $name.' Added');
                     redirect('lab/lab');
                 } else {
                     $this->data['status'] = "edit";
-                    $this->projects_model->update_experiment($id, $name, $image, $link, $code, $description, $status, $tweet);
+                    $this->projects_model->update_experiment($id, $name, $image, $link, $code, $description, $description_id, $status, $tweet);
                     $this->session->set_flashdata('message', $name . ' Updated');
                     redirect('lab/lab');
 

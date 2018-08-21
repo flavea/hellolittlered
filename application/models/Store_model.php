@@ -2,9 +2,8 @@
 
 class store_model extends CI_Model {
 
-	function get_designs($limit, $start) 
+	function get_designs() 
 	{
-		$this->db->limit($limit, $start);
 		$this->load->library('ion_auth');
 		if (!$this->ion_auth->logged_in()) {
 			$this->db->where('status','3');

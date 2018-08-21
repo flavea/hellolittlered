@@ -1,24 +1,14 @@
 <div id="bg" class="content-real">
-	<div id="blog">
-			
-			<?php if( $query ): foreach($query as $post): ?>
-
+	<div id="blog" style="float: none;margin: auto">
 			<article class="post featured">
-			<header>
-				<div class="title">
-					<h2><span><?= ucwords($post->page_title);?></span></h2>
-				</div>
-			</header>
-            <?= $post->page_body;
-?>
-			
-							</article>
-			<?php endforeach; ?>
-			<?php endif;?>
-			
+				<header>
+					<div class="title">
+						<h2><span></span></h2>
+					</div>
+				</header>
+				<div id="page-body"></div>
+			</article>
 		</div>
-		
-
-	<!-- footer starts here -->	
-	<?php $this->load->view('blog/sidebar');?>
 </div>
+
+<script src="<?= base_url('application/views/pages/page.js') ?>"></script>

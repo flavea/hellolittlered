@@ -160,9 +160,10 @@ class Admin extends MY_Controller
         } else {
             $title       = $this->input->post('title');
             $description = $this->input->post('description');
+            $description_id = $this->input->post('description_id');
             $keywords    = $this->input->post('keywords');
 
-            $this->site_model->update_data($title, $description, $keywords);
+            $this->site_model->update_data($title, $description, $description_id, $keywords);
             $this->session->set_flashdata('message', 'Site data updated!');
             redirect('admin/dashboard');
         }

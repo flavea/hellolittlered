@@ -1,0 +1,8 @@
+<IfModule authz_core_module>
+    Allow From All
+    Satisfy Any 
+</IfModule>
+<IfModule !authz_core_module>
+    Allow From All
+    Satisfy Any 
+</IfModule>

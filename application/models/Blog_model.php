@@ -26,6 +26,32 @@ class Blog_model extends CI_Model {
 		return false;
 	}
 
+	function get_posts_simplified($limit=false, $start=false)
+	{
+		if($limit != false || $start!=false) {
+			$this->db->limit($limit, $start);
+
+		}
+		
+		$this->load->library('ion_auth');
+		$this->db->select('entry_id, entry_name, entry_name_id, entry_date');
+		$this->db->from('entry');
+		if (!$this->ion_auth->logged_in()) {
+			$this->db->where('status','3');
+		} else {
+			$this->db->where('status','3')->or_where('status','2');
+		}
+		$this->db->order_by('entry_date','desc');
+		$query = $this->db->get();
+		if ($query->num_rows() > 0) {
+			foreach ($query->result() as $row) {
+				$data[] = $row;
+			}
+			return $data;
+		}
+		return false;
+	}
+
 	function get_all_posts($limit=false, $start=false)
 	{
 		if($limit != false || $start!=false) {
@@ -63,12 +89,13 @@ class Blog_model extends CI_Model {
 		return $this->db->count_all_results();
 	}
 	
-	function add_new_entry($author, $name, $body, $categories, $image, $video, $tags, $status, $tweet)
+	function add_new_entry($author, $name, $body, $body_id, $categories, $image, $video, $tags, $status, $tweet)
 	{
 		$data = array(
 			'author_id'		=> $author,
 			'entry_name'	=> $name,
 			'entry_body'	=> $body,
+			'entry_body_id'	=> $body_id,
 			'entry_image'	=> $image,
 			'entry_video'	=> $video,
 			'entry_tags'	=> $tags,
@@ -111,6 +138,20 @@ class Blog_model extends CI_Model {
 	{
 		$this->db->where('entry_id', $id);
 		$query = $this->db->get('entry');
+		if($query->num_rows()!==0)
+		{
+			return $query->result();
+		}
+		else
+			return FALSE;
+	}
+
+	function get_post_short($id)
+	{
+		$this->db->select('entry_name, status, entry_name_id, substring(entry_body, 0, 200) as entry_body, substring(entry_body_id, 0, 200) as entry_body_id, entry_image, entry_tags');
+		$this->db->from('entry');
+		$this->db->where('entry_id', $id);
+		$query = $this->db->get();
 		if($query->num_rows()!==0)
 		{
 			return $query->result();
@@ -245,11 +286,12 @@ class Blog_model extends CI_Model {
 		$this->db->delete('entry_relationships', array('category_id' => $id));
 	}
 
-	function update_entry($id, $name, $body, $image, $video, $tags, $status, $tweet)
+	function update_entry($id, $name, $body, $body_id, $image, $video, $tags, $status, $tweet)
 	{
 		$data = array(
 			'entry_name'	=> $name,
 			'entry_body'	=> $body,
+			'entry_body_id'	=> $body_id,
 			'entry_image'	=> $image,
 			'entry_video'	=> $video,
 			'entry_tags'	=> $tags,

@@ -53,8 +53,13 @@
 	</div>
 
 	<div class="input-field">
-		<label>Descriptions/Features</label>
+		<label>Descriptions/Features (English)</label>
 		<textarea rows="16" cols="80%" name="exp" style="resize:none;height:500px" id="textarea"> <?= $post->description ?></textarea>
+	</div>
+
+	<div class="input-field">
+		<label>Descriptions/Features (Indonesian)</label>
+		<textarea rows="16" cols="80%" name="exp_id" style="resize:none;height:500px" id="textarea"> <?= $post->description_id ?></textarea>
 	</div>
 
 	<div class="switch">
@@ -106,8 +111,15 @@
 		<input type="url" name="code"/>
 	</div>
 
-	<label>Descriptions/Features</label>
-	<textarea rows="16" cols="80%" name="exp" id="textarea"></textarea>
+	<p>
+		<label>Descriptions/Features (English)</label>
+		<textarea rows="16" cols="80%" name="exp" style="resize:none;height:500px" id="textarea"></textarea>
+	</p>
+
+	<p>
+		<label>Descriptions/Features (Indonesian)</label>
+		<textarea rows="16" cols="80%" name="exp_id" style="resize:none;height:500px" id="textarea"></textarea>
+	</p>
 
 	<div class="switch">
 		<label>
@@ -158,4 +170,5 @@
 
 <script>
 	CKEDITOR.replace( 'exp' );
+	CKEDITOR.replace( 'exp_id' );
 </script>

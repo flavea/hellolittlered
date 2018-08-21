@@ -22,6 +22,7 @@ class album extends MY_Controller
 
 		$this->data['current'] = 'photos';
 		$this->data['explanation'] = 'Personal photos that I took and saved on flickr and instagram.';
+		$this->data['explanation_id'] = 'Foto-foto personal yang disimpan di flickr dan instagram.';
 		$this->data['image'] = '';
 		$this->data['keywords'] = 'photography';
 

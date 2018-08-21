@@ -11,13 +11,13 @@ class search extends MY_Controller {
 
 	public function index() {
 		$cari=$this->input->get('query');
-		$this->data['explanation']  = 'Search Results for"'.$cari.'"';
+		$this->data['explanation']  = 'Search Results for "'.$cari.'"';
+		$this->data['explanation_id']  = 'Hasil pencarian untuk "'.$cari.'"';
 		$this->data['title']        = 'Search for "'.$cari.'" - '.$this->config->item('site_title', 'ion_auth');
 		$this->data["blogs_res"]    = $this->search_model->search_blog($cari);
 		$this->data["themes_res"]   = $this->search_model->search_theme($cari);
 		$this->data["page_res"]     = $this->search_model->search_page($cari);
 		$this->data["projects_res"] = $this->search_model->search_projects($cari);
-		$this->data["writings_res"] = $this->search_model->search_writing($cari);
 		$this->render('blog/search','public_master');
 	}
 

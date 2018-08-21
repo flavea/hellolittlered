@@ -59,11 +59,12 @@ class site_model extends CI_Model {
 		return $query->result();
 	}
 
-	function update_data($title, $description, $keywords)
+	function update_data($title, $description, $description_id, $keywords)
 	{
 		$data = array(
 		 	'title'	=> $title,
 		 	'description'	=> $description,
+		 	'description_id'	=> $description_id,
 		 	'keywords'	=> $keywords,
 		);
 		$this->db->where('id', '1');

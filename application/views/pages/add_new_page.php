@@ -27,10 +27,14 @@
 		</div>
 
 		<p>
-			<label>Content</label>
+			<label>Content (English)</label>
 			<textarea rows="16" cols="80%" name="page_body" style="resize:none;" id="textarea"><?= $post->page_body ?></textarea>
 		</p>
 
+		<p>
+			<label>Content (Indonesian)</label>
+			<textarea rows="16" cols="80%" name="page_body_id" style="resize:none;" id="textarea"><?= $post->page_body_id ?></textarea>
+		</p>
 		<div class="switch">
 			<label>
 				<input type="checkbox" name="tweet" value="1"  />
@@ -66,8 +70,13 @@
 	</div>
 
 	<p>
-		<label>Content</label>
+		<label>Content (English)</label>
 		<textarea rows="16" cols="80%" name="page_body" style="resize:none;" id="textarea"></textarea>
+	</p>
+
+	<p>
+		<label>Content (Indonesian)</label>
+		<textarea rows="16" cols="80%" name="page_body_id" style="resize:none;" id="textarea"></textarea>
 	</p>
 
 	<div class="switch">
@@ -88,4 +97,5 @@
 </div>
 <script>
 	CKEDITOR.replace( 'page_body' );
+	CKEDITOR.replace( 'page_body_id' );
 </script>

@@ -6,7 +6,7 @@
     .form {padding: 1em!important; margin: 0 auto;}
 </style>
 <div class="container">
-<center><h3><strong>Hello Little Red</strong> Dashboard Login</h3></center>
+<center><h3 class="white-text">Dashboard Login</h3></center>
     </div>
 </div>
 <div class="row">

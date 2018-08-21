@@ -173,10 +173,14 @@ class resources_model extends CI_Model {
 
 	function get_category_resource($slug)
 	{
-		$query2 = 'call get_resources_by_slug("'.$slug.'")';
-		$query  = $this->db->query($query2);
-		mysqli_next_result( $this->db->conn_id );
-
+		
+		$this->db->select('*');
+		$this->db->from('resources');
+		$this->db->join('resources_types', 'resources.resource_type = resources_types.type_id ');
+		$this->db->join('status', 'resources.status = status.id and resources.status != "4"');
+		$this->db->order_by('resource_date','desc');
+		$this->db->where('resources_types.type_slug', $slug);
+		$query = $this->db->get();
 		return $query->result();
 
 	}

@@ -10,8 +10,23 @@ class themes_model extends CI_Model {
 		} else {
 			$this->db->where('status','3')->or_where('status','2');
 		}
-		$this->db->order_by('theme_id','desc'); // get all entry, sort by latest to oldest
+		$this->db->order_by('theme_id','desc'); // get all theme, sort by latest to oldest
 		$query = $this->db->get('theme');
+		return $query->result();
+	}
+	
+	function get_themes_simplified($limit, $start) {
+		$this->db->limit($limit, $start);
+		$this->load->library('ion_auth');
+		$this->db->select('theme_id, theme_name, theme_image, theme_code, theme_preview');
+		$this->db->from('theme');
+		if (!$this->ion_auth->logged_in()) {
+			$this->db->where('status','3');
+		} else {
+			$this->db->where('status','3')->or_where('status','2');
+		}
+		$this->db->order_by('theme_id','desc'); // get all theme, sort by latest to oldest
+		$query = $this->db->get();
 		return $query->result();
 	}
 
@@ -20,7 +35,7 @@ class themes_model extends CI_Model {
 		$this->db->select('*');
 		$this->db->from('theme');
 		$this->db->join('status', 'theme.status = status.id and theme.status != "4"');
-		$this->db->order_by('theme_id','desc'); // get all entry, sort by latest to oldest
+		$this->db->order_by('theme_id','desc'); // get all theme, sort by latest to oldest
 		$query = $this->db->get();
 		return $query->result();
 	}
@@ -42,7 +57,7 @@ class themes_model extends CI_Model {
 		return $this->db->count_all_results();
 	}
 
-	function add_new_theme($author, $name, $image, $preview, $code, $body, $categories, $status, $tweet)
+	function add_new_theme($author, $name, $image, $preview, $code, $body, $body_id, $categories, $status, $tweet)
 	{
 		$data = array(
 			'author_id'		=> $author,
@@ -51,6 +66,7 @@ class themes_model extends CI_Model {
 			'theme_preview'	=> $preview,
 			'theme_code'	=> $code,
 			'theme_body'	=> $body,
+			'theme_body_id'	=> $body_id,
 			'status'		=> $status
 			);
 		$this->db->insert('theme', $data);
@@ -90,8 +106,22 @@ class themes_model extends CI_Model {
 	
 	function get_theme($id)
 	{
-
 		$this->db->select('*');
+		$this->db->from('theme');
+		$this->db->join('status', 'theme.status = status.id and theme.status != "4"');
+		$this->db->where('theme_id', $id);
+		$query = $this->db->get();
+		if($query->num_rows()!==0)
+		{
+			return $query->result();
+		}
+		else
+			return FALSE;
+	}
+	
+	function get_theme_short($id)
+	{
+		$this->db->select('status, theme_name, theme_image, substring(theme_body, 0, 200) as theme_body, substring(theme_body_id, 0, 200) as theme_body_id');
 		$this->db->from('theme');
 		$this->db->join('status', 'theme.status = status.id and theme.status != "4"');
 		$this->db->where('theme_id', $id);
@@ -107,12 +137,14 @@ class themes_model extends CI_Model {
 	function get_theme2($id)
 	{
 		$this->load->library('ion_auth');
+		$this->db->select('theme_id, theme_name, theme_image, theme_code, theme_preview');
+		$this->db->from('theme');
 		if (!$this->ion_auth->logged_in()) {
 			$this->db->where('theme_id', $id)->where('status','3');
 		} else {
 			$this->db->where('theme_id', $id)->where('status','3')->or_where('status','2');
 		}
-		$query = $this->db->get('theme');
+		$query = $this->db->get();
 		if($query->num_rows()!==0)
 		{
 			return $query->result();
@@ -309,7 +341,7 @@ class themes_model extends CI_Model {
 		$this->db->delete('theme_relationships', array('category_id' => $id));
 	}
 
-	function update_theme($id, $name, $image, $preview, $code, $body, $status, $tweet)
+	function update_theme($id, $name, $image, $preview, $code, $body, $body_id, $status, $tweet)
 	{
 		$data = array(
 			'theme_name'	=> $name,
@@ -317,6 +349,7 @@ class themes_model extends CI_Model {
 			'theme_preview'	=> $preview,
 			'theme_code'	=> $code,
 			'theme_body'	=> $body,
+			'theme_body_id'	=> $body_id,
 			'status'		=> $status
 			);
 		$this->db->where('theme_id', $id);

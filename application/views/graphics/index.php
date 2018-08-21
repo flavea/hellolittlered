@@ -36,12 +36,14 @@
 <script src='https://npmcdn.com/imagesloaded@4.1/imagesloaded.pkgd.js'></script>
 <script>
 var $grid = $('.album').masonry({
-  itemSelector: '.photo',
-  percentPosition: true
+	itemSelector: '.photo',
+	percentPosition: true
 });
 
-$grid.imagesLoaded().progress( function() {
-  $grid.masonry();
+$grid.imagesLoaded().progress(function () {
+	$grid.masonry();
 });
+$('#bg, #container').show();
+$('#loader').hide();
 </script>
 

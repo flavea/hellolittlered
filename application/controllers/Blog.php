@@ -16,9 +16,14 @@ class Blog extends MY_Controller {
 		$this->data['pagetitle']   = 'Latest Blog Posts';
 		$this->data['current']     = 'Blog';
 		$this->data['explanation'] = 'Thoughts and rants about anything and everything.';
-		$this->data['categories']  = $this->blog_model->get_categories();
+		$this->data['explanation_id'] = 'Catatan mengenai apa pun.';
+		$this->render('blog/index','public_master');
+    }
+    
+    public function get_posts($offset = 0) {
+        
 		$config                    = array();
-		$config["base_url"]        = base_url() . "blog/index";
+		$config["base_url"]        = base_url() . "blog/get_posts";
 		$config["total_rows"]      = $this->blog_model->total_count();
 		$config["per_page"]        = 9;
 		$config["uri_segment"]     = 3;
@@ -32,13 +37,10 @@ class Blog extends MY_Controller {
 		$config['last_link']       = '';
 		$config['first_link']      = '';
 		$this->pagination->initialize($config);
-		$this->data['paginglinks'] = $this->pagination->create_links();
-		
-		$page                      = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
-		$this->data["posts"]       = $this->blog_model->
-		get_posts($config["per_page"], $page);
-		$this->render('blog/index','public_master');
-	}
+		$data['pagination'] = $this->pagination->create_links();
+        $data['posts'] = $this->blog_model->get_posts(9, $offset);
+        echo json_encode($data);
+    }
 
 	public function add_new_entry()
     {
@@ -73,6 +75,7 @@ class Blog extends MY_Controller {
                 $user       = $this->ion_auth->user()->row();
                 $title      = $this->input->post('entry_name');
                 $body       = $this->input->post('entry_body');
+                $body_id    = $this->input->post('entry_body_id');
                 $categories = $this->input->post('entry_category[]');
                 $image      = $this->input->post('entry_image');
                 $video      = $this->input->post('entry_video');
@@ -80,7 +83,7 @@ class Blog extends MY_Controller {
                 $status     = $this->input->post('status');
                 $tweet      = $this->input->post('tweet');
 
-                $this->blog_model->add_new_entry($user->id, $title, $body, $categories, $image, $video, $tags, $status, $tweet);
+                $this->blog_model->add_new_entry($user->id, $title, $body, $body_id, $categories, $image, $video, $tags, $status, $tweet);
                 $this->session->set_flashdata('message', $title.' Added');
                 redirect('blog/add_new_entry');
             }
@@ -125,13 +128,14 @@ class Blog extends MY_Controller {
                 $id     = $this->input->post('entry_id');
                 $title  = $this->input->post('entry_name');
                 $body   = $this->input->post('entry_body');
+                $body_id    = $this->input->post('entry_body_id');
                 $image  = $this->input->post('entry_image');
                 $video  = $this->input->post('entry_video');
                 $tags   = $this->input->post('entry_tags');
                 $status = $this->input->post('status');
                 $tweet  = $this->input->post('tweet');
 
-                $this->blog_model->update_entry($id, $title, $body, $image, $video, $tags, $status, $tweet);
+                $this->blog_model->update_entry($id, $title, $body, $update_id, $image, $video, $tags, $status, $tweet);
                 $this->session->set_flashdata('message', $title.' updated');
                 redirect('blog/update_entry/'.$id);
             }
@@ -177,8 +181,6 @@ class Blog extends MY_Controller {
 	
 	public function post($id, $private = "")
 	{
-		$this->data['query']      = $this->blog_model->get_post($id);
-		$data                     = $this->data['query'];
 		$this->data['post_id']    = $id;
 		$this->data['categories'] = $this->blog_model->get_categories();
 		$this->data['pagetitle']  = '';
@@ -189,17 +191,19 @@ class Blog extends MY_Controller {
 		$this->load->helper('form');
 		$this->load->library(array('form_validation'));
 		
+        $this->data['query'] = $this->blog_model->get_post_short($id);
+
 		if($this->data['query'])
 		{
 			if(($this->data['query'][0]->status == 2 || $this->data['query'][0]->status == 1) && $private == "" && !$this->ion_auth->logged_in())
 				show_404();
 			else if($this->data['query'][0]->status == 4) show_404();
-			else if($this->data['query'][0]->status == 1 && !$this->ion_auth->logged_in()) show_404();
+			else if($this->data['query'][0]->status != 3) show_404();
 			else {
 				foreach($this->data['query'] as $row)
 				{
-					$this->data['title']       = $row->entry_name.' - '.$this->config->item('site_title', 'ion_auth');
-					$this->data['explanation'] = substr($row->entry_body, 0, 200);
+					$this->data['title']       = ($row->entry_name != "" ? $row->entry_name : $row->entry_name_id).' - '.$this->config->item('site_title', 'ion_auth');
+					$this->data['explanation'] = ($row->entry_body != "" ? $row->entry_body : $row->entry_body_id);
 					$this->data['image']       = $row->entry_image;
 					$this->data['keywords']    = $row->entry_tags;
 				}
@@ -209,24 +213,30 @@ class Blog extends MY_Controller {
 		}
 		else
 			show_404();
-	}
+    }
+    
+    public function get_post($id) {
+        $data['cat'] = $this->blog_model->get_related_categories($id);
+        $data['post'] = $this->blog_model->get_post($id);
+        echo json_encode($data);
+    }
 	
 	public function category($slug = FALSE)
 	{
 		$this->data['title']      = 'Blog Categories';
-		$this->data['categories'] = $this->blog_model->get_categories();
 		$this->data['pagetitle']  = '';
 		
 		if( $slug == FALSE )
 			show_404();
 		else
-		{
-			$this->data['category'] = $this->blog_model->get_category(NULL,$slug);
-			$this->data['query']    = $this->blog_model->get_category_post($slug);
-		}
-		
-		$this->render('blog/category','public_master');
-	}
+		    $this->render('blog/category','public_master');
+    }
+    
+    public function get_category_posts($slug) {
+        $data['category'] = $this->blog_model->get_category(NULL,$slug);
+        $data['query']    = $this->blog_model->get_category_post($slug);
+        echo json_encode($data);
+    }
 
 	public function add_new_category($id = "")
     {

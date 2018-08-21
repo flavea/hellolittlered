@@ -14,22 +14,16 @@ class MY_Controller extends CI_Controller {
         $this->load->model('look_model');
         $this->load->model('site_model');
         $this->load->library("pagination");
-        $this->load->model("social_model");
         $this->load->library('ion_auth');
         $this->load->helper("url");
         $this->data['current'] = '';
         $this->data['explanation'] = '';
+        $this->data['explanation_id'] = '';
         $this->data['image'] = '';
         $this->data['keywords'] = '';
-        $this->data["friends"] = $this->look_model->get_friends(5);
-        $this->data["pagess"] = $this->look_model->get_pages();
-        $this->data["themes_categories"] = $this->look_model->get_theme_categories();
-    	$this->data['music']     = $this->social_model->get_latest_lastfm();
-    	$this->data['read']     = $this->social_model->get_latest_read();
-    	$this->data['watch']     = 'Chief Kim';
+    	/* $this->data['music']     = $this->social_model->get_latest_lastfm();
+        $this->data['read']     = $this->social_model->get_latest_read(); */
         $this->data['query']             = '';
-        $site_data                       = $this->site_model->get_data();
-        $this->data['site_data']         = $site_data;
         $this->data['updates']           = $this->site_model->get_statuses();
         $this->data['statuses']          = $this->site_model->get_data_statuses();
         $this->data['commissions_count'] = $this->site_model->get_commissions_count();
@@ -56,19 +50,4 @@ class MY_Controller extends CI_Controller {
           $this->load->view('templates/'.$template.'_view', $this->data);
         }
       }
-}
-
-class Auth_Controller extends MY_Controller {
-    function __construct() {
-        parent::__construct();
-        $this->load->library('ion_auth');
-        if($this->ion_auth->logged_in()===FALSE)
-        {
-            redirect('user/login');
-        }
-    }
-    protected function render($the_view = NULL, $template = 'admin_master')
-    {
-        parent::render($the_view, $template);
-    }
 }

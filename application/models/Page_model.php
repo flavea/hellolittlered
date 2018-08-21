@@ -13,6 +13,21 @@ class Page_model extends CI_Model {
 		$query = $this->db->get('page');
 		return $query->result();
 	}
+	
+	function get_pages_simplified()
+	{
+		$this->db->order_by('page_date','desc');
+		$this->load->library('ion_auth');
+		$this->db->select('page_id, page_title, page_title_id, slug');
+		$this->db->from('page');
+        if (!$this->ion_auth->logged_in()) {
+			$this->db->where('status','3');
+		} else {
+			$this->db->where('status','3')->or_where('status','2');
+		}
+		$query = $this->db->get();
+		return $query->result();
+	}
 
 	function get_all_pages()
 	{
@@ -25,12 +40,13 @@ class Page_model extends CI_Model {
 	}
 
 
-	function add_new_page($author, $name, $body, $slug, $status, $tweet)
+	function add_new_page($author, $name, $body, $body_id, $slug, $status, $tweet)
 	{
 		$data = array(
 			'author_id'		=> $author,
 		 	'page_title'	=> $name,
 		 	'page_body'		=> $body,
+		 	'page_body_id'	=> $body_id,
 		 	'slug'			=> $slug,
 		 	'status'		=> $status
 		);
@@ -82,11 +98,12 @@ class Page_model extends CI_Model {
 		$this->db->insert('statuses', $status_data);
 	}
 
-	function update_page($id, $name, $body, $slug, $status)
+	function update_page($id, $name, $body, $body_id, $slug, $status)
 	{
 		$data = array(
 		 	'page_title'	=> $name,
 		 	'page_body'		=> $body,
+		 	'page_body_id'	=> $body_id,
 		 	'slug'			=> $slug,
 		 	'status'		=> $status
 		);

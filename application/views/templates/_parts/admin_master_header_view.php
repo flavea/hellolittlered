@@ -145,7 +145,6 @@
         <div class="collapsible-body">
           <ul class="submenu">
             <li><a href="<?=base_url('graphics/design');?>">Designs</a></li>
-            <li><a href="<?=base_url('writing/writing');?>">Writing</a></li>
           </ul>
         </div>
       </li>
@@ -205,8 +204,6 @@
       </div>
     </ul>
 
-    <?php
-  }?>
 
   <div class="fixed-action-btn">
     <a class="btn-floating btn-large red">
@@ -221,6 +218,8 @@
     </ul>
   </div>
 
+    <?php
+  }?>
   <main class="grey darken-4">
 
     <div id="tweet">

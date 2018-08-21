@@ -35,8 +35,11 @@
 			<input type="url" name="theme_code" value="<?= $post->theme_code ?>"/>
 		</div>
 
-		<label>Descriptions/Features</label>
+		<label>Descriptions/Features (English)</label>
 		<textarea rows="16" cols="80%" name="theme_body" id="textarea"> <?= $post->theme_body ?></textarea>
+
+		<label>Descriptions/Features (Indonesian)</label>
+		<textarea rows="16" cols="80%" name="theme_body_id" id="textarea"> <?= $post->theme_body_id ?></textarea>
 
 		<div class="switch">
 			<label>
@@ -95,8 +98,11 @@
 		<input type="url" name="theme_code"/>
 	</div>
 
-	<label>Descriptions/Features</label>
+	<label>Descriptions/Features (English)</label>
 	<textarea rows="16" cols="80%" name="theme_body" style="resize:none;height:500px" id="textarea"></textarea>
+
+	<label>Descriptions/Features (Indonesian)</label>
+	<textarea rows="16" cols="80%" name="theme_body_id" id="textarea"></textarea>
 
 	<div class="switch">
 		<label>
@@ -117,4 +123,5 @@
 </div>
 <script>
 	CKEDITOR.replace( 'theme_body' );
+	CKEDITOR.replace( 'theme_body_id' );
 </script>

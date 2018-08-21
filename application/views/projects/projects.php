@@ -52,10 +52,15 @@
 		<input type="url" name="behance" value="<?= $post->behance ?>" />
 	</div>
 
-	<div class="input-field">
-		<label>Descriptions/Features</label>
+	<p>
+		<label>Descriptions/Features (English)</label>
 		<textarea rows="16" cols="80%" name="exp" style="resize:none;height:500px" id="textarea"> <?= $post->exp ?></textarea>
-	</div>
+	</p>
+
+	<p>
+		<label>Descriptions/Features (Indonesian)</label>
+		<textarea rows="16" cols="80%" name="exp_id" style="resize:none;height:500px" id="textarea"> <?= $post->exp_id ?></textarea>
+	</p>
 
 	<div class="switch">
 		<label>
@@ -106,8 +111,15 @@
 		<input type="text" name="behance"/>
 	</div>
 
-	<label>Descriptions/Features</label>
-	<textarea rows="16" cols="80%" name="exp" id="textarea"></textarea>
+	<p>
+		<label>Descriptions/Features (English)</label>
+		<textarea rows="16" cols="80%" name="exp" style="resize:none;height:500px" id="textarea"></textarea>
+	</p>
+
+	<p>
+		<label>Descriptions/Features (Indonesian)</label>
+		<textarea rows="16" cols="80%" name="exp_id" style="resize:none;height:500px" id="textarea"></textarea>
+	</p>
 
 	<div class="switch">
 		<label>
@@ -156,4 +168,5 @@
 
 <script>
 	CKEDITOR.replace( 'exp' );
+	CKEDITOR.replace( 'exp_id' );
 </script>

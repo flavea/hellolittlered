@@ -60,6 +60,3 @@ $route['theme/(:any)'] = 'themes/theme/$1';
 $route['theme/(:any)/preview'] = 'themes/theme/$1/preview';
 $route['album/(:any)'] = 'album/photos/$1';
 $route['category/(:any)'] = 'blog/category/$1';
-$route['project'] = 'projects';
-
-$route['projects/(:any)'] = 'projects';

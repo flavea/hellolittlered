@@ -1,25 +1,20 @@
+<div id="projects-real">
+	<section class="listTemp" style="display: none">
+		<div class="number"></div>
+    	<h3><a data-target=""></a></h3>
+    	<span></span>
+	</section>
 
-
-	<div id="projects-real">
-
-		<?php 
-		$i = 1;
-		foreach($projects as $project): ?>
-		
-    
-		<section>
-		    <div class="number">0<?= $i ?></div>
-    		<h3><a href="<?= $project->link ?>" target="_blank"><?= $project->name ?></a></h3>
-    		<span><?= $project->link ?></span>
-		</section>
-		
-		<!--<div id="image" class="<?= $project->name ?>">
-		    <img src="<?= $project->img ?>">
-		</div>-->
-	<?php 
-	    $i++;
-	endforeach; ?>
+    <div class="popup popupTemp" style="display: none">
+        <div id="popup">
+            <div id="popup-content">
+                <a class="fa close fa-times" aria-hidden="true" data-target=""></a>
+				<h2><a></a></h2>
+				<img src="">
+                <p class="desc"></p>
+            </div>
+        </div>
+    </div>
 </div>
 
-</div>
-</div>
+<script src="<?= base_url('application/views/projects/index.js') ?>"></script>

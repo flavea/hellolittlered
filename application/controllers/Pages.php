@@ -16,10 +16,9 @@ class pages extends MY_Controller {
 		$this->data['title']      = 'Pages - '.$this->config->item('site_title', 'ion_auth');
 		$this->data['pagetitle']  = 'All Pages';
 		$this->data['current']    = 'pages';
-		$this->data['categories'] = $this->page_model->get_pages();
 		$this->render('pages/index','public_master');
 	}
-	
+
 	public function page($slug, $private = false)
 	{
 		$this->data['query']     = $this->page_model->get_page($slug);
@@ -42,12 +41,29 @@ class pages extends MY_Controller {
 					$this->data['explanation'] = substr($row->page_body, 0, 200);
 					$this->data['image']       = '';
 				}
-				$this->render('pages/page','public_master');
+				$this->render('pages/page', 'public_master');
 			}
 		}
 		else
 			show_404();
-	}
+    }
+    
+    public function get_page($slug, $private = false) {
+        $get = $this->page_model->get_page($slug);
+        if(($get[0]->status == 2 || $get[0]->status == 1) && $private == "" && !$this->ion_auth->logged_in())
+			show_404();
+		else if($get[0]->status == 4) show_404();
+		else if($get[0]->status == 1 && !$this->ion_auth->logged_in()) show_404();
+		else {
+			foreach ($get as $row) {
+				$data['title']       = $row->page_title;
+				$data['explanation'] = substr($row->page_body, 0, 200);
+				$data['image']       = '';
+            }
+
+            echo json_encode($get);
+        }
+    }
 
 	public function add_new_page()
     {
@@ -81,11 +97,12 @@ class pages extends MY_Controller {
                 $user   = $this->ion_auth->user()->row();
                 $title  = $this->input->post('page_name');
                 $body   = $this->input->post('page_body');
+                $body_id   = $this->input->post('page_body_id');
                 $slug   = $this->input->post('page_slug');
                 $status = $this->input->post('status');
                 $tweet  = $this->input->post('tweet');
 
-                $this->page_model->add_new_page($user->id, $title, $body, $slug, $status, $tweet);
+                $this->page_model->add_new_page($user->id, $title, $body, $body_id, $slug, $status, $tweet);
                 $this->session->set_flashdata('message', $title.' Added');
                 redirect('pages/add_new_page');
             }
@@ -147,11 +164,12 @@ class pages extends MY_Controller {
                 $id     = $this->input->post('page_id');
                 $title  = $this->input->post('page_name');
                 $body   = $this->input->post('page_body');
+                $body_id   = $this->input->post('page_body_id');
                 $slug   = $this->input->post('page_slug');
                 $status = $this->input->post('status');
                 $tweet  = $this->input->post('tweet');
 
-                $this->page_model->update_page($id, $title, $body, $slug, $status, $tweet);
+                $this->page_model->update_page($id, $title, $body, $body_id, $slug, $status, $tweet);
                 $this->session->set_flashdata('message', $title.' Updated!');
                 redirect('pages/update_page/'.$id);
             }

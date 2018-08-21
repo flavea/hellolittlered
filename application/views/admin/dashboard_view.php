@@ -7,44 +7,70 @@
 		fs.parentNode.insertBefore(js,fs);js.onload=function(){g.load('analytics');};
 	}(window,document,'script'));
 </script>
+<script src="//cdn.ckeditor.com/4.6.2/full/ckeditor.js"></script>
 <div class="row">
 	<div class="card-panel white col s12 l7">
 		<h5 style="margin: .7em 0 1em 0" class="red-text text-darken-4">Update Site Information</h5>
 		<?php if( $site_data != '' ): foreach($site_data as $site): ?>
-			<?= form_open('admin/dashboard');?>
-			
-			<div class="input-field"><label>Site Title</label>
+		<?= form_open('admin/dashboard');?>
+
+			<div class="input-field">
+				<label>Site Title</label>
 				<input type="text" name="title" value="<?= $site->title ?>" required>
-			</div>
-			
-			<div class="input-field"><label>Site Keywords</label>
-				<textarea rows="36" cols="52%" name="keywords"  class="materialize-textarea" id="textarea" required><?= $site->keywords ?></textarea>
 			</div>
 
 			<div class="input-field">
-				<label>Site Description</label>
-				<textarea rows="36" cols="52%" name="description" class="materialize-textarea" id="textarea" required><?= $site->description ?></textarea>
+				<label>Site Keywords</label>
+				<textarea rows="36" cols="52%" name="keywords" class="materialize-textarea" id="textarea" required>
+					<?= $site->keywords ?>
+				</textarea>
 			</div>
-			
-				<input type="submit" value="Submit" class="waves-effect waves-light btn red darken-4"/>
-				<input type="reset" value="Reset" class="waves-effect waves-light btn red darken-4"/>	
-		</form>
-		<?php endforeach;endif; ?><br>
+
+			<div class="input-field">
+				<label>Site Description (English)</label>
+				<textarea rows="36" cols="52%" name="description" class="materialize-textarea" id="textarea" required>
+					<?= $site->description ?>
+				</textarea>
+			</div>
+
+			<div class="input-field">
+				<label>Site Description (Indonesian)</label>
+				<textarea rows="36" cols="52%" name="description_id" class="materialize-textarea" id="textarea" required>
+					<?= $site->description_id ?>
+				</textarea>
+			</div>
+
+			<div class="input-field">
+				<label>Term of Use (English)</label>
+				<textarea rows="36" cols="52%" name="tou" class="materialize-textarea" id="textarea" required>
+					<?= $site->tou ?>
+				</textarea>
+			</div>
+
+			<div class="input-field">
+				<label>Term of Use (Indonesian)</label>
+				<textarea rows="36" cols="52%" name="tou_id" class="materialize-textarea" id="textarea" required>
+					<?= $site->tou_id ?>
+				</textarea>
+			</div>
+
+			<input type="submit" value="Submit" class="waves-effect waves-light btn red darken-4" />
+			<input type="reset" value="Reset" class="waves-effect waves-light btn red darken-4" />
+			</form>
+			<?php endforeach;endif; ?>
+			<br>
 	</div>
 
 	<div class="card-panel white col s12 l4 offset-l1" style="margin-left: 1em">
-
 		<script type="text/javascript" src="http://hellolittlered.disqus.com/combination_widget.js?num_items=3&hide_mods=0&color=white&default_tab=recent&excerpt_length=30"></script>
 	</div>
-	</div>
+</div>
 
-	<div class="card-panel white lighten-5">
-		<div id="embed-api-auth-container"></div>
-		<div id="chart-container"></div>
-		<div id="view-selector-container"></div>
-	</div>
-
-
+<div class="card-panel white lighten-5">
+	<div id="embed-api-auth-container"></div>
+	<div id="chart-container"></div>
+	<div id="view-selector-container"></div>
+</div>
 
 <script>
 
@@ -104,3 +130,9 @@
 
 			});
 		</script>
+
+		
+<script>
+	CKEDITOR.replace( 'tou' );
+	CKEDITOR.replace( 'tou_id' );
+</script>

@@ -1,77 +1,62 @@
 <div id="bg" class="content-real">
-	<div id="blog">
-<article class="post featured">
+	<div id="blog" style="float: none;margin: auto">
+		<article class="post featured">
 			<header>
 				<div class="title">
-					<h2><span>Commission</span></h2>
+					<h2>
+						<span>Commission</span>
+					</h2>
 				</div>
 			</header>
 
-			<p><strong>Rules<em>!</em></strong></p>
-			<ul>
-			<li>You will get a customized theme, I won’t publish the theme anywhere.</li>
-			<li>Payment via paypal for countries other than Indonesia, payment can be via BCA if you are from Indonesia.</li>
-			<li>Do not claim the theme as your own. If you do, I will ask you to take down the theme and I won’t refund you the payment.</li>
-			<li>You have to give me a rough sketch/mock up of the theme you wanted, also please explain in details on how you want your theme to look.</li>
-			<li>I won&#8217;t accept all offers, I will accept the offers that I know I can handle and within my skills.</li>
-			</ul>
-			<p><strong>Procedure<em>!</em></strong></p>
-			<ul>
-			<li>Fill the form below and after you submit it, you will receive an email from me.</li>
-			<li>If your form is accepted, we will have a discussion about the theme and the price.</li>
-			<li>After we reach an agreement, you have to pay first.</li>
-			<li>After I receive the payment, I will send you a confirmation email and start to code the theme.</li>
-			<li>The theme will be finished between 3-8 days, depends on how busy I am at that time.</li>
-			<li>After the theme finished, I will send you the code through email.</li>
-			<li>You can ask me for changes (max 10 changes) and report to me if there is an error.</li>
-			</ul>
-			
-			<?= form_open('commission');?> 
-			<?php if(validation_errors()){echo validation_errors('<p class="error">','</p>');} ?>
-            <?php if($this->session->flashdata('message')){echo '<p class="success">'.$this->session->flashdata('message').'</p>';}?>
-	
-			<p><label>Your Name</label>
-			<input type="text" name="name" placeholder="Your Name" style="display:block;width:100%" required /></p>
+			<div id="comm"></div>
 
-			<p><label>Your Email</label>
-			<input type="text" name="email" placeholder="Your Real Email" style="display:block;width:100%"/ required></p>
-			
+			<p>
+				<label>Your Name</label>
+				<input type="text" name="name" id="txtName" style="display:block;width:100%" required />
+			</p>
+
+			<p>
+				<label>Your Email</label>
+				<input type="text" name="email" id="txtEmail" style="display:block;width:100%" / required>
+			</p>
+
 			<label>What you want</label>
-				<?php if( isset($categories) && $categories): foreach($categories as $category): ?>
-					<input type="checkbox" name="category[]" value="<?= $category->category_id;?>">
-					<?= $category->category_name;?> (Base Price: USD <?= $category->base_price;?>)<br>
-					<?php 
-					if($category->description!=NULL || $category->description!="") {
-						echo '<small>'.$category->description.'</small><br><br>';
-					}
-					?>
-				<?php endforeach; else:?>
-				Please add your category first!
-				<?php endif; ?>
+			<div id="list">
+				<div class="chkTemp" style="display: none">
+					<input type="checkbox" name="category[]" value="" class="chk">
+					<span class="category"></span> (Base Price: USD
+					<span class="base_price"></span>
+					<br>
+					<small></small>
+				</div>
+			</div>
 
-			<p><label>Link to design/sketch if there is any</label>
-			<input type="text" name="sketch" style="display:block;width:100%" /></p>
+			<p>
+				<label>Link to design/sketch if there is any</label>
+				<input type="text" name="sketch" id="txtSketch" style="display:block;width:100%" />
+			</p>
 
-			<p><label>The blog/site you want to use it for</label>
-			<input type="text" name="site"  style="display:block;width:100%" /></p>
+			<p>
+				<label>The blog/site you want to use it for</label>
+				<input type="text" name="site" id="txtWWW" style="display:block;width:100%" />
+			</p>
 
-			<p><label>Your message</label>
-			<textarea rows="6" cols="80%" name="message" style="resize:none;" id="textarea"></textarea></p>
-			
-			<p><label>[Fill in The Blanks] Bond. James ____</label>
-			<input name="validate" type="text" size="30" required/></p>
-			
-			
-			
-			<input class="button" type="submit" value="Submit"/>
-			<input class="button" type="reset" value="Reset"/>	
-			</form>	
-				
-			</article>
-			
+			<p>
+				<label>Your message</label>
+				<textarea rows="6" cols="80%" name="message"  id="txtMessage" style="resize:none;" id="textarea"></textarea>
+			</p>
 
-			
-			
-		</div>
+			<p>
+				<label>[Fill in The Blanks] Bond. James ____</label>
+				<input name="validate" type="text" size="30" id="txtValidation" required/>
+			</p>
+
+			<input class="button" type="submit" value="Submit" id="btnSubmit"/>
+			<input class="button" type="reset" value="Reset"  id="btnReset"/>
+
+		</article>
+	</div>
 </div>
-</div>
+
+<script src="<?= base_url('application/views/commission/index.js') ?>"></script>

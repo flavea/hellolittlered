@@ -37,12 +37,13 @@ class projects_model extends CI_Model {
 		return $query->result();
 	}
 
-	function add_new_project($name, $image, $exp, $link, $behance, $status, $tweet)
+	function add_new_project($name, $image, $exp, $exp_id, $link, $behance, $status, $tweet)
 	{
 		$data = array(
 			'name'    => $name,
 			'img'     => $image,
 			'exp'     => $exp,
+			'exp_id'  => $exp_id,
 			'link'    => $link,
 			'behance' => $behance,
 			'status'  => $status
@@ -86,12 +87,13 @@ class projects_model extends CI_Model {
 		$this->db->insert('statuses', $status_data);
 	}
 
-	function update_project($id, $name, $image, $exp, $link, $behance, $status, $tweet)
+	function update_project($id, $name, $image, $exp, $exp_id, $link, $behance, $status, $tweet)
 	{
 		$data = array(
 			'name'    => $name,
 			'img'     => $image,
 			'exp'     => $exp,
+			'exp_id'  => $exp_id,
 			'link'    => $link,
 			'behance' => $behance,
 			'status'  => $status
@@ -146,7 +148,7 @@ class projects_model extends CI_Model {
 		return $query->result();
 	}
 
-	function add_new_experiment($name, $image, $link, $code, $description, $status, $tweet)
+	function add_new_experiment($name, $image, $link, $code, $description, $description_id, $status, $tweet)
 	{
 		$data = array(
 			'name'        => $name,
@@ -154,6 +156,7 @@ class projects_model extends CI_Model {
 			'link'        => $link,
 			'code'        => $code,
 			'description' => $description,
+			'description_id' => $description_id,
 			'status'      => $status
 			);
 		$this->db->insert('lab', $data);
@@ -194,7 +197,7 @@ class projects_model extends CI_Model {
 		$this->db->insert('statuses', $status_data);
 	}
 
-	function update_experiment($id, $name, $image, $link, $code, $description, $status, $tweet)
+	function update_experiment($id, $name, $image, $link, $code, $description, $description_id, $status, $tweet)
 	{
 		$data = array(
 			'name'        => $name,
@@ -202,6 +205,7 @@ class projects_model extends CI_Model {
 			'link'        => $link,
 			'code'        => $code,
 			'description' => $description,
+			'description_id' => $description_id,
 			'status'      => $status
 			);
 		$this->db->where('id', $id);

@@ -15,27 +15,8 @@ class themes extends MY_Controller {
 		$this->data['title'] = 'Themes - '.$this->config->item('site_title', 'ion_auth');
 		$this->data['current'] = 'themes';
 		$this->data['explanation'] = 'Free themes and templates that I made for various platforms.<br>';
+        $this->data["explanation_id"] = "Tema dan template gratis untuk berbagai platform.<br>";
 
-		$this->data['categories'] = $this->themes_model->get_categories();
-		$config["base_url"] = base_url() . "themes/index";
-		$config["total_rows"] = $this->themes_model->total_count();
-		$config["per_page"] = 9;
-		$config["uri_segment"] = 3;
-		$config['display_pages'] = FALSE;
-		$config['next_link']       = '<span class="fa fa-chevron-right"></span>';
-		$config['next_tag_open']   = '<span class="button big next">';
-		$config['next_tag_close']  = '</span>';
-		$config['prev_link']       = '<span class="fa fa-chevron-left"></span>';
-		$config['prev_tag_open']   = '<span class="button big previous">';
-		$config['prev_tag_close']  = '</span>';
-		$config['last_link'] = '';
-		$config['first_link'] = '';
-		$this->pagination->initialize($config);
-		$this->data['paginglinks'] = $this->pagination->create_links();
-
-		$page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
-		$this->data["posts"] = $this->themes_model->
-		get_themes($config["per_page"], $page);
 		$this->render('themes/index','public_master');
 	}
 
@@ -61,19 +42,9 @@ class themes extends MY_Controller {
 	public function theme($id, $preview='', $private = false) // get a post based on id
 	{
 		$this->data['pagetitle']  = '';
-		$this->data['query']      = $this->themes_model->get_theme($id);
-		$this->data['theme_id']   = $id;
-		$this->data['categories'] = $this->themes_model->get_categories();
 		
-		if( $this->ion_auth->logged_in() )
-			$this->data['user'] = $this->ion_auth->user()->row(); // get current user login details
-		
-		$this->load->helper('form');
-		$this->load->library(array('form_validation'));
-		
-
-		
-		if($preview=='') {
+		if($preview!="preview") {
+            $this->data['query']      = $this->themes_model->get_theme_short($id);
 			if($this->themes_model->get_theme($id))
 			{
 				if(($this->data['query'][0]->status == 2 || $this->data['query'][0]->status == 1) && $private == "" && !$this->ion_auth->logged_in())
@@ -83,40 +54,55 @@ class themes extends MY_Controller {
 				else {
 					foreach($this->data['query'] as $row)
 					{
-						$this->data['title']       = $row->theme_name.' - '.$this->config->item('site_title', 'ion_auth');
-						$this->data['explanation'] = substr($row->theme_body, 0, 200);
-						$this->data['image']       = $row->theme_image;
-
-
+                        $this->data['title']       = $row->theme_name;
+                        $this->data['explanation'] = ($row->theme_body != "" ? $row->theme_body : $row->theme_body_id);
+                        $this->data['image']       = $row->theme_image;
 					}
 
 					$this->render('themes/theme','public_master');
 				}
 			}
 		} else if($preview=="preview") {
+            $this->data['query']      = $this->themes_model->get_theme($id);
 			$this->render('themes/theme_preview', 'preview_master');
-		} else {
-			show_404();
 		}
-	}
+    }
+    
+    public function get_theme($id) {
+        $data['cat'] = $this->themes_model->get_related_categories($id);
+        $data['theme'] = $this->themes_model->get_theme($id);
+        echo json_encode($data);
+    }
 	
 	public function type($slug = FALSE)
 	{
 		$this->data['title'] = $slug.' - '.$this->config->item('site_title', 'ion_auth');
 		$this->data['pagetitle'] = $slug;
-		$this->data['categories'] = $this->themes_model->get_categories();
 		$this->data['current'] = 'themes/'.$slug;
 
 		if( $slug == FALSE )
 			redirect(themes);
 		else
 		{
-			$this->data['category'] = $this->themes_model->get_category(NULL,$slug);
-			$this->data["posts"] = $this->themes_model->get_category_theme($slug);
-		}
-		
-		$this->render('themes/index','public_master');
-	}
+            $this->render('themes/index','public_master');
+        }
+    }
+    
+    public function get_categories($slug) {
+        $data = $this->themes_model->get_categories();
+        echo json_encode($data);
+    }
+    
+    public function get_themes_by_slug($slug) {
+        if($slug == "all") $data = $this->themes_model->get_themes_simplified(12, 0);
+        else $data =  $this->themes_model->get_category_theme($slug);
+        echo json_encode($data);
+    }
+    
+    public function get_category($slug) {
+        $data =  $this->themes_model->get_category(null, $slug);
+        echo json_encode($data);
+    }
 
 	public function add_new_theme()
     {
@@ -148,6 +134,7 @@ class themes extends MY_Controller {
                 $user       = $this->ion_auth->user()->row();
                 $name       = $this->input->post('theme_name');
                 $body       = $this->input->post('theme_body');
+                $body_id    = $this->input->post('theme_body_id');
                 $categories = $this->input->post('theme_category[]');
                 $image      = $this->input->post('theme_image');
                 $preview    = $this->input->post('theme_preview');
@@ -155,7 +142,7 @@ class themes extends MY_Controller {
                 $status     = $this->input->post('status');
                 $tweet      = $this->input->post('tweet');
 
-                $this->themes_model->add_new_theme($user->id, $name, $image, $preview, $code, $body, $categories, $status, $tweet);
+                $this->themes_model->add_new_theme($user->id, $name, $image, $preview, $code, $body, $body_id, $categories, $status, $tweet);
                 $this->session->set_flashdata('message', $name.' Added');
                 redirect('themes/add_new_theme');
             }
@@ -200,6 +187,7 @@ class themes extends MY_Controller {
                 $id         = $this->input->post('theme_id');
                 $name       = $this->input->post('theme_name');
                 $body       = $this->input->post('theme_body');
+                $body_id    = $this->input->post('theme_body_id');
                 $categories = $this->input->post('theme_category[]');
                 $image      = $this->input->post('theme_image');
                 $preview    = $this->input->post('theme_preview');
@@ -207,7 +195,7 @@ class themes extends MY_Controller {
                 $status     = $this->input->post('status');
                 $tweet      = $this->input->post('tweet');
 
-                $this->themes_model->update_theme($id, $name, $image, $preview, $code, $body, $status, $tweet);
+                $this->themes_model->update_theme($id, $name, $image, $preview, $code, $body, $body_id, $status, $tweet);
                 $this->session->set_flashdata('message', $name.' updated');
                 redirect('themes/update_theme/'.$id);
             }

@@ -20,6 +20,7 @@ class graphics extends MY_Controller
 		$this->data['current']     = 'Graphics';
 		$this->data['explanation'] = 'Graphics I made for various things. Just for memories, because I suck at this.';
 		
+        $this->data['explanation_id'] = 'Poster, edit, dll.';
 		$this->data['results']     = $this->social_model->get_tumblr_posts(9, "gyuseu", "gfx");
 		$this->data['seconds']     = $this->social_model->get_tumblr_posts(6, "slayein", false);
 

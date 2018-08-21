@@ -22,10 +22,15 @@
 			<input type="text" name="entry_video" style="display:block;width:100%"  value="<?= $post->entry_video ?>"/>
 		</div>
 
-		<div class="input-field">
-			<label>Content:</label>
+		<p>
+			<label>Content (English)</label>
 			<textarea rows="16" cols="80%" name="entry_body" id="textarea"><?= $post->entry_body ?></textarea>
-		</div>
+		</p>
+
+		<p>
+			<label>Content (Indonesian)</label>
+			<textarea rows="16" cols="80%" name="entry_body_id" id="textarea"><?= $post->entry_body_id ?></textarea>
+		</p>
 
 		<input class="button" type="submit" value="Submit"/>
 		<input class="button" type="reset" value="Reset"/>	
@@ -60,28 +65,34 @@
 </p>
 
 
-<p>
+	<p>
 	<label>Status</label><br>
 
 	<?php if( isset($statuses) && $statuses): foreach($statuses as $status): ?>
 		<input name="status" type="radio" id="status-<?= $status->id;?>" value="<?= $status->id;?>"/>
 		<label for="status-<?= $status->id;?>" style="margin-right:1em"><?= $status->name;?></label>
 	<?php endforeach;endif; ?>
-</p>
+	</p>
 
-<div class="input-field">
-	<label>Image</label>
-	<input type="text" name="entry_image" style="display:block;width:100%" />
-</div>
+	<div class="input-field">
+		<label>Image</label>
+		<input type="text" name="entry_image" style="display:block;width:100%" />
+	</div>
 
-<div class="input-field">
-	<label>Video</label>
-	<input type="text" name="entry_video"  style="display:block;width:100%" />
-</div>
+	<div class="input-field">
+		<label>Video</label>
+		<input type="text" name="entry_video"  style="display:block;width:100%" />
+	</div>
 
-<div class="input-field">
-	<textarea rows="16" cols="80%" name="entry_body" style="resize:none;height:500px" id="textarea"></textarea>
-</div>
+		<p>
+			<label>Content (English)</label>
+			<textarea rows="16" cols="80%" name="entry_body" id="textarea"></textarea>
+		</p>
+
+		<p>
+			<label>Content (Indonesian)</label>
+			<textarea rows="16" cols="80%" name="entry_body_id" id="textarea"></textarea>
+		</p>
 
 	<div class="switch">
 		<label>
@@ -102,4 +113,5 @@
 </div>
 <script>
 	CKEDITOR.replace( 'entry_body' );
+	CKEDITOR.replace( 'entry_body_id' );
 </script>
