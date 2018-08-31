@@ -9,7 +9,7 @@ $(document).ready(() => {
             site_data.theme_categories.forEach(d => {
                 let temp = $('.tableTemp').clone().removeClass('tableTemp').show()
                 $(".id", temp).text(d.category_id)
-                $(".name a", temp).attr("href", `${base_url}themes/manage_themes/${d.slug}`)
+                $(".name a", temp).attr("href", `${base_url}tema/index/${d.slug}`)
                 $(".slug", temp).text(d.slug)
                 $(".name a", temp).text(d.category_name)
                 $(".fa", temp).attr("mid", d.category_id)
@@ -62,7 +62,7 @@ $(document).ready(() => {
         let conf = confirm("Are you sure you want to delete this?")
         if (conf) {
             $.ajax({
-                url: `${base_url}themes/delete_category/${id}`,
+                url: `${base_url}tema/delete_category/${id}`,
                 type: "POST",
                 dataType: "JSON",
                 success(ret) {
@@ -90,8 +90,8 @@ $(document).ready(() => {
 
             let url = ""
 
-            if (mode === "edit") url = `${base_url}themes/update_category/${id}`
-            else url = `${base_url}themes/add_category/`
+            if (mode === "edit") url = `${base_url}tema/update_category/${id}`
+            else url = `${base_url}tema/add_category/`
 
             $.ajax({
                 url: url,

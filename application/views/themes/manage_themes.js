@@ -29,7 +29,7 @@ $(document).ready(() => {
 
         checkData()
     } else {
-        $.getJSON(`${base_url}themes/get_themes_by_slug/${slug}`, loadThemes);
+        $.getJSON(`${base_url}tema/get_themes_by_slug/${slug}`, loadThemes);
 
         function loadThemes(data) {
             if (data.length > 0) {
@@ -65,7 +65,7 @@ $(document).ready(() => {
 
         $('html').on('click', '.fa-edit', function(event) {
             id = $(this).attr("mid")
-            window.location.href = `${base_url}themes/form_theme/${id}`
+            window.location.href = `${base_url}tema/form_theme/${id}`
         })
 
         $('html').on('click', '.fa-trash', function(event) {
@@ -73,13 +73,13 @@ $(document).ready(() => {
             let conf = confirm("Are you sure you want to delete this?");
             if (conf) {
                 $.ajax({
-                    url: `${base_url}themes/delete_theme/${id}`,
+                    url: `${base_url}tema/delete_theme/${id}`,
                     type: "POST",
                     dataType: "JSON",
                     success(ret) {
                         showAlert(ret.status, ret.message)
                         $("#load").show();
-                        $.getJSON(`${base_url}themes/get_themes_by_slug/${slug}`, loadThemes);
+                        $.getJSON(`${base_url}tema/get_themes_by_slug/${slug}`, loadThemes);
                     }
                 })
             }

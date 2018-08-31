@@ -49,7 +49,7 @@ $(document).ready(() => {
         $('#theme-loader').show();
         $('#theme-categories a').removeClass("theme_current");
         $(this).addClass("theme_current");
-        window.history.pushState(null, null, `${base_url}themes/${slug}`);
+        window.history.pushState(null, null, `${base_url}themes/type/${slug}`);
         $.getJSON(`${base_url}themes/get_themes_by_slug/${slug}`, loadThemes);
     });
 });

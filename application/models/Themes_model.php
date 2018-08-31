@@ -214,6 +214,7 @@ class themes_model extends CI_Model {
             show_404();
         
         foreach ($query->result() as $category) {
+            $this->db->where('theme_relationships.category_id', $category->category_id);
             if (!$this->ion_auth->logged_in()) {
                 $this->db->where('status', '3');
             } else {

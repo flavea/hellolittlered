@@ -89,8 +89,8 @@ $(document).ready(() => {
 
         let url = ""
 
-        if (mode === "edit") url = `${base_url}themes/update_theme/${slug}`
-        else url = `${base_url}themes/add_theme/`
+        if (mode === "edit") url = `${base_url}tema/update_theme/${slug}`
+        else url = `${base_url}tema/add_theme/`
 
         $.ajax({
             url: url,
