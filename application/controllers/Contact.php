@@ -2,10 +2,8 @@
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
-class contact extends MY_Controller
-{
-    function __construct()
-    {
+class Contact extends MY_Controller {
+    function __construct() {
         parent::__construct();
         $this->load->model('contact_model');
         $this->load->library('form_validation');
@@ -15,19 +13,17 @@ class contact extends MY_Controller
         $this->data['explanation'] = '';
         $this->data['image']       = '';
         
-        $this->data['keywords']   = '';
+        $this->data['keywords'] = '';
     }
     
-    public function index()
-    {
+    public function index() {
         $this->data['title']     = 'Contact Us - ' . $this->config->item('site_title', 'ion_auth');
         $this->data['pagetitle'] = '';
         $this->render('contact/index', 'public_master');
         
     }
     
-    public function submit()
-    {
+    public function submit() {
         $name       = $this->input->post('name');
         $from_email = $this->input->post('email');
         $subject    = $this->input->post('subject');
@@ -69,27 +65,26 @@ class contact extends MY_Controller
             $this->email->set_mailtype("html");
             $this->contact_model->add_new_contact($name, $from_email, $message);
             
-			if ($this->email->send()) {
-                $data['status'] = "success";
-                $data['message'] = 'Email sent! Please wait for the answer!';
+            if ($this->email->send()) {
+                $data['status']     = "success";
+                $data['message']    = 'Email sent! Please wait for the answer!';
                 $data['message_id'] = 'Email terkirim!';
                 echo json_encode($data);
-			} else {
-                $data['status'] = "failed";
-                $data['message'] = 'There is error in sending mail! Please try again later';
+            } else {
+                $data['status']     = "failed";
+                $data['message']    = 'There is error in sending mail! Please try again later';
                 $data['message_id'] = 'Terjadi kesalahan saat pengiriman terjadi, harap mencoba lagi.';
                 echo json_encode($data);
-			}
+            }
         } else {
-            $data['status'] = "failed";
-            $data['message'] = "Wrong validation text!";
+            $data['status']     = "failed";
+            $data['message']    = "Wrong validation text!";
             $data['message_id'] = "Teks validasi salah!";
-			echo json_encode($data);
+            echo json_encode($data);
         }
     }
     
-    function alpha_space_only($str)
-    {
+    function alpha_space_only($str) {
         if (!preg_match("/^[a-zA-Z ]+$/", $str)) {
             $this->form_validation->set_message('alpha_space_only', 'The %s field must contain only alphabets and space');
             return FALSE;
@@ -98,12 +93,11 @@ class contact extends MY_Controller
         }
     }
     
-    public function emails()
-    {
-        $user                     = $this->ion_auth->user()->row();
-        $this->data['user']       = $user;
+    public function emails() {
+        $user                  = $this->ion_auth->user()->row();
+        $this->data['user']    = $user;
         $this->data['current'] = 'Emails';
-        $this->data['title'] = 'Emails | Hello Little Red';
+        $this->data['title']   = 'Emails | Hello Little Red';
         
         if (!$this->ion_auth->logged_in() && !$this->ion_auth->is_admin()) {
             show_404();
@@ -112,7 +106,7 @@ class contact extends MY_Controller
             $this->render($this->data["file"], 'admin_master');
         }
     }
-
+    
     public function get_emails($page) {
         
         if (!$this->ion_auth->logged_in() && !$this->ion_auth->is_admin()) {
@@ -124,24 +118,23 @@ class contact extends MY_Controller
             $config["per_page"]       = 5;
             $config["uri_segment"]    = 3;
             $config['display_pages']  = TRUE;
-            $config['next_link']       = '<span class="fa fa-chevron-right"></span>';
-            $config['next_tag_open']   = '<span class="button big next">';
-            $config['next_tag_close']  = '</span>';
-            $config['prev_link']       = '<span class="fa fa-chevron-left"></span>';
-            $config['prev_tag_open']   = '<span class="button big previous">';
-            $config['prev_tag_close']  = '</span>';
+            $config['next_link']      = '<span class="fa fa-chevron-right"></span>';
+            $config['next_tag_open']  = '<span class="button big next">';
+            $config['next_tag_close'] = '</span>';
+            $config['prev_link']      = '<span class="fa fa-chevron-left"></span>';
+            $config['prev_tag_open']  = '<span class="button big previous">';
+            $config['prev_tag_close'] = '</span>';
             $config['last_link']      = '';
             $config['first_link']     = '';
             $this->pagination->initialize($config);
             $data['paginglinks'] = $this->pagination->create_links();
-            $page                      = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
+            $page                = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
             $data['posts']       = $this->contact_model->get_emails($config["per_page"], $page);
             echo json_encode($data);
         }
     }
     
-    public function email_mark($id = NULL)
-    {
+    public function email_mark($id = NULL) {
         if (!$this->ion_auth->logged_in() && !$this->ion_auth->is_admin()) {
             show_404();
         }
@@ -157,8 +150,7 @@ class contact extends MY_Controller
         }
     }
     
-    public function questions()
-    {
+    public function questions() {
         $user                     = $this->ion_auth->user()->row();
         $this->data['user']       = $user;
         $this->data['page_title'] = 'Questions | Hello Little Red';
@@ -194,8 +186,7 @@ class contact extends MY_Controller
         }
     }
     
-    public function answer($id = '')
-    {
+    public function answer($id = '') {
         
         $this->data['page_title'] = 'Answer | Hello Little Red';
         $user                     = $this->ion_auth->user()->row();
@@ -230,6 +221,4 @@ class contact extends MY_Controller
             }
         }
     }
-    
-    
 }

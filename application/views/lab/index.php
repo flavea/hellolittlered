@@ -1,3 +1,4 @@
+<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 <div class="content-real">
 	<div class="post featured clearfix expTemp" style="display: none">
 		<img style="float:left;width:250px;margin-right:1em">

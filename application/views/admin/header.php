@@ -1,3 +1,4 @@
+<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 <script>
 	function delete_category($id) {
 		var check = confirm('Are you sure you want to delete?');

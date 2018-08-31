@@ -1,5 +1,5 @@
+<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 <div class="post">
-
 	<div class="input-field">
 		<label>Name</label>
 		<input type="text" id="name" required />

@@ -1,3 +1,4 @@
+<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 <div id="projects-real">
 	<section class="listTemp" style="display: none">
 		<div class="number"></div>

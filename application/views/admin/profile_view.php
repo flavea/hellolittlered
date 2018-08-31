@@ -1,3 +1,4 @@
+<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 <article class="post">
   <?= form_open('',array('class'=>'form-horizontal'));?>
     <div class="input-field">

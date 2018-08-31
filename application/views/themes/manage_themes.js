@@ -79,7 +79,7 @@ $(document).ready(() => {
                     success(ret) {
                         showAlert(ret.status, ret.message)
                         $("#load").show();
-                        $.getJSON(link, loadPosts);
+                        $.getJSON(`${base_url}themes/get_themes_by_slug/${slug}`, loadThemes);
                     }
                 })
             }

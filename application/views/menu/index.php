@@ -1,3 +1,4 @@
+<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 <div class="post">
 
 	<div class="input-field">
@@ -5,20 +6,20 @@
 		<input type="text" id="menu_en" required />
 	</div>
 
-<div class="input-field">
-    <label>Indonesian</label>
-    <input type="text" id="menu_id" required />
-</div>
+	<div class="input-field">
+		<label>Indonesian</label>
+		<input type="text" id="menu_id" required />
+	</div>
 
-<div class="input-field">
-    <label>Link</label>
-    <input type="text" id="link" required />
-</div>
+	<div class="input-field">
+		<label>Link</label>
+		<input type="text" id="link" required />
+	</div>
 
-<div class="input-field">
-    <label>Priority</label>
-    <input type="text" id="priority" required />
-</div>
+	<div class="input-field">
+		<label>Priority</label>
+		<input type="text" id="priority" required />
+	</div>
 
 	<p>
 		<label>Status</label>

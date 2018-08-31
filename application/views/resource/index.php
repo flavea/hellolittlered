@@ -1,13 +1,17 @@
-
+<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 <script src="http://static.tumblr.com/twte3d7/H8Glm663z/masonry.js"></script>
 <script type="text/javascript">
-$(window).load(function () {
-	$('#resource').masonry({
-		itemSelector : ".mini-resource",
-	},
-	function() { $('#resource').masonry({ appendedContent: $(this) }); }
-	);
-});
+	$(window).load(function () {
+		$('#resource').masonry({
+				itemSelector: ".mini-resource",
+			},
+			function () {
+				$('#resource').masonry({
+					appendedContent: $(this)
+				});
+			}
+		);
+	});
 </script>
 <div class="content-real">
 	<div class="post featured">

@@ -42,7 +42,10 @@ $(document).ready(() => {
                 success(ret) {
                     showAlert(ret.status, ret.message)
                     $("#load").show()
-                    $.getJSON(link, loadPosts)
+                    $.getJSON(`${base_url}site/get_data`, data => {
+                        site_data = data
+                        checkData()
+                    })
                 }
             })
         }

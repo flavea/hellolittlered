@@ -1,4 +1,4 @@
-
+<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 <div class="content-real">
 	<center>
 		<h2><a href="http://gyuseu.tumblr.com">From My Tumblr</a></h2>

@@ -1,3 +1,4 @@
+<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 <div class="content-real">
 	<div id="blog">
 		<article class="post featured">

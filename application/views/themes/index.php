@@ -1,3 +1,4 @@
+<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 <script type="text/javascript">
 $LAB.script("http://static.tumblr.com/twte3d7/H8Glm663z/masonry.js").wait().script("<?= base_url('application/views/'.$file.'.js') ?>").wait(function(){
 	$(window).load(function () {

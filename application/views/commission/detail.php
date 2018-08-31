@@ -1,3 +1,4 @@
+<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 <div class="post">
 	<h2 style="margin: .2em 0 1em 0" class="red-text text-darken-4">Commission Detail</h2>
 	<?php if( $posts ): ?>

@@ -1,3 +1,4 @@
+<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 <table style="display: none">
 	<tr class="tableTemp">
 		<td class="name">

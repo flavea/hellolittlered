@@ -1,3 +1,4 @@
+<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 <article class="mini-theme shopTemp" style="display: none">
 	<img width="100%" />
 

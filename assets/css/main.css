@@ -436,7 +436,7 @@ h6 {
 .left>div:nth-child(even) h4::after,
 #project-ext>div>h2::before,
 #project-ext>div>h2::after {
-    background: #6d0000!important;
+    background: #6d0000 !important;
 }
 
 .left>div:nth-child(even) {
@@ -444,7 +444,7 @@ h6 {
 }
 
 .left>div:nth-child(even) a {
-    color: #6d0000!important;
+    color: #6d0000 !important;
 }
 
 .mini-theme {
@@ -630,7 +630,7 @@ footer {
 
 #leftmenu a {
     display: inline-block;
-    color: #000000!important;
+    color: #000000 !important;
     position: relative;
     font-family: 'Abril Fatface', cursive;
     font-size: 1.3em;
@@ -638,7 +638,7 @@ footer {
 }
 
 #leftmenu b {
-    font-weight: 300!important;
+    font-weight: 300 !important;
 }
 
 #leftmenu a span {
@@ -1114,7 +1114,7 @@ iframe {
 .dark .affiliate .number,
 .dark .affiliate,
 .dark #leftmenu a span {
-    color: #6d0000!important;
+    color: #6d0000 !important;
 }
 
 .dark #lowermenu {
@@ -1480,7 +1480,7 @@ iframe {
         font-size: 7em
     }
     #mobile-menu {
-        display: block!important
+        display: block !important
     }
     #leftmenu a {
         display: block;
@@ -1574,7 +1574,7 @@ iframe {
         height: auto;
         position: relative;
         border-radius: 0;
-        left: 0!important;
+        left: 0 !important;
         right: 0;
         font-size: .8em;
         margin: 10px 0;
@@ -1774,13 +1774,13 @@ table.dataTable {
 .dataTables_wrapper .dataTables_info,
 .dataTables_wrapper .dataTables_processing,
 .dataTables_wrapper .dataTables_paginate {
-    color: #fff!important;
+    color: #fff !important;
     min-width: 200px;
     margin: .5em;
 }
 
 .dataTables_wrapper label {
-    color: #fff!important;
+    color: #fff !important;
 }
 
 .dataTables_wrapper .dataTables_length select {
@@ -1789,5 +1789,5 @@ table.dataTable {
 }
 
 .dataTables_wrapper .dataTables_filter input {
-    margin-left: 0em!important;
+    margin-left: 0em !important;
 }

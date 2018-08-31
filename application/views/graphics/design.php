@@ -1,3 +1,4 @@
+<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 <div class="post">
 	<div class="input-field">
 		<label>Design Name</label>

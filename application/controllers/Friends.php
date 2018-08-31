@@ -2,10 +2,8 @@
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
-class friends extends MY_Controller
-{
-    function __construct()
-    {
+class Friends extends MY_Controller {
+    function __construct() {
         parent::__construct();
         $this->load->model('look_model');
         $this->load->library('form_validation');
@@ -13,16 +11,14 @@ class friends extends MY_Controller
         $this->load->library('email');
     }
     
-    public function apply()
-    {
+    public function apply() {
         $this->data['title']     = 'Apply as Affiliate - ' . $this->config->item('site_title', 'ion_auth');
         $this->data['pagetitle'] = '';
-        $this->data["file"] = "friends/affiliates-form";
+        $this->data["file"]      = "friends/affiliates-form";
         $this->render($this->data["file"], 'public_master');
     }
     
-    public function submit()
-    {
+    public function submit() {
         $name        = $this->input->post('name');
         $website     = $this->input->post('website');
         $description = $this->input->post('description');
@@ -52,30 +48,28 @@ class friends extends MY_Controller
         $this->email->set_mailtype("html");
         $this->look_model->add_new_friend($name, $website, $description, '1');
         
-		if ($this->email->send()) {
-            $data['status'] = "success";
-            $data['message'] = 'You have successfully applied, your application will be reviewed and then accepted soon.';
+        if ($this->email->send()) {
+            $data['status']     = "success";
+            $data['message']    = 'You have successfully applied, your application will be reviewed and then accepted soon.';
             $data['message_id'] = 'Sukses!';
             echo json_encode($data);
-		} else {
-            $data['status'] = "failed";
-            $data['message'] = 'There is error in sending mail! Please try again later';
+        } else {
+            $data['status']     = "failed";
+            $data['message']    = 'There is error in sending mail! Please try again later';
             $data['message_id'] = 'Terjadi kesalahan saat pengiriman terjadi, harap mencoba lagi.';
             echo json_encode($data);
-		}
+        }
         
     }
     
-    public function index()
-    {
-        $this->data['title']     = 'Affiliates - ' . $this->config->item('site_title', 'ion_auth');
-        $this->data['current']   = 'friends';
-        $this->data["file"] = "friends/affiliates";
+    public function index() {
+        $this->data['title']   = 'Affiliates - ' . $this->config->item('site_title', 'ion_auth');
+        $this->data['current'] = 'friends';
+        $this->data["file"]    = "friends/affiliates";
         $this->render($this->data["file"], 'public_master');
     }
     
-    public function get_friends()
-    {
+    public function get_friends() {
         if (!$this->ion_auth->logged_in() && !$this->ion_auth->is_admin()) {
             $data = $this->look_model->get_friends();
         } else {
@@ -84,8 +78,7 @@ class friends extends MY_Controller
         echo json_encode($data);
     }
     
-    function alpha_space_only($str)
-    {
+    function alpha_space_only($str) {
         if (!preg_match("/^[a-zA-Z ]+$/", $str)) {
             $this->form_validation->set_message('alpha_space_only', 'The %s field must contain only alphabets and space');
             return FALSE;
@@ -94,10 +87,9 @@ class friends extends MY_Controller
         }
     }
     
-    public function friends($id = false)
-    {
+    public function friends($id = false) {
         $this->data['current'] = 'Friends';
-        $this->data['title'] = 'Friends | Hello Little Red';
+        $this->data['title']   = 'Friends | Hello Little Red';
         
         if (!$this->ion_auth->logged_in() && !$this->ion_auth->is_admin()) {
             show_404();
@@ -106,7 +98,7 @@ class friends extends MY_Controller
             $this->render($this->data["file"], 'admin_master');
         }
     }
-
+    
     public function add_friend() {
         
         if (!$this->ion_auth->logged_in() && !$this->ion_auth->is_admin()) {
@@ -117,15 +109,15 @@ class friends extends MY_Controller
             $description = $this->input->post('description');
             $status      = $this->input->post('status');
             $tweet       = $this->input->post('tweet');
-
+            
             $this->look_model->add_new_friend($name, $website, $description, $status, $tweet);
-            $data['status'] = "success";
-            $data['message'] = $name.' added!';
-            $data['message_id'] = $name.' ditambahkan!';
+            $data['status']     = "success";
+            $data['message']    = $name . ' added!';
+            $data['message_id'] = $name . ' ditambahkan!';
             echo json_encode($data);
         }
     }
-
+    
     public function update_friend($id) {
         
         if (!$this->ion_auth->logged_in() && !$this->ion_auth->is_admin()) {
@@ -137,22 +129,20 @@ class friends extends MY_Controller
             $status      = $this->input->post('status');
             $tweet       = $this->input->post('tweet');
             $this->look_model->update_friend($id, $name, $website, $description, $status, $tweet);
-            $data['status'] = "success";
-            $data['message'] = $name.' updated!';
-            $data['message_id'] = $name.' diperbaharui!';
+            $data['status']     = "success";
+            $data['message']    = $name . ' updated!';
+            $data['message_id'] = $name . ' diperbaharui!';
             echo json_encode($data);
         }
     }
     
-    public function delete_friend($id)
-    {
-        if (!$this->ion_auth->logged_in() && !$this->ion_auth->is_admin()) 
-        {
+    public function delete_friend($id) {
+        if (!$this->ion_auth->logged_in() && !$this->ion_auth->is_admin()) {
             show_404();
         } else {
             $this->look_model->delete_website($id);
-            $data['status'] = "success";
-            $data['message'] = 'Friend deleted!';
+            $data['status']     = "success";
+            $data['message']    = 'Friend deleted!';
             $data['message_id'] = 'Teman dihapus!';
             echo json_encode($data);
         }

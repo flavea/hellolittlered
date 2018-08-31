@@ -1,3 +1,4 @@
+<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 <a class="button button-inverse" id="markAll">Mark All Emails As Read</a>
 <div class="post pTemp" style="display: none">
 	<p><label>From</label> <span class="from"></span></p>
