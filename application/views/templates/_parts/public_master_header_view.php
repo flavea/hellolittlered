@@ -41,12 +41,10 @@
 
     <meta name="theme-color" content="#6d0000">
     <meta name="google-site-verification" content="R1AJmpriHPv9KnGMvbKBGg0lKXx7HRBbcNDeC9QUSZs" />
-    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/labjs/2.0.3/LAB.min.js"></script>
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
         crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro|Abril+Fatface|Roboto|Oswald|Poppins" rel="stylesheet">
-    <script src="<?=base_url('assets/js/main.js');?>"></script>
-    <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?skin=sunburst"></script>
     <link rel="stylesheet" href="<?=base_url('assets/css/base.css');?>" />
     <link rel="stylesheet" href="<?=base_url('assets/css/main.css');?>" />
     <link rel="icon" href="http://i.imgur.com/I6Udqo8.png" sizes="any" type="image/png">
@@ -63,7 +61,9 @@
 
 </head>
 <script>
-    $(document).ready(function () {
+    $LAB.script("https://code.jquery.com/jquery-3.1.1.min.js").wait().script("<?=base_url('assets/js/main.js');?>").script(
+        "https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?skin=sunburst").wait().script(
+        "<?= base_url('application/views/'.$file.'.js') ?>").wait(function () {
         var exp = "";
         if (localStorage.getItem("lang") == "id") {
             exp = "<?= preg_replace( " / \r | \n / ", "
@@ -85,9 +85,13 @@
             ', $explanation_id)); ?>";
         }
 
-        $('#info h2 span').text("<?= $current; ?>");
-        $('#info p').html(exp);
-    });
+        document.querySelectorAll('#info h2 span').forEach(_element => _element.textContent =
+            "<?= str_replace("
+            ", "
+            _ ", $current); ?>");
+        document.querySelectorAll('#info p').forEach(_element2 => _element2.innerHTML = exp);
+        $("pre, code").addClass("prettyprint");
+    }).wait();
 </script>
 
 <body>
@@ -97,9 +101,11 @@
             <div id="popup-content">
                 <a class="fa close fa-times" aria-hidden="true" data-target="lang"></a>
                 <h2>Switch Language</h2>
-                <p>Website language will be changed. Please not that not all text will be translated, contents that are only available in
+                <p>Website language will be changed. Please not that not all text will be translated, contents that are
+                    only available in
                     one languange will be shown in that language.</p>
-                <p>Bahasa akan diganti. Tidak semua teks akan terganti, konten yang hanya tersedia dalam satu bahasa akan ditampilkan dalam
+                <p>Bahasa akan diganti. Tidak semua teks akan terganti, konten yang hanya tersedia dalam satu bahasa
+                    akan ditampilkan dalam
                     bahasa tersebut.</p>
                 <center>
                     <a id="lang-yes" class="button button-inverse">Switch</a>
@@ -113,118 +119,25 @@
     <div id="bottom" class="third fade-in topbottom"></div>
     <div id="left" class="fourth right fade-in leftright"></div>
     <div id="right" class="second fade-in leftright"></div>
+
+    <li class="menuTemp" style="display: none">
+        <a>
+            <span></span> <b></b>
+        </a>
+        <div>
+        </div>
+    </li>
+
+    <div class="multimenu mmTemp" style="display: none">
+        <a><span></span> <b></b></a>
+        <div>
+        </div>
+    </div>
+
     <main class="fourth fade-in fadein">
 
         <div id="linkage">
             <ul id="main-menu">
-                <li>
-                    <a href="<?=base_url()?>">
-                        <span>01</span> Home</a>
-                </li>
-                <li>
-                    <a data-target="about">
-                        <span>02</span> About</a>
-                    <div id="about">
-                        <article class="menu-pages"></article>
-                        <?php if ($this->ion_auth->logged_in() && $this->ion_auth->is_admin()) { ?>
-                        <a href="<?=base_url('pages/add_new_page');?>">Add New Page</a>
-                        <a href="<?=base_url('pages/manage_pages');?>">Manage Pages</a>
-                        <?php } ?>
-                    </div>
-                </li>
-                <li>
-                    <a href="<?=base_url('blog')?>">
-                        <span>03</span> Blog</a>
-                </li>
-                <li>
-                    <a data-target="codes">
-                        <span>04</span> Codes</a>
-                    <div id="codes">
-                        <a href="<?=base_url('projects')?>">
-                            <span>a.</span> Projects</a>
-                        <a href="<?=base_url('lab')?>">
-                            <span>b.</span> Lab</a>
-
-                        <article class="menu-codes"></article>
-
-                        <?php if ($this->ion_auth->logged_in() && $this->ion_auth->is_admin()) { ?>
-                        <a href="<?=base_url('projects/projects');?>">Manage Projects</a>
-                        <a href="<?=base_url('lab/lab');?>">Manage Lab</a>
-                        <a href="<?=base_url('themes/add_new_theme');?>">Add New Theme</a>
-                        <a href="<?=base_url('themes/add_new_theme_category');?>">Manage Themes Category</a>
-                        <?php } ?>
-                    </div>
-                </li>
-                <li>
-                    <a data-target="resources">
-                        <span>05</span> Resources</a>
-                    <div id="resources">
-                        <a href="<?=base_url('resource/psd')?>">
-                            <span>a.</span> PSD</a>
-                        <a href="<?=base_url('resource/textures')?>">
-                            <span>b.</span> Textures</a>
-                        <?php if ($this->ion_auth->logged_in() && $this->ion_auth->is_admin()) { ?>
-                        <a href="<?=base_url('resource/add_new_resource');?>">Add New Resource</a>
-                        <a href="<?=base_url('resource/manage_resources');?>">Manage Resources</a>
-                        <a href="<?=base_url('resource/add_new_resource_type');?>">Manage Resources Type</a>
-                        <?php } ?>
-                    </div>
-                </li>
-                <li>
-                    <a data-target="hobbies">
-                        <span>06</span> Hobbies</a>
-                    <div id="hobbies">
-                        <a href="<?=base_url('album')?>">
-                            <span>a.</span> Photography</a>
-                        <a href="https://fictions.hellolittlered.org">
-                            <span>b.</span> Writing</a>
-                        <a href="<?=base_url('graphics')?>">
-                            <span>c.</span> Graphics</a>
-                        <?php if ($this->ion_auth->logged_in() && $this->ion_auth->is_admin()) { ?>
-                        <a href="<?=base_url('graphics/design');?>">Manage Designs</a>
-                        <?php } ?>
-                    </div>
-                </li>
-                <li>
-                    <a href="<?=base_url('shop')?>">
-                        <span>08</span> Shop</a>
-                </li>
-                <li>
-                    <a data-target="contact">
-                        <span>09</span> Contact</a>
-                    <div id="contact">
-                        <a href="<?=base_url('contact')?>">
-                            <span>a.</span> Email</a>
-                        <a href="<?=base_url('friends')?>">
-                            <span>b.</span> Affiliates</a>
-                        <a href="<?=base_url('commission')?>">
-                            <span>c.</span> Commission</a>
-                        <?php if ($this->ion_auth->logged_in() && $this->ion_auth->is_admin()) { ?>
-                        <a href="<?=base_url('admin/commissions');?>">Manage Commissions (
-                            <?= $commissions_count; ?>)</a>
-                        <a href="<?=base_url('admin/questions');?>">Manage Questions (
-                            <?= $q_count; ?>)</a>
-                        <a href="<?=base_url('admin/contacts');?>">Manage Emails (
-                            <?= $emails_count; ?>)</a>
-                        <?php } ?>
-                    </div>
-                </li>
-                <?php if ($this->ion_auth->logged_in() && $this->ion_auth->is_admin()) { ?>
-                <li>
-                    <a data-target="mng">
-                        <span>10</span> Management</a>
-                    <div id="mng">
-                        <a href="<?=base_url('admin/socmeds');?>">Social Medias</a>
-                        <a href="<?=base_url('admin/sidebar');?>">Sidebar Boxes</a>
-                        <a href="<?=base_url('admin/website');?>">Websites</a>
-                        <a href="<?=base_url('admin/friends');?>">Friends (
-                            <?= $friends_count; ?>)</a>
-                        <a href="<?=base_url('admin/history');?>">History</a>
-                        <a href="<?=base_url('admin/profile');?>">Edit Profile</a>
-                        <a href="<?=base_url('admin/logout');?>">Log Out</a>
-                    </div>
-                </li>
-                <?php } ?>
             </ul>
         </div>
 
@@ -238,63 +151,6 @@
                 </h3>
 
                 <div id="leftmenu">
-                    <a href="<?=base_url()?>">
-                        <span>01.</span> Home</a>
-                    <div class="multimenu">
-                        <a>
-                            <span>02.</span> About</a>
-                        <div class="menu-pages">
-                        </div>
-                    </div>
-                    <a href="<?=base_url('blog')?>">
-                        <span>03.</span> Blog</a>
-
-                    <div class="multimenu">
-                        <a>
-                            <span>04.</span> Codes</a>
-                        <div class="menu-codes">
-                            <a href="<?=base_url('projects')?>">
-                                <span>a.</span> Projects</a>
-                            <a href="<?=base_url('lab')?>">
-                                <span>b.</span> Lab</a>
-                        </div>
-                    </div>
-                    <div class="multimenu">
-                        <a>
-                            <span>05.</span> Resources</a>
-                        <div>
-                            <a href="<?=base_url('resource/psd')?>">
-                                <span>a.</span> PSD</a>
-                            <a href="<?=base_url('resource/textures')?>">
-                                <span>b.</span> Textures</a>
-                        </div>
-                    </div>
-                    <div class="multimenu">
-                        <a>
-                            <span>06.</span> Hobbies</a>
-                        <div>
-                            <a href="<?=base_url('album')?>">
-                                <span>a.</span> Photography</a>
-                            <a href="<?=base_url('writing')?>">
-                                <span>b.</span> Writing</a>
-                            <a href="<?=base_url('graphics')?>">
-                                <span>c.</span> Graphics</a>
-                        </div>
-
-                    </div>
-                    <!--<a data-target="shop"><span>07.</span> Shop</a>-->
-                    <div class="multimenu">
-                        <a data-target="contact">
-                            <span>07.</span> Contact</a>
-                        <div>
-                            <a href="<?=base_url('contact')?>">
-                                <span>a.</span> Email</a>
-                            <a href="<?=base_url('friends')?>">
-                                <span>b.</span> Affiliates</a>
-                            <a href="<?=base_url('commission')?>">
-                                <span>c.</span> Commission</a>
-                        </div>
-                    </div>
                 </div>
             </div>
             <div id="lowermenu">

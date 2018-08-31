@@ -1,4 +1,4 @@
-<div id="bg" class="content-real">
+<div class="content-real">
 	<div id="blog" style="float: none;margin: auto">
 		<article class="post featured">
 			<header>
@@ -58,5 +58,3 @@
 		</article>
 	</div>
 </div>
-
-<script src="<?= base_url('application/views/commission/index.js') ?>"></script>

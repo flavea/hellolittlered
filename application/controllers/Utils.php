@@ -158,7 +158,7 @@ class utils extends MY_Controller {
 	        $my_file = $post->theme_id . '.html';
             echo $my_file;
 	        $data = 'Some file data';
-            write_file(FCPATH.'preview2/'.$my_file, $data);;
+            write_file(FCPATH.'preview2/'.$my_file, $data);
 	    }
 	}
 }

@@ -2,9 +2,9 @@
 
 class themes_model extends CI_Model {
 
-	function get_themes($limit, $start) {
+	function get_themes() {
 		$this->db->limit($limit, $start);
-		$this->load->library('ion_auth');
+		
 		if (!$this->ion_auth->logged_in()) {
 			$this->db->where('status','3');
 		} else {
@@ -17,7 +17,7 @@ class themes_model extends CI_Model {
 	
 	function get_themes_simplified($limit, $start) {
 		$this->db->limit($limit, $start);
-		$this->load->library('ion_auth');
+		
 		$this->db->select('theme_id, theme_name, theme_image, theme_code, theme_preview');
 		$this->db->from('theme');
 		if (!$this->ion_auth->logged_in()) {
@@ -30,18 +30,8 @@ class themes_model extends CI_Model {
 		return $query->result();
 	}
 
-	function get_all_themes($limit, $start) {
-		$this->db->limit($limit, $start);
-		$this->db->select('*');
-		$this->db->from('theme');
-		$this->db->join('status', 'theme.status = status.id and theme.status != "4"');
-		$this->db->order_by('theme_id','desc'); // get all theme, sort by latest to oldest
-		$query = $this->db->get();
-		return $query->result();
-	}
-
 	function total_count() {
-		$this->load->library('ion_auth');
+		
 		if (!$this->ion_auth->logged_in()) {
 			$this->db->where('status','3');
 		} else {
@@ -51,19 +41,15 @@ class themes_model extends CI_Model {
 		return $this->db->count_all_results();
 	}
 
-	function total_all_count() {
-		$this->db->from('theme');
-		$this->db->where('status !=', '4');
-		return $this->db->count_all_results();
-	}
-
 	function add_new_theme($author, $name, $image, $preview, $code, $body, $body_id, $categories, $status, $tweet)
 	{
+		
+	    $this->load->helper('file');
 		$data = array(
 			'author_id'		=> $author,
 			'theme_name'	=> $name,
 			'theme_image'	=> $image,
-			'theme_preview'	=> $preview,
+			'theme_preview'	=> "",
 			'theme_code'	=> $code,
 			'theme_body'	=> $body,
 			'theme_body_id'	=> $body_id,
@@ -81,6 +67,15 @@ class themes_model extends CI_Model {
 			);
 		$this->db->insert('master', $master_data);
 
+		$my_file = $id . '.html';
+		$data = 'Some file data';
+		write_file(FCPATH.'preview/'.$my_file, $preview);
+		
+		$data = array(
+			'theme_preview'	=> $my_file,
+			);
+		$this->db->where('theme_id', $id);
+		$this->db->update('theme', $data);
 
 		$status_data = array(
 			'author_id'		=> $author,
@@ -110,6 +105,11 @@ class themes_model extends CI_Model {
 		$this->db->from('theme');
 		$this->db->join('status', 'theme.status = status.id and theme.status != "4"');
 		$this->db->where('theme_id', $id);
+		if (!$this->ion_auth->logged_in()) {
+			$this->db->where('status','3');
+		} else {
+			$this->db->where('status','3')->or_where('status','2');
+		}
 		$query = $this->db->get();
 		if($query->num_rows()!==0)
 		{
@@ -125,6 +125,11 @@ class themes_model extends CI_Model {
 		$this->db->from('theme');
 		$this->db->join('status', 'theme.status = status.id and theme.status != "4"');
 		$this->db->where('theme_id', $id);
+		if (!$this->ion_auth->logged_in()) {
+			$this->db->where('status','3');
+		} else {
+			$this->db->where('status','3')->or_where('status','2');
+		}
 		$query = $this->db->get();
 		if($query->num_rows()!==0)
 		{
@@ -136,7 +141,7 @@ class themes_model extends CI_Model {
 
 	function get_theme2($id)
 	{
-		$this->load->library('ion_auth');
+		
 		$this->db->select('theme_id, theme_name, theme_image, theme_code, theme_preview');
 		$this->db->from('theme');
 		if (!$this->ion_auth->logged_in()) {
@@ -210,7 +215,7 @@ class themes_model extends CI_Model {
 			return $query->result();
 		}
 		else
-			return FALSE; // return false if no category in database
+			return FALSE;
 	}
 
 	function total_count_slug($slug) {
@@ -222,7 +227,7 @@ class themes_model extends CI_Model {
 
 		$this->db->select('*');
 		$this->db->from('theme_relationships');
-		$this->load->library('ion_auth');
+		
 		if (!$this->ion_auth->logged_in()) {
 			$this->db->join('theme', 'theme.theme_id = theme_relationships.object_id and theme.status = "3"');
 		} else {
@@ -343,14 +348,25 @@ class themes_model extends CI_Model {
 
 	function update_theme($id, $name, $image, $preview, $code, $body, $body_id, $status, $tweet)
 	{
+	    $this->load->helper('file');
 		$data = array(
 			'theme_name'	=> $name,
 			'theme_image'	=> $image,
-			'theme_preview'	=> $preview,
+			'theme_preview'	=> "",
 			'theme_code'	=> $code,
 			'theme_body'	=> $body,
 			'theme_body_id'	=> $body_id,
 			'status'		=> $status
+			);
+		$this->db->where('theme_id', $id);
+		$this->db->update('theme', $data);
+
+		$my_file = $id . '.html';
+		$data = 'Some file data';
+		write_file(FCPATH.'preview/'.$my_file, $preview);
+		
+		$data = array(
+			'theme_preview'	=> $my_file,
 			);
 		$this->db->where('theme_id', $id);
 		$this->db->update('theme', $data);

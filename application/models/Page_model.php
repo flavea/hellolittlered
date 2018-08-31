@@ -4,7 +4,7 @@ class Page_model extends CI_Model {
 	function get_pages()
 	{
 		$this->db->order_by('page_date','desc');
-		$this->load->library('ion_auth');
+		
         if (!$this->ion_auth->logged_in()) {
 			$this->db->where('status','3');
 		} else {
@@ -17,7 +17,7 @@ class Page_model extends CI_Model {
 	function get_pages_simplified()
 	{
 		$this->db->order_by('page_date','desc');
-		$this->load->library('ion_auth');
+		
 		$this->db->select('page_id, page_title, page_title_id, slug');
 		$this->db->from('page');
         if (!$this->ion_auth->logged_in()) {
@@ -29,22 +29,12 @@ class Page_model extends CI_Model {
 		return $query->result();
 	}
 
-	function get_all_pages()
-	{
-		$this->db->select('*');
-		$this->db->from('page');
-		$this->db->join('status', 'page.status = status.id and page.status != "4"');
-		$this->db->order_by('page_date','desc');
-		$query = $this->db->get();
-		return $query->result();
-	}
-
-
-	function add_new_page($author, $name, $body, $body_id, $slug, $status, $tweet)
+	function add_new_page($author, $name, $name_id, $body, $body_id, $slug, $status, $tweet)
 	{
 		$data = array(
 			'author_id'		=> $author,
 		 	'page_title'	=> $name,
+		 	'page_title_id'	=> $name_id,
 		 	'page_body'		=> $body,
 		 	'page_body_id'	=> $body_id,
 		 	'slug'			=> $slug,
@@ -65,6 +55,11 @@ class Page_model extends CI_Model {
 
 	function get_page($slug)
 	{
+        if (!$this->ion_auth->logged_in()) {
+			$this->db->where('status','3');
+		} else {
+			$this->db->where('status','3')->or_where('status','2');
+		}
 		$this->db->where('slug', $slug);
 		$query = $this->db->get('page');
 		if($query->num_rows()!==0)
@@ -98,15 +93,17 @@ class Page_model extends CI_Model {
 		$this->db->insert('statuses', $status_data);
 	}
 
-	function update_page($id, $name, $body, $body_id, $slug, $status)
+	function update_page($id, $name, $name_id, $body, $body_id, $slug, $status)
 	{
 		$data = array(
 		 	'page_title'	=> $name,
+		 	'page_title_id'	=> $name_id,
 		 	'page_body'		=> $body,
 		 	'page_body_id'	=> $body_id,
 		 	'slug'			=> $slug,
 		 	'status'		=> $status
 		);
+
 		$this->db->where('page_id', $id);
 		$this->db->update('page', $data);
 

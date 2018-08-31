@@ -1,4 +1,4 @@
-<div id="bg" class="content-real">
+<div class="content-real">
 	<div id="blog" style="float: none;margin: auto">
 		<article class="post featured">
 			<header>
@@ -27,7 +27,7 @@
 						<th>Size</th>
 						<th>Code</th>
 					</tr>
-				</thead>
+				<thead>
 				<tbody>
 					<tr>
 						<td width="100px" style="text-align: center;">
@@ -92,5 +92,3 @@
 		</article>
 	</div>
 </div>
-
-<script src="<?= base_url('application/views/friends/affiliates-form.js') ?>"></script>

@@ -12,13 +12,9 @@ class resource extends MY_Controller {
 
 	public function index()
 	{
-		// set page title
 		$this->data['title']       = 'Resources - '.$this->config->item('site_title', 'ion_auth');
-			// set current menu highlight
 		$this->data['current']     = 'Resources';
-			// get all post
 		$this->data['posts']       = $this->resources_model->get_resources();
-			// get all categories for sidebar menu
 		$this->data['categories']  = $this->resources_model->get_types();
 		foreach ($this->data['categories'] as $category ) {
 			$link                      = '<a href="'.base_url().'resource/type/'.$category->type_slug.'">'.$category->type_slug."</a> - ";
@@ -42,8 +38,8 @@ class resource extends MY_Controller {
 		
 		$page                      = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
 		$this->data["posts"]       = $this->resources_model->get_resources($config["per_page"], $page);
-		// render view
-		$this->render('resource/index','public_master');
+        $this->data["file"] = "resource/index";
+        $this->render($this->data["file"], 'public_master');
     }
 	
 	public function type($slug = FALSE)
@@ -55,129 +51,122 @@ class resource extends MY_Controller {
 		$this->data['current'] = 'Resources/'.$slug;
 		
 		if( $slug == FALSE )
-			redirect(themes);
-		else
-		    $this->render('resource/index','public_master');
+			redirect(resource);
+		else { 
+            $this->data["file"] = "resource/index";
+            $this->render($this->data["file"], 'public_master');
+        }
     }
     
     public function get_resources_by_slug($slug = FALSE)
 	{
-		
 		if( $slug == FALSE )
 			$data = array();
 		else
             $data   = $this->resources_model->get_category_resource($slug);
         echo json_encode($data);
 	}
+    
+    public function get_resource($id = FALSE)
+	{
+		if( $id == FALSE )
+			$data = array();
+		else
+            $data   = $this->resources_model->get_resource($id);
+        echo json_encode($data);
+	}
 
-	public function add_new_resource()
+	public function form_resource()
     {
-
-        $this->load->model('resources_model');
-        $this->data['page_title'] = 'Add Resource | Hello Little Red';
-        $user                     = $this->ion_auth->user()->row();
-        $this->data['user']       = $user;
+        $this->data['title'] = 'form resource';
+        $this->data['current'] = $this->data['title'];
         if (!$this->ion_auth->logged_in() && !$this->ion_auth->is_admin()) {
             show_404();
         } else {
-            $this->data['categories'] = $this->resources_model->get_types();
-
-            $this->load->helper('form');
-            $this->load->library(array(
-                'form_validation'
-                ));
-
-
-            $this->form_validation->set_rules('resource_name', 'Title', 'required');
-            $this->form_validation->set_rules('resource_download', 'Download Link', 'required');
-            $this->form_validation->set_rules('resource_preview', 'Preview', 'required');
-
-            if ($this->form_validation->run() == FALSE) {
-
-                $this->render('resource/add_new_resource', 'admin_master');
-            } else {
-
-                $user       = $this->ion_auth->user()->row();
-                $name       = $this->input->post('resource_name');
-                $body       = $this->input->post('resource_body');
-                $categories = $this->input->post('resource_category');
-                $preview    = $this->input->post('resource_preview');
-                $download   = $this->input->post('resource_download');
-                $status     = $this->input->post('status');
-                $tweet      = $this->input->post('tweet');
-
-                $this->resources_model->add_new_resource($user->id, $name, $preview, $download, $categories, $status, $tweet);
-                $this->session->set_flashdata('message', $name.' Added');
-                redirect('resource/add_new_resource');
-            }
+            $this->data["file"] = "resource/form_resource";
+            $this->render($this->data["file"], 'admin_master');
         }
     }
 
-    public function update_resource($id = '')
-    {
+    /*
+    ==================================================
+    |             Resources Management               |
+    ==================================================
+    */
 
-        $this->load->model('resources_model');
-        $this->data['page_title'] = 'Add Resource | Hello Little Red';
-        $user                     = $this->ion_auth->user()->row();
-        $this->data['user']       = $user;
+    public function add_resource() {
         if (!$this->ion_auth->logged_in() && !$this->ion_auth->is_admin()) {
             show_404();
         } else {
-            $this->data['categories'] = $this->resources_model->get_types();
+            $user       = $this->ion_auth->user()->row();
+            $name       = $this->input->post('resource_name');
+            $categories = $this->input->post('resource_category');
+            $preview    = $this->input->post('resource_preview');
+            $download   = $this->input->post('resource_download');
+            $status     = $this->input->post('status');
+            $tweet      = $this->input->post('tweet');
 
-            $this->load->helper('form');
-            $this->load->library(array(
-                'form_validation'
-                ));
+            $this->resources_model->add_new_resource($user->id, $name, $preview, $download, $categories, $status, $tweet);
+            $data['status'] = "success";
+            $data['message'] = $name.' added!';
+            $data['message_id'] = $name.' ditambahkan!';
+            echo json_encode($data);
+        }
+    }
 
+    public function update_resource($id)
+    {
+        if (!$this->ion_auth->logged_in() && !$this->ion_auth->is_admin()) {
+            show_404();
+        } else {
+            $user       = $this->ion_auth->user()->row();
+            $name       = $this->input->post('resource_name');
+            $categories = $this->input->post('resource_category');
+            $preview    = $this->input->post('resource_preview');
+            $download   = $this->input->post('resource_download');
+            $status     = $this->input->post('status');
+            $tweet      = $this->input->post('tweet');
 
-            $this->form_validation->set_rules('resource_name', 'Title', 'required');
-            $this->form_validation->set_rules('resource_download', 'Download Link', 'required');
-            $this->form_validation->set_rules('resource_preview', 'Preview', 'required');
-
-            if ($this->form_validation->run() == FALSE) {
-                $this->data['query']      = $this->resources_model->get_resource($id);
-                $this->render('resource/add_new_resource', 'admin_master');
-            } else {
-
-                $user       = $this->ion_auth->user()->row();
-                $id         = $this->input->post('resource_id');
-                $name       = $this->input->post('resource_name');
-                $body       = $this->input->post('resource_body');
-                $categories = $this->input->post('resource_category');
-                $preview    = $this->input->post('resource_preview');
-                $download   = $this->input->post('resource_download');
-                $status     = $this->input->post('status');
-                $tweet      = $this->input->post('tweet');
-
-                $this->resources_model->update_resource($id, $name, $preview, $download, $categories, $status, $tweet);
-                $this->session->set_flashdata('message', $name.' Updated!');
-                redirect('resource/update_resource/'.$id);
-            }
+            $this->resources_model->update_resource($id, $name, $preview, $download, $categories, $status, $tweet);
+            $data['status'] = "success";
+            $data['message'] = $name.' updated!';
+            $data['message_id'] = $name.' diperbaharui!';
+            echo json_encode($data);
         }
     }
 
     public function delete_resource($id)
     {
-
-        $this->load->model('resources_model');
-        $this->resources_model->delete_resource($id);
-        $this->session->set_flashdata('message', '1 Resource Deleted!');
-        redirect('resource/manage_resources');
+        if (!$this->ion_auth->logged_in() && !$this->ion_auth->is_admin()) 
+        {
+            show_404();
+        } else {
+            $this->resources_model->delete_resource($id);
+            $data['status'] = "success";
+            $data['message'] = 'Resource deleted!';
+            $data['message_id'] = 'Resource dihapus';
+            echo json_encode($data);
+        }
     }
 
     public function manage_resources()
     {
-        $this->load->model('resources_model');
-        $this->data['page_title'] = 'Manage Resources | Hello Little Red';
+        $this->data['current'] = 'Manage Resources';
+        $this->data['title'] = 'Manage Resources | Hello Little Red';
         $user                     = $this->ion_auth->user()->row();
         $this->data['user']       = $user;
         if (!$this->ion_auth->logged_in() && !$this->ion_auth->is_admin()) {
             show_404();
         } else {
-            $this->data['posts'] = $this->resources_model->get_all_resources();
-            $this->render('resource/manage_resources', 'admin_master');
+            $this->data["file"] = "resource/manage_resources";
+            $this->render($this->data["file"], 'admin_master');
         }
+    }
+
+    public function get_resources()
+    {
+        $data = $this->resources_model->get_all_resources();
+        echo json_encode($data);
     }
 
     /*
@@ -186,60 +175,73 @@ class resource extends MY_Controller {
     ==================================================
     */
 
-    public function add_new_resource_type($id = "")
+    public function manage_category($id = "")
     {
-
-        $this->load->model('resources_model');
-        $user                     = $this->ion_auth->user()->row();
-        $this->data['user']       = $user;
-        $this->data['page_title'] = 'Add New Category | Hello Little Red';
-        $this->data['categories'] = $this->resources_model->get_types();
+        $this->data['current'] = 'Manage Category';
+        $this->data['title'] = 'Manage Categories | Hello Little Red';
 
         if (!$this->ion_auth->logged_in() && !$this->ion_auth->is_admin()) 
         {
             show_404();
         } else {
-            $this->load->helper('form');
-            $this->load->library(array(
-                'form_validation'
-                ));
+            $this->data["file"] = "resource/manage_category";
+            $this->render($this->data["file"], 'admin_master');
+        }
+    }
 
-            
-            $this->form_validation->set_rules('category_name', 'Name', 'required|max_length[200]');
-            $this->form_validation->set_rules('category_slug', 'Slug', 'max_length[200]');
+    public function add_category() {
+        
+        if (!$this->ion_auth->logged_in() && !$this->ion_auth->is_admin()) 
+        {
+            show_404();
+        } else {
+            $name = $this->input->post('category_name');
 
-            if ($this->form_validation->run() == FALSE) {
+            if ($this->input->post('category_slug') != '')
+                $slug = $this->input->post('category_slug');
+            else
+                $slug = strtolower(preg_replace('/[^A-Za-z0-9_-]+/', '-', $name));
 
-                if($id != "") $this->data['query'] = $this->resources_model->get_type($id, NULL);
-                $this->render('resource/add_new_resource_category', 'admin_master');
-            } else {
+            $this->resources_model->add_new_type($name, $slug);
+            $data['status'] = "success";
+            $data['message'] = $name.' added!';
+            $data['message_id'] = $name.' ditambahkan!';
+            echo json_encode($data);
+        }
+    }
+    public function update_category($id) {
+        
+        if (!$this->ion_auth->logged_in() && !$this->ion_auth->is_admin()) 
+        {
+            show_404();
+        } else {
+            $name = $this->input->post('category_name');
 
-                $name = $this->input->post('category_name');
+            if ($this->input->post('category_slug') != '')
+                $slug = $this->input->post('category_slug');
+            else
+                $slug = strtolower(preg_replace('/[^A-Za-z0-9_-]+/', '-', $name));
 
-                if ($this->input->post('category_slug') != '')
-                    $slug = $this->input->post('category_slug');
-                else
-                    $slug = strtolower(preg_replace('/[^A-Za-z0-9_-]+/', '-', $name));
-
-                if($id != "") {
-                    $this->resources_model->update_type($id, $name, $slug);
-                    $this->session->set_flashdata('message', $name.' updated!');
-                } else {
-                    $this->resources_model->add_new_type($name, $slug);
-                    $this->session->set_flashdata('message', $name.' Added');
-                }
-                redirect('resource/add-new-resource-type');
-            }
+            $this->resources_model->update_type($id, $name, $slug);
+            $data['status'] = "success";
+            $data['message'] = $name.' updated!';
+            $data['message_id'] = $name.' diperbaharui!';
+            echo json_encode($data);
         }
     }
 
     public function delete_resource_category($id)
     {
-
-        $this->load->model('resources_model');
-        $this->resources_model->delete_type($id);
-        $this->session->set_flashdata('message', 'a category is deleted.');
-        redirect('resource/add_new_resource_type');
+        if (!$this->ion_auth->logged_in() && !$this->ion_auth->is_admin()) 
+        {
+            show_404();
+        } else {
+            $this->resources_model->delete_type($id);
+            $data['status'] = "success";
+            $data['message'] = 'Type deleted!';
+            $data['message_id'] = 'Type dihapus!';
+            echo json_encode($data);
+        }
     }
 }
 

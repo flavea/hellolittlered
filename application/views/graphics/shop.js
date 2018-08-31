@@ -1,9 +1,9 @@
-$(document).ready(function() {
-    $.getJSON(base_url + "shop/get_store_items/", loadShop);
+$(document).ready(() => {
+    $.getJSON(`${base_url}shop/get_store_items/`, loadShop);
 
     function loadShop(data) {
         if (data.length > 0) {
-            data.forEach(function(d) {
+            data.forEach(d => {
                 let temp = $('.shopTemp').clone().removeClass('shopTemp').show();
                 $('.redbubble', temp).attr('href', d.redbubble)
                 $('.tees', temp).attr('href', d.tees)

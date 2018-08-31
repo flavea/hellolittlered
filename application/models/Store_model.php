@@ -4,7 +4,6 @@ class store_model extends CI_Model {
 
 	function get_designs() 
 	{
-		$this->load->library('ion_auth');
 		if (!$this->ion_auth->logged_in()) {
 			$this->db->where('status','3');
 		} else {
@@ -17,6 +16,11 @@ class store_model extends CI_Model {
 	function get_all_designs($limit, $start) 
 	{
 		$this->db->limit($limit, $start);
+		if (!$this->ion_auth->logged_in()) {
+			$this->db->where('status','3');
+		} else {
+			$this->db->where('status','3')->or_where('status','2');
+		}
 		$query = $this->db->get('design');
 		return $query->result();
 	}
@@ -25,6 +29,11 @@ class store_model extends CI_Model {
 	function get_design($id)
 	{
 		$this->db->where('id', $id);
+		if (!$this->ion_auth->logged_in()) {
+			$this->db->where('status','3');
+		} else {
+			$this->db->where('status','3')->or_where('status','2');
+		}
 		
 		$query = $this->db->get('design');
 		
@@ -33,11 +42,11 @@ class store_model extends CI_Model {
 			return $query->result();
 		}
 		else
-			return FALSE; // return false if no category in database
+			return FALSE;
 	}
 
 	function total_count() {
-		$this->load->library('ion_auth');
+		
 		if (!$this->ion_auth->logged_in()) {
 			$this->db->where('status','3');
 		} else {
@@ -50,6 +59,11 @@ class store_model extends CI_Model {
 	function total_all_count() {
 		$this->db->from('entry');
 		$this->db->where('status !=', '4');
+		if (!$this->ion_auth->logged_in()) {
+			$this->db->where('status','3');
+		} else {
+			$this->db->where('status','3')->or_where('status','2');
+		}
 		return $this->db->count_all_results();
 	}
 	

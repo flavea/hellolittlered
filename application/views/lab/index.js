@@ -1,11 +1,11 @@
-$(document).ready(function() {
-    $.getJSON(base_url + "lab/get_exps", loadFrontData);
+$(document).ready(() => {
+    $.getJSON(`${base_url}lab/get_exps`, loadFrontData);
 
     function loadFrontData(data) {
         if (data.length > 0) {
-            data.forEach(function(d) {
+            data.forEach(d => {
                 let temp = $('.expTemp').clone().removeClass('expTemp').show();
-                $('a', temp).attr('href', base_url + 'theme/' + d.theme_id);
+                $('a', temp).attr('href', `${base_url}theme/${d.theme_id}`);
                 $('.previewLink', temp).attr('href', d.link);
                 $('.codeLink', temp).attr('href', d.code);
                 $('img', temp).attr('src', d.image);

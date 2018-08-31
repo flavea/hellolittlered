@@ -7,5 +7,3 @@
 		<a class="button codeLink" target="blank">Source Code</a>
 	</div>
 </div>
-
-<script src="<?= base_url('application/views/lab/index.js') ?>"></script>

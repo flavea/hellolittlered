@@ -39,5 +39,3 @@
 
 <ul class="actions pagination">
 </ul>
-
-<script src="<?= base_url('application/views/blog/index.js') ?>"></script>

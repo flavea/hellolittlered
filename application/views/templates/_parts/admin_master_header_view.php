@@ -223,15 +223,15 @@
   <main class="grey darken-4">
 
     <div id="tweet">
-      <div class="card-panel white">
+      <div class="post">
         <?= form_open('admin/tweet'); ?>
 
         <div class="input-field">
-          <input type="text" name="tweet" placeholder="Your Tweet" required />
+          <input type="text" id="tweet" placeholder="Your Tweet" required />
         </div>
 
-        <input class="waves-effect waves-light btn" type="submit" value="Send Tweet"/>
-        <a href="#" class="waves-effect waves-light btn">Close</a>
+        <input class="button button-inverse" type="submit" value="Send Tweet"/>
+        <a href="#" class="button button-inverse">Close</a>
       </form>
     </div>
   </div>

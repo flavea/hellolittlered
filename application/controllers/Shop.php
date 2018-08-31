@@ -13,8 +13,10 @@ class shop extends MY_Controller {
 
 	public function index()
 	{
-		$this->data['title']       = 'Shop - '.$this->config->item('site_title', 'ion_auth');
-		$this->render('graphics/shop','public_master');
+		$this->data['title']       = 'Shop';
+        $this->data['title'] = 'Shop | Hello Little Red';
+		$this->data["file"] = "graphics/shop";
+		$this->render($this->data["file"], 'public_master');
 	}
 	
 	public function get_store_items() {

@@ -14,7 +14,7 @@ class MY_Controller extends CI_Controller {
         $this->load->model('look_model');
         $this->load->model('site_model');
         $this->load->library("pagination");
-        $this->load->library('ion_auth');
+        
         $this->load->helper("url");
         $this->data['current'] = '';
         $this->data['explanation'] = '';

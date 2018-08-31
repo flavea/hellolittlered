@@ -3,7 +3,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 include_once (APPPATH . 'core/MY_Controller.php');
 
 class album extends MY_Controller
-
 {
 	protected $data = array();
 	function __construct()
@@ -13,7 +12,6 @@ class album extends MY_Controller
 		$this->load->model('look_model');
 		$this->load->model('site_model');
 		$this->load->model('social_model');
-		$this->load->library('ion_auth');
 	}
 
 	function index()
@@ -31,8 +29,8 @@ class album extends MY_Controller
 		$response = $this->social_model->get_latest_instagram();
 		$this->data['instagram'] = $response['data'];
 
-
-		$this->render('graphics/album', 'public_master');
+		$this->data["file"] = "graphics/album";
+		$this->render($this->data["file"], 'public_master');
 	}
 
 }

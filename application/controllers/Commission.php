@@ -7,7 +7,6 @@ class commission extends MY_Controller
     function __construct()
     {
         parent::__construct();
-        $this->load->model('blog_model');
         $this->load->model('commission_model');
         $this->load->library('form_validation');
         $this->load->helper('form');
@@ -20,8 +19,8 @@ class commission extends MY_Controller
     public function index()
     {
         $this->data['title'] = 'Commission - ' . $this->config->item('site_title', 'ion_auth');
-        
-		$this->render('commission/index', 'public_master');
+        $this->data["file"] = "commission/index";
+        $this->render($this->data["file"], 'public_master');
         
     }
     
@@ -98,7 +97,6 @@ class commission extends MY_Controller
 		} 
 	}
     
-    
     function alpha_space_only($str)
     {
         if (!preg_match("/^[a-zA-Z ]+$/", $str)) {
@@ -111,27 +109,43 @@ class commission extends MY_Controller
     
     public function commissions($id = NULL)
     {
-        $this->load->model('commission_model');
-        $user                     = $this->ion_auth->user()->row();
-        $this->data['user']       = $user;
-        $this->data['page_title'] = 'Commissions | Hello Little Red';
+        $this->data['current'] = 'Commissions';
+        $this->data['title'] = 'Commissions | Hello Little Red';
         
         if (!$this->ion_auth->logged_in() && !$this->ion_auth->is_admin()) {
             show_404();
         }
         
         if ($id == NULL) {
-            $this->data['posts'] = $this->commission_model->get_commissions();
-            $this->render('commission/commission', 'admin_master');
+            $this->data["file"] = "commission/commission";
         } else {
-            $this->data['posts'] = $this->commission_model->get_commission($id);
-            $this->render('commission/detail', 'admin_master');
+            $this->data["file"] = "commission/detail";
+        }
+        $this->render($this->data["file"], 'admin_master');
+    }
+
+    public function get_commissions() {
+        if (!$this->ion_auth->logged_in() && !$this->ion_auth->is_admin()) 
+        {
+            show_404();
+        } else {
+            $data = $this->commission_model->get_commissions();
+            json_encode($data);
+        }
+    }
+
+    public function get_commission_by_id() {
+        if (!$this->ion_auth->logged_in() && !$this->ion_auth->is_admin()) 
+        {
+            show_404();
+        } else {
+            $data = $this->commission_model->get_commission($id);
+            json_encode($data);
         }
     }
     
     public function commission_mark($id = NULL)
     {
-        $this->load->model('commission_model');
         if (!$this->ion_auth->logged_in() && !$this->ion_auth->is_admin()) {
             show_404();
         }

@@ -17,7 +17,8 @@ class Blog extends MY_Controller {
 		$this->data['current']     = 'Blog';
 		$this->data['explanation'] = 'Thoughts and rants about anything and everything.';
 		$this->data['explanation_id'] = 'Catatan mengenai apa pun.';
-		$this->render('blog/index','public_master');
+		$this->data["file"] = "blog/index";
+		$this->render($this->data["file"], 'public_master');
     }
     
     public function get_posts($offset = 0) {
@@ -42,140 +43,98 @@ class Blog extends MY_Controller {
         echo json_encode($data);
     }
 
-	public function add_new_entry()
-    {
-        $this->load->model('blog_model');
-        $site_data  = $this->site_model->get_data();
-        $site_title = '';
-        foreach ($site_data as $site) {
-            $site_title = $site->title;
+    public function get_all_posts() {
+        if (!$this->ion_auth->logged_in() && !$this->ion_auth->is_admin()) 
+        {
+            show_404();
+        } else {
+            $data = $this->blog_model->get_posts();
+            echo json_encode($data);
         }
-        $user               = $this->ion_auth->user()->row();
-        $this->data['user'] = $user;
+    }
+
+	public function form_entry()
+    {
+        $this->data['current']  = 'Add Blog Post';
+        $this->data['title']  = 'Post | Hello Little Red';
         if (!$this->ion_auth->logged_in() && !$this->ion_auth->is_admin()) {
             show_404();
         } else {
-            $this->data['title']      = 'Add new entry - ' . $this->config->item('site_title', 'ion_auth');
-            $this->data['categories'] = $this->blog_model->get_categories();
-            $this->data['statuses']   = $this->site_model->get_data_statuses();
-
-            $this->load->helper('form');
-            $this->load->library(array(
-                'form_validation'
-                ));
-
-            $this->form_validation->set_rules('entry_name', 'Title', 'required');
-            $this->form_validation->set_rules('status', 'Status', 'required');
-
-            if ($this->form_validation->run() == FALSE) {
-
-                $this->render('blog/add_new_entry', 'admin_master');
-            } else {
-
-                $user       = $this->ion_auth->user()->row();
-                $title      = $this->input->post('entry_name');
-                $body       = $this->input->post('entry_body');
-                $body_id    = $this->input->post('entry_body_id');
-                $categories = $this->input->post('entry_category[]');
-                $image      = $this->input->post('entry_image');
-                $video      = $this->input->post('entry_video');
-                $tags       = $this->input->post('entry_tags');
-                $status     = $this->input->post('status');
-                $tweet      = $this->input->post('tweet');
-
-                $this->blog_model->add_new_entry($user->id, $title, $body, $body_id, $categories, $image, $video, $tags, $status, $tweet);
-                $this->session->set_flashdata('message', $title.' Added');
-                redirect('blog/add_new_entry');
-            }
+            $this->data["file"] = "blog/form_entry";
+            $this->render($this->data["file"], 'admin_master');
         }
     }
 
     public function delete_post($id)
     {
-
-        $this->load->model('blog_model');
-        $this->blog_model->delete_post($id);
-        $this->session->set_flashdata('message', '1 post deleted');
-        redirect('blog/manage_posts');
+        if (!$this->ion_auth->logged_in() && !$this->ion_auth->is_admin()) 
+        {
+            show_404();
+        } else {
+            $this->blog_model->delete_post($id);
+            $data['status'] = "success";
+            $data['message_id'] = 'Blog post deleted!';
+            $data['message'] = 'Pos dihapus!';
+            echo json_encode($data);
+        }
     }
 
-    public function update_entry($id = '')
-    {
-
-        $this->load->model('blog_model');
-        $this->data['page_title'] = 'Add Blog Entry | Hello Little Red';
-        $user                     = $this->ion_auth->user()->row();
-        $this->data['user']       = $user;
-
+    public function add_post() {
         if (!$this->ion_auth->logged_in() && !$this->ion_auth->is_admin()) {
             show_404();
         } else {
-            $this->data['page_title'] = 'Edit entry - ' . $this->config->item('site_title', 'ion_auth');
-            $this->data['query']      = $this->blog_model->get_post($id);
-            $this->data['statuses'] = $this->site_model->get_data_statuses();
+            $user       = $this->ion_auth->user()->row();
+            $title      = $this->input->post('entry_name');
+            $title_id   = $this->input->post('entry_name_id');
+            $body       = $this->input->post('entry_body');
+            $body_id    = $this->input->post('entry_body_id');
+            $categories = $this->input->post('entry_categories');
+            $image      = $this->input->post('entry_image');
+            $video      = $this->input->post('entry_video');
+            $tags       = $this->input->post('entry_tags');
+            $status     = $this->input->post('status');
+            $tweet      = $this->input->post('tweet');
 
-            $this->load->helper('form');
-            $this->load->library(array(
-                'form_validation'
-                ));
+            $this->blog_model->add_new_entry($user->id, $title, $title_id, $body, $body_id, $categories, $image, $video, $tags, $status, $tweet);
+            $data['status'] = "success";
+            $data['message'] = $title.' ditambahkan!';
+            $data['message_id'] = $title.'added!';
+            echo json_encode($data);
+        }
+    }
 
-            $this->form_validation->set_rules('entry_name', 'Title', 'required');
+    public function update_post($id)
+    {
+        if (!$this->ion_auth->logged_in() && !$this->ion_auth->is_admin()) {
+            show_404();
+        } else {
+            $title  = $this->input->post('entry_name');
+            $title_id   = $this->input->post('entry_name_id');
+            $body   = $this->input->post('entry_body');
+            $body_id    = $this->input->post('entry_body_id');
+            $image  = $this->input->post('entry_image');
+            $video  = $this->input->post('entry_video');
+            $tags   = $this->input->post('entry_tags');
+            $status = $this->input->post('status');
+            $tweet  = $this->input->post('tweet');
 
-            if ($this->form_validation->run() == FALSE) {
-                $this->render('blog/add_new_entry', 'admin_master');
-            } else {
-
-                $id     = $this->input->post('entry_id');
-                $title  = $this->input->post('entry_name');
-                $body   = $this->input->post('entry_body');
-                $body_id    = $this->input->post('entry_body_id');
-                $image  = $this->input->post('entry_image');
-                $video  = $this->input->post('entry_video');
-                $tags   = $this->input->post('entry_tags');
-                $status = $this->input->post('status');
-                $tweet  = $this->input->post('tweet');
-
-                $this->blog_model->update_entry($id, $title, $body, $update_id, $image, $video, $tags, $status, $tweet);
-                $this->session->set_flashdata('message', $title.' updated');
-                redirect('blog/update_entry/'.$id);
-            }
+            $this->blog_model->update_entry($id, $title, $title_id, $body, $id, $image, $video, $tags, $status, $tweet);
+            $data['status'] = "success";
+            $data['message'] = $title.' updated!';
+            $data['message_id'] = $title.'diperbaharui!';
+            echo json_encode($data);
         }
     }
 
     public function manage_posts($offset = 0)
     {
-
-        $this->load->model('blog_model');
-        $this->data['page_title'] = 'Manage Blog Entries | Hello Little Red';
-        $user                     = $this->ion_auth->user()->row();
-        $this->data['user']       = $user;
+        $this->data['current']  = 'Manage Blog Posts';
+        $this->data['title'] = 'Posts | Hello Little Red';
         if (!$this->ion_auth->logged_in() && !$this->ion_auth->is_admin()) {
             show_404();
         } else {
-            $config                   = array();
-            $config["base_url"]       = base_url() . "blog/manage_posts";
-            $config["total_rows"]     = $this->blog_model->total_all_count();
-            $config["per_page"]       = 10;
-            $config["uri_segment"]    = 3;
-            $config['display_pages']  = TRUE;
-            $config['cur_tag_open']   ='<li class="active">';
-            $config['cur_tag_close']  = '</li>';
-            $config['num_tag_open']   = '<li class="waves-effect">';
-            $config['num_tag_close']  = '</li>';
-            $config['next_link']      = '<i class="material-icons">chevron_right</i>';
-            $config['next_tag_open']  = '<li class="waves-effect">';
-            $config['next_tag_close'] = '</li>';
-            $config['prev_link']      = '<i class="material-icons">chevron_left</i>';
-            $config['prev_tag_open']  = '<li class="waves-effect">';
-            $config['prev_tag_close'] = '</li>';
-            $config['last_link']      = '';
-            $config['first_link']     = '';
-            $this->pagination->initialize($config);
-            $this->data['paginglinks'] = $this->pagination->create_links();
-
-            $page                = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
-            $this->data["posts"] = $this->blog_model->get_all_posts($config["per_page"], $page);
-            $this->render('blog/manage_posts', 'admin_master');
+            $this->data["file"] = "blog/manage_posts";
+            $this->render($this->data["file"], 'admin_master');
         }
     }
 	
@@ -208,7 +167,8 @@ class Blog extends MY_Controller {
 					$this->data['keywords']    = $row->entry_tags;
 				}
 
-				$this->render('blog/post','public_master');
+                $this->data["file"] = "blog/post";
+                $this->render($this->data["file"], 'public_master');
 			}
 		}
 		else
@@ -223,13 +183,15 @@ class Blog extends MY_Controller {
 	
 	public function category($slug = FALSE)
 	{
-		$this->data['title']      = 'Blog Categories';
-		$this->data['pagetitle']  = '';
+        $this->data['title'] = 'Blog Categories | Hello Little Red';
+		$this->data['current']  = 'Blog Categories';
 		
 		if( $slug == FALSE )
 			show_404();
-		else
-		    $this->render('blog/category','public_master');
+		else {
+            $this->data["file"] = "blog/category";
+            $this->render($this->data["file"], 'public_master');
+        }
     }
     
     public function get_category_posts($slug) {
@@ -238,60 +200,65 @@ class Blog extends MY_Controller {
         echo json_encode($data);
     }
 
-	public function add_new_category($id = "")
+	public function manage_category($id = "")
     {
-
-        $this->load->model('blog_model');
-        $user                     = $this->ion_auth->user()->row();
-        $this->data['user']       = $user;
-        $this->data['page_title'] = 'Add New Category | Hello Little Red';
-        $this->data['categories'] = $this->blog_model->get_categories();
+        $this->data['current']             = 'Blog Categories';
+        $this->data['title'] = 'Blog Categories | Hello Little Red';
 
         if (!$this->ion_auth->logged_in() && !$this->ion_auth->is_admin()) 
         {
             show_404();
         } else {
             $this->load->helper('form');
-            $this->load->library(array(
-                'form_validation'
-                ));
-
-            
-            $this->form_validation->set_rules('category_name', 'Name', 'required|max_length[200]');
-            $this->form_validation->set_rules('category_slug', 'Slug', 'max_length[200]');
-
-            if ($this->form_validation->run() == FALSE) {
-                if($id != "") {
-                    $this->data['query'] = $this->blog_model->get_category($id, NULL);
-                }
-                $this->render('blog/add_new_category', 'admin_master');
-            } else {
-
+            if($id != "") {
                 $name = $this->input->post('category_name');
 
                 if ($this->input->post('category_slug') != '')
                     $slug = $this->input->post('category_slug');
                 else
                     $slug = strtolower(preg_replace('/[^A-Za-z0-9_-]+/', '-', $name));
-
-                if($id != "") {
-                    $this->blog_model->update_category($id, $name, $slug);
-                    $this->session->set_flashdata('message', $name.' Updated!');
-                } else {
-                    $this->blog_model->add_new_category($name, $slug);
-                    $this->session->set_flashdata('message', $name.' Added');
-                }
-                redirect('blog/add-new-category');
+                $this->blog_model->update_category($id, $name, $slug);
+                $data['status'] = "success";
+                $data['message'] = $name.' Updated!';
+                $data['message_id'] = $name.' diperbaharui!';
+                echo json_encode($data);
+            } else {
+                $this->data["file"] = "blog/manage_category";
+                $this->render($this->data["file"], 'admin_master');
             }
+        }
+    }
+	public function add_category()
+    {
+        if (!$this->ion_auth->logged_in() && !$this->ion_auth->is_admin()) 
+        {
+            show_404();
+        } else {
+            $name = $this->input->post('category_name');
+
+            if ($this->input->post('category_slug') != '')
+                $slug = $this->input->post('category_slug');
+            else
+                $slug = strtolower(preg_replace('/[^A-Za-z0-9_-]+/', '-', $name));
+            $this->blog_model->add_new_category($name, $slug);
+            $data['status'] = "success";
+            $data['message'] = $name.' Added!';
+            $data['message_id'] = $name.' ditambahkan!';
+            echo json_encode($data);
         }
     }
 
     public function delete_category($id)
     {
-        $this->load->model('blog_model');
-        $this->blog_model->delete_category($id);
-        $this->session->set_flashdata('message', '1 category deleted');
-        redirect('blog/add_new_category');
+        if (!$this->ion_auth->logged_in() && !$this->ion_auth->is_admin()) 
+        {
+            show_404();
+        } else {
+            $this->blog_model->delete_category($id);
+            $data['status'] = "success";
+            $data['status'] = "1 category deleted";
+            echo json_encode($data);
+        }
     }
 }
 

@@ -9,7 +9,6 @@ class Blog_model extends CI_Model {
 
 		}
 		
-		$this->load->library('ion_auth');
 		if (!$this->ion_auth->logged_in()) {
 			$this->db->where('status','3');
 		} else {
@@ -33,7 +32,6 @@ class Blog_model extends CI_Model {
 
 		}
 		
-		$this->load->library('ion_auth');
 		$this->db->select('entry_id, entry_name, entry_name_id, entry_date');
 		$this->db->from('entry');
 		if (!$this->ion_auth->logged_in()) {
@@ -52,28 +50,7 @@ class Blog_model extends CI_Model {
 		return false;
 	}
 
-	function get_all_posts($limit=false, $start=false)
-	{
-		if($limit != false || $start!=false) {
-			$this->db->limit($limit, $start);
-
-		}
-		$this->db->select('*');
-		$this->db->from('entry');
-		$this->db->join('status', 'entry.status = status.id and entry.status != "4"');
-		$this->db->order_by('entry_date','desc');
-		$query = $this->db->get();
-		if ($query->num_rows() > 0) {
-			foreach ($query->result() as $row) {
-				$data[] = $row;
-			}
-			return $data;
-		}
-		return false;
-	}
-
 	function total_count() {
-		$this->load->library('ion_auth');
 		if (!$this->ion_auth->logged_in()) {
 			$this->db->where('status','3');
 		} else {
@@ -82,18 +59,13 @@ class Blog_model extends CI_Model {
 		$this->db->from('entry');
 		return $this->db->count_all_results();
 	}
-
-	function total_all_count() {
-		$this->db->from('entry');
-		$this->db->where('status !=', '4');
-		return $this->db->count_all_results();
-	}
 	
-	function add_new_entry($author, $name, $body, $body_id, $categories, $image, $video, $tags, $status, $tweet)
+	function add_new_entry($author, $name, $name_id, $body, $body_id, $categories, $image, $video, $tags, $status, $tweet)
 	{
 		$data = array(
 			'author_id'		=> $author,
 			'entry_name'	=> $name,
+			'entry_name_id'	=> $name_id,
 			'entry_body'	=> $body,
 			'entry_body_id'	=> $body_id,
 			'entry_image'	=> $image,
@@ -136,12 +108,15 @@ class Blog_model extends CI_Model {
 	
 	function get_post($id)
 	{
+		if (!$this->ion_auth->logged_in()) {
+			$this->db->where('status','3');
+		} else {
+			$this->db->where('status','3')->or_where('status','2');
+		}
 		$this->db->where('entry_id', $id);
 		$query = $this->db->get('entry');
 		if($query->num_rows()!==0)
-		{
 			return $query->result();
-		}
 		else
 			return FALSE;
 	}
@@ -151,11 +126,14 @@ class Blog_model extends CI_Model {
 		$this->db->select('entry_name, status, entry_name_id, substring(entry_body, 0, 200) as entry_body, substring(entry_body_id, 0, 200) as entry_body_id, entry_image, entry_tags');
 		$this->db->from('entry');
 		$this->db->where('entry_id', $id);
+		if (!$this->ion_auth->logged_in()) {
+			$this->db->where('status','3');
+		} else {
+			$this->db->where('status','3')->or_where('status','2');
+		}
 		$query = $this->db->get();
 		if($query->num_rows()!==0)
-		{
 			return $query->result();
-		}
 		else
 			return FALSE;
 	}
@@ -221,7 +199,7 @@ class Blog_model extends CI_Model {
 			return $query->result();
 		}
 		else
-			return FALSE; // return false if no category in database
+			return FALSE;
 	}
 	
 	function get_categories()
@@ -234,12 +212,12 @@ class Blog_model extends CI_Model {
 	{
 		$category = array();
 		$this->db->where('object_id', $post_id);
-		$query = $this->db->get('entry_relationships'); // get category id related to the post
+		$query = $this->db->get('entry_relationships');
 		
 		foreach($query->result() as $row)
 		{
 			$this->db->where('category_id', $row->category_id);
-			$query = $this->db->get('entry_category'); // get category details
+			$query = $this->db->get('entry_category');
 			$category = array_merge($category, $query->result());
 		}
 		
@@ -251,14 +229,14 @@ class Blog_model extends CI_Model {
 		$list_post = array();
 		
 		$this->db->where('slug', $slug);
-		$query = $this->db->get('entry_category'); // get category id
+		$query = $this->db->get('entry_category');
 		if( $query->num_rows() == 0 )
 			show_404();
 		
 		foreach($query->result() as $category)
 		{
 			$this->db->where('category_id', $category->category_id);
-			$query = $this->db->get('entry_relationships'); // get posts id which related the category
+			$query = $this->db->get('entry_relationships');
 			$posts = $query->result();
 		}
 		
@@ -266,11 +244,11 @@ class Blog_model extends CI_Model {
 		{
 			foreach($posts as $post)
 			{
-				$list_post = array_merge($list_post, $this->get_post($post->object_id)); // get posts and merge them into array
+				$list_post = array_merge($list_post, $this->get_post($post->object_id));
 			}		
 		}
 		
-		return $list_post; // return an array of post object
+		return $list_post;
 	}
 
 	function delete_post ($id) {
@@ -286,10 +264,11 @@ class Blog_model extends CI_Model {
 		$this->db->delete('entry_relationships', array('category_id' => $id));
 	}
 
-	function update_entry($id, $name, $body, $body_id, $image, $video, $tags, $status, $tweet)
+	function update_entry($id, $name, $name_id, $body, $body_id, $image, $video, $tags, $status, $tweet)
 	{
 		$data = array(
 			'entry_name'	=> $name,
+			'entry_name_id' => $name_id,
 			'entry_body'	=> $body,
 			'entry_body_id'	=> $body_id,
 			'entry_image'	=> $image,

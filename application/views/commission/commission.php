@@ -1,33 +1,26 @@
-<?php if( $posts ): ?>
-	<?php foreach($posts as $post): ?>
-		<div class="card-panel white">
-			<?= form_open('commission/answer/'.$post->id);?>
-			
-			<input type="hidden" name="id" value="<?= $post->id ?>" readonly>
+<table style="display: none">
+	<tr class="tableTemp">
+		<td class="id"></td>
+		<td class="name"></td>
+	</tr>
+</table>
 
-			<div class="input-field">
-				<label>Name</label>
-				<input type="text" name="name" value="<?= $post->name ?>" readonly>
-			</div>
-
-			<label>Question</label>
-			<textarea rows="16" cols="100%" name="question" class="materialize-textarea" readonly><?= $post->message ?></textarea>
-
-			<label>Answer</label>
-			<textarea rows="16" cols="100%" name="answer" class="materialize-textarea"><?= $post->answer ?></textarea>
-
-			<div class="switch">
-				<label>
-					<input type="checkbox" name="tweet" value="1"  />
-					<span class="lever"></span>
-					Tweet?
-				</label>
-			</div>
-
-			<input class="waves-effect waves-light btn red darken-4 red darken-4" type="submit" value="Submit"/>
-			<input class="waves-effect waves-light btn red darken-4 red darken-4" type="reset" value="Reset"/>	
-
-		</form>
-
+<div id="load" class="lds-css ng-scope">
+	<div style="width:100%;height:100%" class="lds-disk">
+		<div>
+			<div></div>
+			<div></div>
+		</div>
 	</div>
-<?php endforeach; endif;?>
+</div>
+
+<table id="table" class="stripe">
+	<thead>
+		<tr>
+			<th width="10%">ID</th>
+			<th width="75%">Name</th>
+		</tr>
+	</thead>
+	<tbody>
+	</tbody>
+</table>

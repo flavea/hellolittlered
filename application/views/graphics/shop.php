@@ -10,5 +10,3 @@
 </article>
 <div id="theme" class="content-real">
 </div>
-
-<script src="<?= base_url('application/views/graphics/shop.js') ?>"></script>

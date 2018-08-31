@@ -4,7 +4,6 @@ class projects_model extends CI_Model {
 
 	function get_projects() 
 	{
-		$this->load->library('ion_auth');
 		if (!$this->ion_auth->logged_in()) {
 			$this->db->where('status','3');
 		} else {
@@ -14,18 +13,13 @@ class projects_model extends CI_Model {
 		return $query->result();
 	}
 
-	function get_all_projects() 
-	{
-		$this->db->select('projects.*, status.name as status_name');
-		$this->db->from('projects');
-		$this->db->join('status', 'projects.status = status.id and projects.status != "4"');
-		$this->db->order_by('date_up','desc');
-		$query = $this->db->get();
-		return $query->result();
-	}
-
 	function get_project($id) 
 	{
+		if (!$this->ion_auth->logged_in()) {
+			$this->db->where('status','3');
+		} else {
+			$this->db->where('status','3')->or_where('status','2');
+		}
 		$this->db->where('id', $id);
 		$query = $this->db->get('projects');
 		return $query->result();
@@ -48,7 +42,6 @@ class projects_model extends CI_Model {
 			'behance' => $behance,
 			'status'  => $status
 			);
-		print_r($data);
 		$this->db->insert('projects', $data);
 
 		$query = $this->db->query('select id from projects order by id DESC limit 1');
@@ -115,7 +108,7 @@ class projects_model extends CI_Model {
 
 	function get_experiments() 
 	{
-		$this->load->library('ion_auth');
+		
 		if (!$this->ion_auth->logged_in()) {
 			$this->db->where('status','3');
 		} else {
@@ -131,6 +124,11 @@ class projects_model extends CI_Model {
 		$this->db->from('lab');
 		$this->db->join('status', 'lab.status = status.id and lab.status != "4"');
 		$this->db->order_by('date_up','desc');
+		if (!$this->ion_auth->logged_in()) {
+			$this->db->where('status','3');
+		} else {
+			$this->db->where('status','3')->or_where('status','2');
+		}
 		$query = $this->db->get();
 		return $query->result();
 	}
@@ -138,6 +136,11 @@ class projects_model extends CI_Model {
 	function get_experiment($id) 
 	{
 		$this->db->where('id', $id);
+		if (!$this->ion_auth->logged_in()) {
+			$this->db->where('status','3');
+		} else {
+			$this->db->where('status','3')->or_where('status','2');
+		}
 		$query = $this->db->get('lab');
 		return $query->result();
 	}

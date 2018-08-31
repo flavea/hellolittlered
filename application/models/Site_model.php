@@ -59,12 +59,18 @@ class site_model extends CI_Model {
 		return $query->result();
 	}
 
-	function update_data($title, $description, $description_id, $keywords)
+	function update_data($title, $description, $description_id, $comm, $comm_id, $tou, $tou_id, $aff, $aff_id,$keywords)
 	{
 		$data = array(
 		 	'title'	=> $title,
 		 	'description'	=> $description,
 		 	'description_id'	=> $description_id,
+		 	'comm'	=> $comm,
+		 	'comm_id'	=> $comm_id,
+		 	'tou'	=> $tou,
+		 	'tou_id'	=> $tou_id,
+		 	'aff'	=> $aff,
+		 	'aff_id'	=> $aff_id,
 		 	'keywords'	=> $keywords,
 		);
 		$this->db->where('id', '1');
@@ -132,7 +138,7 @@ class site_model extends CI_Model {
 			return $query->result();
 		}
 		else
-			return FALSE; // return false if no category in database
+			return FALSE;
 	}
 	
 
@@ -147,7 +153,7 @@ class site_model extends CI_Model {
 			return $query->result();
 		}
 		else
-			return FALSE; // return false if no category in database
+			return FALSE;
 	}
 
 	function get_story($id)
@@ -161,7 +167,7 @@ class site_model extends CI_Model {
 			return $query->result();
 		}
 		else
-			return FALSE; // return false if no category in database
+			return FALSE;
 	}
 
 	function get_related_categories($id)

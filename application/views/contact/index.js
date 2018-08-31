@@ -1,21 +1,13 @@
-$(document).ready(function() {
+$(document).ready(() => {
 
     $('#bg, #container').show()
     $('#loader').hide()
 
-    function Reset() {
-        $("#txtName").val("")
-        $("#txtEmail").val("")
-        $("#txtSubject").val("")
-        $("#txtMessage").val("")
-        $("#txtValidate").val("")
-    }
-
-    $('#btnReset').click(function(e) {
-        Reset()
+    $('#btnReset').click(e => {
+        $("#txtName, #txtEmail, #txtSubject, #txtMessage, #txtValidate").val("")
     })
 
-    $('#btnSubmit').click(function(e) {
+    $('#btnSubmit').click(e => {
         e.preventDefault()
 
         if ($("#txtName").val() == "") showAlert("Error", lang == "id" ? "Nama masih kosong, harap diisi." : "Name is empty.")
@@ -38,16 +30,14 @@ $(document).ready(function() {
             }
 
             $.ajax({
-                url: base_url + "contact/submit",
-                data: data,
+                url: `${base_url}contact/submit`,
+                data,
                 type: "POST",
                 dataType: "JSON",
-                success: function(ret) {
+                success(ret) {
                     showAlert(ret.status, lang == "id" ? ret.message_id : ret.message)
                 }
             })
-
-            console.log(data)
         }
     })
 })

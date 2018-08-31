@@ -1,9 +1,9 @@
-$(document).ready(function() {
-    $.getJSON(base_url + "commission/get_categories", loadCategories)
+$(document).ready(() => {
+    $.getJSON(`${base_url}commission/get_categories`, loadCategories)
 
     function loadCategories(data) {
         if (data.length > 0) {
-            data.forEach(function(d) {
+            data.forEach(d => {
 
                 let temp = $('.chkTemp').clone().removeClass('chkTemp').show()
                 $('.chk', temp).attr('value', d.category_id)
@@ -16,6 +16,7 @@ $(document).ready(function() {
             })
         }
     }
+
 
     function checkData() {
         if (typeof site_data === "undefined") {
@@ -33,22 +34,17 @@ $(document).ready(function() {
     checkData()
 
     function Reset() {
-        $("#txtName").val("")
-        $("#txtEmail").val("")
-        $("#txtSketch").val("")
-        $("#txtWWW").val("")
-        $("#txtValidation").val("")
-        $("#txtMessage").val("")
+        $("#txtName, #txtEmail, #txtSketch, #txtWWW, #txtValidation, #txtMessage").val("")
         $(':checkbox:checked').each(function(i) {
             $(this).attr('checked', false)
         })
     }
 
-    $('#btnReset').click(function(e) {
+    $('#btnReset').click(e => {
         Reset()
     })
 
-    $('#btnSubmit').click(function(e) {
+    $('#btnSubmit').click(e => {
         e.preventDefault()
 
         if ($("#txtName").val() == "") showAlert("Error", lang == "id" ? "Nama masih kosong, harap diisi." : "Name is empty.")
@@ -72,16 +68,14 @@ $(document).ready(function() {
             }
 
             $.ajax({
-                url: base_url + "commission/submit",
-                data: data,
+                url: `${base_url}commission/submit`,
+                data,
                 type: "POST",
                 dataType: "JSON",
-                success: function(ret) {
+                success(ret) {
                     showAlert(ret.status, lang == "id" ? ret.message_id : ret.message)
                 }
-            })
-
-            console.log(data)
+            }) =
         }
     })
 

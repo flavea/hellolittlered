@@ -1,6 +1,6 @@
 <?php if( $posts ): ?>
 	<?php foreach($posts as $post): ?>
-		<div class="card-panel white">
+		<div class="post">
 			<?= form_open('contact/answer/'.$post->id);?>
 			
 			<input type="hidden" name="id" value="<?= $post->id ?>" readonly>
@@ -11,21 +11,21 @@
 			</div>
 
 			<label>Question</label>
-			<textarea rows="16" cols="100%" name="question" class="materialize-textarea"><?= $post->message ?></textarea>
+			<textarea rows="16" cols="100%" name="question" ><?= $post->message ?></textarea>
 
 			<label>Answer</label>
-			<textarea rows="16" cols="100%" name="answer" class="materialize-textarea"><?= $post->answer ?></textarea>
+			<textarea rows="16" cols="100%" name="answer" ><?= $post->answer ?></textarea>
 
 			<div class="switch">
 				<label>
-					<input type="checkbox" name="tweet" value="1"  />
+					<input type="checkbox" id="tweet" value="1"  />
 					<span class="lever"></span>
 					Tweet?
 				</label>
 			</div>
 
-			<input class="waves-effect waves-light btn red darken-4" type="submit" value="Submit"/>
-			<input class="waves-effect waves-light btn red darken-4" type="reset" value="Reset"/>	
+			<input class="button button-inverse" type="submit" value="Submit"/>
+			<input class="button button-inverse" type="reset" value="Reset"/>	
 
 		</form>
 

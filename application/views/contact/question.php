@@ -1,4 +1,4 @@
-	<div id="bg" class="content-real">
+	<div class="content-real">
 		<div id="blog">
 			<article class="post featured">
 			<header>

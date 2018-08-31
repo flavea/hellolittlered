@@ -4,7 +4,6 @@ class look_model extends CI_Model {
 
 	function get_sidebars()
 	{
-		$this->load->library('ion_auth');
 		if (!$this->ion_auth->logged_in()) {
 			$this->db->where('status','3');
 		} else {
@@ -72,7 +71,7 @@ class look_model extends CI_Model {
 			return $query->result();
 		}
 		else
-			return FALSE; // return false if no category in database
+			return FALSE;
 	}
 
 	function get_website($id)
@@ -85,7 +84,7 @@ class look_model extends CI_Model {
 			return $query->result();
 		}
 		else
-			return FALSE; // return false if no category in database
+			return FALSE;
 	}
 
 
@@ -98,7 +97,7 @@ class look_model extends CI_Model {
 
 	function get_websites()
 	{
-		$this->load->library('ion_auth');
+		
 		if (!$this->ion_auth->logged_in()) {
 			$this->db->where('status','3');
 		} else {

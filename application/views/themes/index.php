@@ -1,13 +1,13 @@
-
-<script src="http://static.tumblr.com/twte3d7/H8Glm663z/masonry.js"></script>
 <script type="text/javascript">
-$(window).load(function () {
-	$('#theme').masonry({
-		itemSelector : ".mini-theme",
-	},
-	function() { $('#theme').masonry({ appendedContent: $(this) }); }
-	);
-});
+$LAB.script("http://static.tumblr.com/twte3d7/H8Glm663z/masonry.js").wait().script("<?= base_url('application/views/'.$file.'.js') ?>").wait(function(){
+	$(window).load(function () {
+		$('#theme').masonry({
+			itemSelector : ".mini-theme",
+		},
+		function() { $('#theme').masonry({ appendedContent: $(this) }); }
+		);
+	});
+  });
 </script>
 <div class="content-real">
 	<div class="post featured">
@@ -49,6 +49,3 @@ $(window).load(function () {
 
 	</div>
 </div>
-
-
-<script src="<?= base_url('application/views/themes/index.js') ?>"></script>

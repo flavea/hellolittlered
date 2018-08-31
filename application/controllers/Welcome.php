@@ -10,7 +10,7 @@ class Welcome extends MY_Controller {
 		$this->load->model('themes_model');
         $this->load->model('look_model');
         $this->load->model('site_model');
-		$this->load->library('ion_auth');
+		
         $this->load->library("pagination");
         $this->load->helper("url");
         $this->data['pagetitle'] = "";

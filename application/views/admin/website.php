@@ -1,130 +1,68 @@
- required	<!-- content starts -->
-	<script>
-		function delete_sb($id) {
-			var check = confirm('Are you sure you want to delete?');
-			var id = $id;
-			if (check == true) {
-				window.location.href = "<?=base_url()?>admin/delete_website/".concat(id);
-			}
-			else {
-				return false;
-			}
-		}
-
-		function update_sb($id) {
-			var id = $id;
-			window.location.href = "<?=base_url()?>admin/website/".concat(id);
-		}
-
-
-	</script>
-	
-	<div class="card-panel white">
-		<h2 style="margin: .2em 0 1em 0" class="red-text text-darken-4">Manage Websites</h2>
-		<?php if( $query != '' ): foreach($query as $post): ?>
-			<?= form_open('admin/website/'.$post->id);?>
-			
-			<input type="hidden" name="id" value="<?= $post->id ?>" readonly>
-
-			<div class="input-field">
-				<label>Name</label>
-				<input type="text" name="name" value="<?= $post->name ?>" required/>
-			</div>
-
-			<div class="input-field">
-				<label>Link</label>
-				<input type="text" name="link" value="<?= $post->link ?>"/>
-			</div>
-
-			<div class="input-field">
-				<label>Icon</label>
-				<input type="text" name="icon" value="<?= $post->icon ?>"/>
-			</div>
-
-			
-			<p>
-				<label>Status</label><br>
-
-				<?php if( isset($statuses) && $statuses): foreach($statuses as $status): ?>
-					<input name="status" type="radio" id="status-<?= $status->id;?>" value="<?= $status->id;?>" <?php if($post->status == $status->id) echo 'checked';?>/>
-					<label for="status-<?= $status->id;?>" style="margin-right:1em"><?= $status->name;?></label>
-				<?php endforeach;endif; ?>
-			</p>
-
-			<div class="input-field">
-				<label>Description</label>
-				<textarea rows="16" cols="80%" name="description" style="resize:none;" id="textarea" class="materialize-textarea"><?= $post->description ?></textarea>
-			</div>
-
-			<input class="waves-effect waves-light btn red darken-4" type="submit" value="Submit"/>
-			<input class="waves-effect waves-light btn red darken-4" type="reset" value="Reset"/>	
-
-		</form>
-
-	<?php endforeach; else:?>
-	<?= form_open('admin/website');?>
-
+<div class="post">
 	<div class="input-field">
 		<label>Name</label>
-		<input type="text" name="name" required/>
+		<input type="text" id="name" required />
 	</div>
 
 	<div class="input-field">
 		<label>Link</label>
-		<input type="text" name="link"/>
+		<input type="text" id="link" />
 	</div>
 
 	<div class="input-field">
 		<label>Icon</label>
-		<input type="text" name="icon"/>
+		<input type="text" id="icon" />
 	</div>
 	<p>
-		<label>Status</label><br>
-
-		<?php if( isset($statuses) && $statuses): foreach($statuses as $status): ?>
-			<input name="status" type="radio" id="status-<?= $status->id;?>" value="<?= $status->id;?>"/>
-			<label for="status-<?= $status->id;?>" style="margin-right:1em"><?= $status->name;?></label>
-		<?php endforeach;endif; ?>
+		<label>Status</label>
+		<div id="statuses">
+		</div>
+		<div class="statTemp" style="display: none">
+			<input name="status" type="radio" class="status" />
+			<label style="margin-right:1em" class="label"></label>
+		</div>
 	</p>
 
 	<div class="input-field">
 		<label>Description</label>
-		<textarea rows="16" cols="80%" name="description" style="resize:none;" class="materialize-textarea" id="textarea" class="materialize-textarea"></textarea>
+		<textarea rows="8" style="resize:none;" id="textarea"></textarea>
 	</div>
 
 
-	<input class="waves-effect waves-light btn red darken-4" type="submit" value="Submit"/>
-	<input class="waves-effect waves-light btn red darken-4" type="reset" value="Reset"/>	
+	<input class="button button-inverse" type="submit" value="Submit" id="btnSubmit" />
+	<input class="button button-inverse" type="reset" value="Reset" id="btnReset" />
 
-</form>
-<?php endif; ?>
+	</form>
 </div>
-<div class="card-panel white">
-	<h2 style="margin: .2em 0 1em 0" class="red-text text-darken-4">Existing Websites</h2>
-	<table class="highlight striped">
-		<thead>
-			<tr>
-				<th width="20%">Website Name</th>
-				<th>Action</th>
-			</tr>
-		</thead>
-		<tr>
-			<?php if( isset($categories) && $categories): foreach($categories as $category): ?>
-				<?php 
-				echo '<td>'.$category->name.'</td>';
-				echo '<td>
-				<button class="waves-effect waves-light btn red darken-4" onclick="update_sb('.$category->id.')">update</button>
-				<button class="waves-effect waves-light btn red darken-4" onclick="delete_sb('.$category->id.')">delete</button>
-			</td>';
-			?>
-		</tr>
-	<?php endforeach; else:?>
-	<td colspan="4">There is no category.</td>
-<?php endif; ?>
+
+<table style="display: none">
+	<tr class="tableTemp">
+		<td class="name"></td>
+		<td class="action">
+			<center>
+				<button class="button button-inverse fa fa-edit"></button>
+				<button class="button button-inverse fa fa-trash"></button>
+			</center>
+		</td>
+	</tr>
 </table>
 
-
-
-
+<div id="load" class="lds-css ng-scope">
+	<div style="width:100%;height:100%" class="lds-disk">
+		<div>
+			<div></div>
+			<div></div>
+		</div>
+	</div>
 </div>
-</div>
+
+<table id="table"=class="stripe">
+	<thead>
+		<tr>
+			<th>Website Name</th>
+			<th width="20%">Action</th>
+		</tr>
+	</thead>
+	<tbody>
+	</tbody>
+</table>

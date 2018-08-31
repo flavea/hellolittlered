@@ -52,5 +52,3 @@
 	</section>
 
 </section>
-
-<script src="<?= base_url('application/views/blog/sidebar.js') ?>"></script>

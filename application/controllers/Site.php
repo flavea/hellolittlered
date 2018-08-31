@@ -4,13 +4,14 @@ class Site extends MY_Controller {
 	function __construct()
 	{
 		parent::__construct();
-		$this->load->library('ion_auth');
+		
 	}
 
 	public function index() {
 		$this->data['title'] = 'Home - '.$this->config->item('site_title', 'ion_auth');
         $this->data["current"] = "home";
-		$this->render('blog/front','public_master');
+        $this->data["file"] = "blog/front";
+		$this->render($this->data["file"],'public_master');
 	}
 
 	public function get_front_data() {
@@ -31,6 +32,7 @@ class Site extends MY_Controller {
 		$this->load->model('page_model');
         $this->load->model('themes_model');
         $this->load->model('resources_model');
+        $this->load->model('menu_model');
 		$data['resources']= $this->resources_model->get_types();
 		$data['basic'] = $this->site_model->get_data();
 		$data['websites'] = $this->look_model->get_websites();
@@ -40,6 +42,7 @@ class Site extends MY_Controller {
 		$data['sidebars'] = $this->look_model->get_sidebars();
 		$data['sns'] = $this->look_model->get_socmeds();
 		$data['friends'] = $this->look_model->get_friends(5);
+		$data['menu'] = $this->menu_model->get_parents();
 		echo json_encode($data);
 	}
 

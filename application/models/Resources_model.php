@@ -7,23 +7,12 @@ class resources_model extends CI_Model {
 		$this->db->select('*');
 		$this->db->from('resources');
 		$this->db->join('resources_types', 'resources.resource_type = resources_types.type_id ');
-		$this->load->library('ion_auth');
+		
 		if (!$this->ion_auth->logged_in()) {
 			$this->db->where('status','3');
 		} else {
 			$this->db->where('status','3')->or_where('status','2');
 		}
-		$this->db->order_by('resource_date','desc');
-		$query = $this->db->get();
-		return $query->result();
-	}
-
-	function get_all_resources()
-	{
-		$this->db->select('*');
-		$this->db->from('resources');
-		$this->db->join('resources_types', 'resources.resource_type = resources_types.type_id ');
-		$this->db->join('status', 'resources.status = status.id and resources.status != "4"');
 		$this->db->order_by('resource_date','desc');
 		$query = $this->db->get();
 		return $query->result();
@@ -57,7 +46,7 @@ class resources_model extends CI_Model {
 
 		$this->db->insert('resources', $data);
 
-		$query = $this->db->query('select id from design order by id DESC limit 1');
+		/*$query = $this->db->query('select id from design order by id DESC limit 1');
 		$object_id = max($query->result());
 		$id = $object_id -> resource_id;
 
@@ -71,7 +60,7 @@ class resources_model extends CI_Model {
 			'author_id'		=> 1,
 			'status'		=> 'Added a new resource: "'.$name.'" check it out here '.base_url().'resource/',
 			);
-		$this->db->insert('statuses', $status_data);
+		$this->db->insert('statuses', $status_data);*/
 
 		if($status == 3 && $tweet == 1) {
 			$this->load->model('social_model');
@@ -160,7 +149,7 @@ class resources_model extends CI_Model {
 			return $query->result();
 		}
 		else
-			return FALSE; // return false if no category in database
+			return FALSE;
 	}
 
 

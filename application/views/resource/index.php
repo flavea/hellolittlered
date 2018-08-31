@@ -43,5 +43,3 @@ $(window).load(function () {
 
 	</div>
 </div>
-
-<script src="<?= base_url('application/views/resource/index.js') ?>"></script>

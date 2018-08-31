@@ -1,174 +1,89 @@
-<script>
-	function delete_design($id) {
-		var check = confirm('Are you sure you want to delete?');
-		var id = $id;
-		if (check == true) {
-			window.location.href = "<?=base_url()?>lab/delete_experiment/".concat(id);
-		}
-		else {
-			return false;
-		}
-	}
-	function update_design($id) {
-		var id = $id;
-		window.location.href = "<?=base_url()?>lab/lab/".concat(id);
-	}
-</script>
 <script src="//cdn.ckeditor.com/4.6.2/full/ckeditor.js"></script>
 
-<div class="card-panel white">
-	<?php if( $status != "add" ): 
-	foreach($query as $post): ?>
-
-	<h2 style="margin: .2em 0 1em 0" class="red-text text-darken-4">Edit Experitment</h2>
-	<?= form_open('lab/lab/'.$post->id);?>
-
+<div class="post">
 	<div class="input-field">
 		<label>Name</label>
-		<input type="text" name="name"value="<?= $post->name ?>" required/>
+		<input type="text" id="name" required />
 	</div>
 
 	<p>
-		<label>Status</label><br>
+		<label>Status</label>
 
-		<?php if( isset($statuses) && $statuses): foreach($statuses as $status): ?>
-			<input name="status" type="radio" id="status-<?= $status->id;?>" value="<?= $status->id;?>" <?php if($post->status == $status->id) echo 'checked';?>/>
-			<label for="status-<?= $status->id;?>" style="margin-right:1em"><?= $status->name;?></label>
-		<?php endforeach;endif; ?>
+		<div id="statuses">
+		</div>
+		<div class="statTemp" style="display: none">
+			<input name="status" type="radio" class="status" />
+			<label style="margin-right:1em" class="label"></label>
+		</div>
 	</p>
 
 	<div class="input-field">
 		<label>Image</label>
-		<input type="url" name="image" value="<?= $post->image ?>"/>
+		<input type="url" id="timage" />
 	</div>
 
 	<div class="input-field">
 		<label>Link</label>
-		<input type="url" name="link" value="<?= $post->link ?>"  required//>
+		<input type="url" id="link" required />
 	</div>
 
 	<div class="input-field">
 		<label>Code</label>
-		<input type="url" name="code" value="<?= $post->code ?>" />
+		<input type="url" id="code" />
 	</div>
 
-	<div class="input-field">
+	<p>
 		<label>Descriptions/Features (English)</label>
-		<textarea rows="16" cols="80%" name="exp" style="resize:none;height:500px" id="textarea"> <?= $post->description ?></textarea>
-	</div>
+		<textarea name="exp" id="exp"></textarea>
+	</p>
 
-	<div class="input-field">
+	<p>
 		<label>Descriptions/Features (Indonesian)</label>
-		<textarea rows="16" cols="80%" name="exp_id" style="resize:none;height:500px" id="textarea"> <?= $post->description_id ?></textarea>
-	</div>
+		<textarea name="exp_id" id="exp_id"></textarea>
+	</p>
 
 	<div class="switch">
 		<label>
-			<input type="checkbox" name="tweet" value="1"  />
+			<input type="checkbox" id="tweet" value="1" />
 			<span class="lever"></span>
 			Tweet?
 		</label>
 	</div>
 
-
-	<input class="waves-effect waves-light btn red darken-4" type="submit" value="Submit"/>
-	<input class="waves-effect waves-light btn red darken-4" type="reset" value="Reset"/>	
-
-</form>
-
-<?php endforeach; else:?>
-
-	<h2 style="margin: .2em 0 1em 0" class="red-text text-darken-4">Add New Experiemtn</h2>
-	<?= form_open('lab/lab');?>
-
-	<div class="input-field">
-		<label>Name</label>
-		<input type="text" name="name" required//>
-	</div>
-
-
 	<p>
-		<label>Status</label><br>
-
-		<?php if( isset($statuses) && $statuses): foreach($statuses as $status): ?>
-			<input name="status" type="radio" id="status-<?= $status->id;?>" value="<?= $status->id;?>" required//>
-			<label for="status-<?= $status->id;?>" style="margin-right:1em"><?= $status->name;?></label>
-		<?php endforeach;endif; ?>
+		<input class="button button-inverse" type="submit" value="Submit" id="btnSubmit" />
+		<input class="button button-inverse" type="reset" value="Reset" id="btnReset" />
 	</p>
-
-	<div class="input-field">
-		<label>Image</label>
-		<input type="url" name="image"/>
-	</div>
-
-	<div class="input-field">
-		<label>Link</label>
-		<input type="url" name="link" required//>
-	</div>
-
-	<div class="input-field">
-		<label>Code</label>
-		<input type="url" name="code"/>
-	</div>
-
-	<p>
-		<label>Descriptions/Features (English)</label>
-		<textarea rows="16" cols="80%" name="exp" style="resize:none;height:500px" id="textarea"></textarea>
-	</p>
-
-	<p>
-		<label>Descriptions/Features (Indonesian)</label>
-		<textarea rows="16" cols="80%" name="exp_id" style="resize:none;height:500px" id="textarea"></textarea>
-	</p>
-
-	<div class="switch">
-		<label>
-			<input type="checkbox" name="tweet" value="1"  />
-			<span class="lever"></span>
-			Tweet?
-		</label>
-	</div>
-
-	<input class="waves-effect waves-light btn red darken-4" type="submit" value="Submit"/>
-	<input class="waves-effect waves-light btn red darken-4" type="reset" value="Reset"/>	
-
-</form>
-
-<?php endif; ?>
-
 </div>
 
-
-<div class="card-panel white">
-	<h2 style="margin: .2em 0 1em 0" class="red-text text-darken-4">Existing Experiments</h2>
-	<table class="highlight striped">
-		<thead>
-			<tr>
-				<th>ID</th>
-				<th>Name</th>
-				<th>Status</th>
-				<th>Action</th>
-			</tr>
-		</thead>
-		<tr>
-			<?php if( isset($categories) && $categories): foreach($categories as $category): ?>
-				<?php 
-				echo '<td>'.$category->id.'</td>';
-				echo '<td>'.$category->name.'</td>';
-				echo '<td>'.$category->status_name.'</td>';
-				echo '<td>
-				<button class="waves-effect waves-light btn red darken-4" onclick="update_design('.$category->id.')">update</button>
-				<button class="waves-effect waves-light btn red darken-4" onclick="delete_design('.$category->id.')">delete</button>
-			</td>';
-			?>
-		</tr>
-	<?php endforeach; else:?>
-	<td colspan="4">There is no category.</td>
-<?php endif; ?>
+<table style="display: none">
+	<tr class="tableTemp">
+		<td class="name"></td>
+		<td class="action">
+			<center>
+				<button class="button button-inverse fa fa-edit"></button>
+				<button class="button button-inverse fa fa-trash"></button>
+			</center>
+		</td>
+	</tr>
 </table>
+
+<div id="load" class="lds-css ng-scope">
+	<div style="width:100%;height:100%" class="lds-disk">
+		<div>
+			<div></div>
+			<div></div>
+		</div>
+	</div>
 </div>
 
-<script>
-	CKEDITOR.replace( 'exp' );
-	CKEDITOR.replace( 'exp_id' );
-</script>
+<table id="table" class="stripe">
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>Action</th>
+		</tr>
+	</thead>
+	<tbody>
+	</tbody>
+</table>

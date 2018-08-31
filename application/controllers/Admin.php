@@ -10,26 +10,12 @@ class Admin extends MY_Controller
     function __construct()
     {
         parent::__construct();
-        $this->load->library('ion_auth');
-        $this->load->model('themes_model');
         $this->load->library('form_validation');
+        $this->load->model('look_model');
         $user                            = $this->ion_auth->user()->row();
         $this->data['user']              = $user;
         $this->data['query']             = '';
-        $site_data                       = $this->site_model->get_data();
-        $this->data['site_data']         = $site_data;
-        $this->data['updates']           = $this->site_model->get_statuses();
-        $this->data['statuses']          = $this->site_model->get_data_statuses();
-        $this->data['theme_categories']  = $this->themes_model->get_categories();
-        $this->data['commissions_count'] = $this->site_model->get_commissions_count();
-        $this->data['q_count']           = $this->site_model->get_questions_count();
-        $this->data['emails_count']      = $this->site_model->get_emails_count();
-        $this->data['friends_count']     = $this->site_model->get_friends_count();
-        $site_title                      = '';
-        if(!isset($_SESSION['gravatar']) || $_SESSION['gravatar'] != "") $_SESSION['gravatar'] = md5(strtolower(trim('youareabsurd@yahoo.com')));
-        foreach ($site_data as $site) {
-            $site_title = $site->title;
-        }
+        $this->data['title']             = 'Administrator';
     }
 
     /*
@@ -37,6 +23,11 @@ class Admin extends MY_Controller
     |                  Basic Options                 |
     ==================================================
     */
+
+    public function get_statuses() {
+        $data = $this->site_model->get_data_statuses();
+        echo json_encode($data);
+    }
 
     public function index()
     {
@@ -49,13 +40,15 @@ class Admin extends MY_Controller
 
     public function login()
     {
+        $this->data['current']             = 'Login';
+        $this->data['title']             = 'Login | Hello Little Red';
 
         $site_data  = $this->site_model->get_data();
         $site_title = '';
         foreach ($site_data as $site) {
             $site_title = $site->title;
         }
-        $this->data['page_title'] = 'Admin Login | ' . $site_title;
+        $this->data['title'] = 'Admin Login | ' . $site_title;
         if (!$this->ion_auth->logged_in()) {
             $this->load->library('form_validation');
             $this->form_validation->set_rules('username', 'Username', 'trim|required');
@@ -69,7 +62,8 @@ class Admin extends MY_Controller
                     exit;
                 }
                 $this->load->helper('form');
-                $this->render('admin/login_view', 'admin_master');
+                $this->data["file"] = "admin/login_view";
+                $this->render($this->data["file"], 'admin_master');
             } else {
                 $remember = (bool) $this->input->post('remember');
                 $username = $this->input->post('username');
@@ -121,7 +115,6 @@ class Admin extends MY_Controller
 
     public function tweet()
     {
-
         if (!$this->ion_auth->logged_in() && !$this->ion_auth->is_admin()) 
         {
             show_404();
@@ -143,47 +136,58 @@ class Admin extends MY_Controller
 
     public function dashboard()
     {
-
-        $site_data  = $this->site_model->get_data();
-        $site_title = '';
-        foreach ($site_data as $site) {
-            $site_title = $site->title;
-        }
-        $this->data['page_title'] = 'Admin dashboard | ' . $site_title;
+        
+        $this->data['current']             = 'Dashboard';
+        $this->data['title']             = 'Dashboard | Hello Little Red';
         if (!$this->ion_auth->logged_in()) {
             redirect('admin/login');
         }
 
-        $this->form_validation->set_rules('title', 'title', 'trim');
-        if ($this->form_validation->run() === FALSE) {
-            $this->render('admin/dashboard_view', 'admin_master');
+        $this->data["file"] = "admin/dashboard_view";
+        $this->render($this->data["file"], 'admin_master');
+    }
+
+    public function update_data() {
+        
+        if (!$this->ion_auth->logged_in() && !$this->ion_auth->is_admin()) 
+        {
+            show_404();
         } else {
             $title       = $this->input->post('title');
             $description = $this->input->post('description');
             $description_id = $this->input->post('description_id');
+            $comm = $this->input->post('comm');
+            $comm_id = $this->input->post('comm_id');
+            $tou = $this->input->post('tou');
+            $tou_id = $this->input->post('tou_id');
+            $aff = $this->input->post('aff');
+            $aff_id = $this->input->post('aff_id');
             $keywords    = $this->input->post('keywords');
 
-            $this->site_model->update_data($title, $description, $description_id, $keywords);
-            $this->session->set_flashdata('message', 'Site data updated!');
-            redirect('admin/dashboard');
+            $this->site_model->update_data($title, $description, $description_id, $comm, $comm_id, $tou, $tou_id, $aff, $aff_id,$keywords);
+            $data['status'] = "success";
+            $data['message'] = 'Site data Updated!';
+            $data['message_id'] = 'Data website diperbaharui!';
+            echo json_encode($data);
         }
     }
 
     public function profile()
     {
+        $this->data['current']             = 'Profile';
+        $this->data['title']             = 'Profile | Hello Little Red';
         $site_data  = $this->site_model->get_data();
         $site_title = '';
         foreach ($site_data as $site) {
             $site_title = $site->title;
         }
-        $this->data['page_title'] = 'Edit Profile | ' . $site_title;
+        $this->data['title'] = 'Edit Profile | ' . $site_title;
         if (!$this->ion_auth->logged_in()) {
             redirect('admin');
         }
-        $this->data['page_title']        = 'User Profile';
+        $this->data['title']        = 'User Profile';
         $user                            = $this->ion_auth->user()->row();
         $this->data['user']              = $user;
-        $this->data['current_user_menu'] = '';
 
         $this->load->library('form_validation');
         $this->form_validation->set_rules('first_name', 'First name', 'trim');
@@ -192,7 +196,8 @@ class Admin extends MY_Controller
         $this->form_validation->set_rules('phone', 'Phone', 'trim');
 
         if ($this->form_validation->run() === FALSE) {
-            $this->render('admin/profile_view', 'admin_master');
+            $this->data["file"] = "admin/profile_view";
+            $this->render($this->data["file"], 'admin_master');
         } else {
             $new_data = array(
                 'first_name' => $this->input->post('first_name'),
@@ -211,113 +216,107 @@ class Admin extends MY_Controller
 
     public function sidebar($id = false)
     {
-
-        $this->load->model('look_model');
-        $user                     = $this->ion_auth->user()->row();
-        $this->data['user']       = $user;
-        $this->data['page_title'] = 'Add Sidebar | Hello Little Red';
-        $this->data['categories'] = $this->look_model->get_all_sidebars();
-        $this->data['query']      = $this->look_model->get_sidebar($id);
+        $this->data['current']             = 'Sidebars';
+        $this->data['title'] = 'Sidebars | Hello Little Red';
 
         if (!$this->ion_auth->logged_in() && !$this->ion_auth->is_admin()) 
         {
             show_404();
         } else {
-            $this->load->helper('form');
-            $this->load->library(array(
-                'form_validation'
-                ));
-
-            
-            $this->form_validation->set_rules('name', 'name', 'required|max_length[200]');
-            $this->form_validation->set_rules('content', 'content', 'required');
-
-            if ($this->form_validation->run() == FALSE) {
-
-                $this->render('admin/sidebar', 'admin_master');
+            if ($id == false) {
+                $this->data["file"] = "admin/sidebar";
+                $this->render($this->data["file"], 'admin_master');
             } else {
-
-
-
                 $user    = $this->ion_auth->user()->row();
                 $name    = $this->input->post('name');
                 $content = $this->input->post('content');
                 $status = $this->input->post('status');
-                if ($id == false) {
-                    //print_r($name);print_r($location);die();
-                    $this->look_model->add_new_sidebar($name, $content, $status);
-                    $this->session->set_flashdata('message', $name.' Added');
-                    redirect('admin/sidebar');
-                } else {
-                    $this->look_model->update_sidebar($id, $name, $content, $status);
-                    $this->session->set_flashdata('message', $name.' Updated');
-                    redirect('admin/sidebar');
-
-                }
+                $this->look_model->update_sidebar($id, $name, $content, $status);
+                $data['status'] = "success";
+                $data['message'] = 'Site sidebars Updated!';
+                $data['message_id'] = 'Data sidebar diperbaharui!';
+                echo json_encode($data);
             }
+        }
+    }
+
+    public function add_sidebar() {
+        if (!$this->ion_auth->logged_in() && !$this->ion_auth->is_admin()) 
+        {
+            show_404();
+        } else {
+            $name    = $this->input->post('name');
+            $content = $this->input->post('content');
+            $status = $this->input->post('status');
+            $this->look_model->add_new_sidebar($name, $content, $status);
+            $data['status'] = "success";
+            $data['message'] = 'Site sidebar added!';
+            $data['message_id'] = 'Data sidebar ditambahkan!';
+            echo json_encode($data);
         }
     }
 
     public function delete_sidebar($id)
     {
-
-        $this->load->model('look_model');
-        $this->look_model->delete_sidebar($id);
-        $this->session->set_flashdata('message', 'a sidebar is deleted.');
-        redirect('admin/add_new_photo_album');
+        if (!$this->ion_auth->logged_in() && !$this->ion_auth->is_admin()) 
+        {
+            show_404();
+        } else {
+            $this->look_model->delete_sidebar($id);
+            $data['status'] = "success";
+            $data['message'] = 'Site sidebar deleted!';
+            $data['message_id'] = 'Data sidebar dihapus!';
+            echo json_encode($data);
+        }
     }
 
     public function socmeds()
     {
-
-        $this->load->model('look_model');
-        $user                     = $this->ion_auth->user()->row();
-        $this->data['user']       = $user;
-        $this->data['page_title'] = 'Social Medias | Hello Little Red';
-        $this->data['query']      = $this->look_model->get_socmeds();
+        $this->data['current']             = 'SNS';
+        $this->data['title'] = 'Social Medias | Hello Little Red';
 
         if (!$this->ion_auth->logged_in() && !$this->ion_auth->is_admin()) {
             show_404();
         } else {
-            $this->load->helper('form');
-            $this->load->library(array(
-                'form_validation'
-                ));
+            $this->data["file"] = "admin/socmeds";
+            $this->render($this->data["file"], 'admin_master');
+        }
+    }
 
-            $this->form_validation->set_rules('id', 'id', 'required');
+    public function submit_sns() {
+        
+        if (!$this->ion_auth->logged_in() && !$this->ion_auth->is_admin()) {
+            show_404();
+        } else {
+            $codepen    = $this->input->post('codepen');
+            $deviantart = $this->input->post('deviantart');
+            $facebook   = $this->input->post('facebook');
+            $flickr     = $this->input->post('flickr');
+            $instagram  = $this->input->post('instagram');
+            $linkedin   = $this->input->post('linkedin');
+            $soundcloud = $this->input->post('soundcloud');
+            $tumblr     = $this->input->post('tumblr');
+            $twitter    = $this->input->post('twitter');
+            $youtube    = $this->input->post('youtube');
+            $behance    = $this->input->post('behance');
+            $github     = $this->input->post('github');
 
-
-            if ($this->form_validation->run() == FALSE) {
-                $this->render('admin/socmeds', 'admin_master');
-            } else {
-                $codepen    = $this->input->post('codepen');
-                $deviantart = $this->input->post('deviantart');
-                $facebook   = $this->input->post('facebook');
-                $flickr     = $this->input->post('flickr');
-                $instagram  = $this->input->post('instagram');
-                $linkedin   = $this->input->post('linkedin');
-                $soundcloud = $this->input->post('soundcloud');
-                $tumblr     = $this->input->post('tumblr');
-                $twitter    = $this->input->post('twitter');
-                $youtube    = $this->input->post('youtube');
-                $behance    = $this->input->post('behance');
-                $github     = $this->input->post('github');
-
-                $this->look_model->update_socmeds($codepen, $deviantart, $facebook, $flickr, $instagram, $linkedin, $soundcloud, $tumblr, $twitter, $youtube, $behance, $github);
-                $this->session->set_flashdata('message', 'Social Media Updated');
-                redirect('admin/socmeds');
-
-            }
+            $this->look_model->update_socmeds($codepen, $deviantart, $facebook, $flickr, $instagram, $linkedin, $soundcloud, $tumblr, $twitter, $youtube, $behance, $github);
+            
+            $data['status'] = "success";
+            $data['message'] = 'SNS data Updated!';
+            $data['message_id'] = 'Data SNS diperbaharui!';
+            echo json_encode($data);
         }
     }
 
     public function header()
     {
-
-        $this->load->model('look_model');
+        $this->data['current']             = 'Manage Headers';
+        $this->data['title']             = 'Login | Hello Little Red';
         $user                     = $this->ion_auth->user()->row();
         $this->data['user']       = $user;
-        $this->data['page_title'] = 'Header | Hello Little Red';
+        $this->data['title'] = 'Header | Hello Little Red';
         $this->data['query']      = $this->look_model->get_headers();
 
         if (!$this->ion_auth->logged_in() && !$this->ion_auth->is_admin()) 
@@ -331,10 +330,9 @@ class Admin extends MY_Controller
 
             $this->form_validation->set_rules('id', 'id', 'required');
 
-
             if ($this->form_validation->run() == FALSE) {
-
-                $this->render('admin/header', 'admin_master');
+                $this->data["file"] = "admin/header";
+                $this->render($this->data["file"], 'admin_master');
             } else {
 
                 $link = $this->input->post('link');
@@ -350,60 +348,60 @@ class Admin extends MY_Controller
     public function website($id = false)
     {
 
-        $this->load->model('look_model');
-        $user                     = $this->ion_auth->user()->row();
-        $this->data['user']       = $user;
-        $this->data['page_title'] = 'Add Website | Hello Little Red';
-        $this->data['categories'] = $this->look_model->get_all_websites();
-        $this->data['query']      = $this->look_model->get_website($id);
+        $this->data['current']             = 'Websites';
+        $this->data['title'] = 'Websites | Hello Little Red';
 
         if (!$this->ion_auth->logged_in() && !$this->ion_auth->is_admin()) 
         {
             show_404();
         } else {
-            $this->load->helper('form');
-            $this->load->library(array(
-                'form_validation'
-                ));
-
-            
-            $this->form_validation->set_rules('name', 'name', 'required|max_length[200]');
-            $this->form_validation->set_rules('link', 'link', 'required|max_length[200]');
-
-            if ($this->form_validation->run() == FALSE) {
-
-                $this->render('admin/website', 'admin_master');
+            if ($id == false) {
+                $this->data["file"] = "admin/website";
+                $this->render($this->data["file"], 'admin_master');
             } else {
-
-
                 $name        = $this->input->post('name');
                 $link        = $this->input->post('link');
                 $icon        = $this->input->post('icon');
                 $description = $this->input->post('description');
+                $this->look_model->update_website($id, $name, $link, $icon, $description);
+                $data['status'] = "success";
+                $data['message'] = 'Website data Updated!';
+                $data['message_id'] = 'Data Website diperbaharui!';
+                echo json_encode($data);
 
-                if ($id == false) {
-                    //print_r($name);print_r($location);die();
-                    $this->look_model->add_new_website($name, $link, $icon, $description);
-                    $this->session->set_flashdata('message', $name.' Added');
-                    redirect('admin/website');
-                } else {
-                    $id = $this->input->post('album_id');
-                    $this->look_model->update_website($id, $name, $link, $icon, $description);
-                    $this->session->set_flashdata('message', $name.' Updated');
-                    redirect('admin/website');
-
-                }
             }
+        }
+    }
+
+    public function add_website() {
+        if (!$this->ion_auth->logged_in() && !$this->ion_auth->is_admin()) 
+        {
+            show_404();
+        } else {
+            $name        = $this->input->post('name');
+            $link        = $this->input->post('link');
+            $icon        = $this->input->post('icon');
+            $description = $this->input->post('description');
+            $this->look_model->add_new_website($name, $link, $icon, $description);
+            $data['status'] = "success";
+            $data['message'] = 'Website data Added!';
+            $data['message_id'] = 'Data Website ditambahkan!';
+            echo json_encode($data);
         }
     }
 
     public function delete_website($id)
     {
-
-        $this->load->model('look_model');
-        $this->look_model->delete_website($id);
-        $this->session->set_flashdata('message', 'a website is deleted.');
-        redirect('admin/website');
+        if (!$this->ion_auth->logged_in() && !$this->ion_auth->is_admin()) 
+        {
+            show_404();
+        } else {
+            $this->look_model->delete_website($id);
+            $data['status'] = "success";
+            $data['message'] = 'Website data deleted!';
+            $data['message_id'] = 'Data Website dihapus!';
+            echo json_encode($data);
+        }
     }
 
 
@@ -413,7 +411,7 @@ class Admin extends MY_Controller
         $this->load->model('site_model');
         $user                     = $this->ion_auth->user()->row();
         $this->data['user']       = $user;
-        $this->data['page_title'] = 'History';
+        $this->data['title'] = 'History';
 
         $config                   = array();
         $config["base_url"]       = base_url() . "admin/history";
@@ -443,8 +441,8 @@ class Admin extends MY_Controller
         {
             show_404();
         } else {
-
-            $this->render('admin/history', 'admin_master');
+            $this->data["file"] = "admin/history";
+            $this->render($this->data["file"], 'admin_master');
             
         }
     }

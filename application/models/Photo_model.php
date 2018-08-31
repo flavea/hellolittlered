@@ -47,7 +47,7 @@ class photo_model extends CI_Model {
 			return $query->result();
 		}
 		else
-			return FALSE; // return false if no category in database
+			return FALSE;
 	}
 
 	function get_albums()

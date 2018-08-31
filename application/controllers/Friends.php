@@ -7,8 +7,7 @@ class friends extends MY_Controller
     function __construct()
     {
         parent::__construct();
-        $this->load->model('blog_model');
-        $this->load->model('contact_model');
+        $this->load->model('look_model');
         $this->load->library('form_validation');
         $this->load->helper('form');
         $this->load->library('email');
@@ -18,7 +17,8 @@ class friends extends MY_Controller
     {
         $this->data['title']     = 'Apply as Affiliate - ' . $this->config->item('site_title', 'ion_auth');
         $this->data['pagetitle'] = '';
-        $this->render('friends/affiliates-form', 'public_master');
+        $this->data["file"] = "friends/affiliates-form";
+        $this->render($this->data["file"], 'public_master');
     }
     
     public function submit()
@@ -69,14 +69,18 @@ class friends extends MY_Controller
     public function index()
     {
         $this->data['title']     = 'Affiliates - ' . $this->config->item('site_title', 'ion_auth');
-        $this->data['pagetitle'] = '';
         $this->data['current']   = 'friends';
-        $this->render('friends/affiliates', 'public_master');
+        $this->data["file"] = "friends/affiliates";
+        $this->render($this->data["file"], 'public_master');
     }
     
     public function get_friends()
     {
-        $data = $this->look_model->get_friends();
+        if (!$this->ion_auth->logged_in() && !$this->ion_auth->is_admin()) {
+            $data = $this->look_model->get_friends();
+        } else {
+            $data = $this->look_model->get_all_friends();
+        }
         echo json_encode($data);
     }
     
@@ -92,56 +96,66 @@ class friends extends MY_Controller
     
     public function friends($id = false)
     {
-        
-        $this->load->model('look_model');
-        $user                     = $this->ion_auth->user()->row();
-        $this->data['user']       = $user;
-        $this->data['page_title'] = 'Add Website | Hello Little Red';
-        $this->data['categories'] = $this->look_model->get_all_friends();
+        $this->data['current'] = 'Friends';
+        $this->data['title'] = 'Friends | Hello Little Red';
         
         if (!$this->ion_auth->logged_in() && !$this->ion_auth->is_admin()) {
             show_404();
         } else {
-            $this->load->helper('form');
-            $this->load->library(array(
-                'form_validation'
-            ));
-            
-            $this->form_validation->set_rules('name', 'name', 'required');
-            
-            if ($this->form_validation->run() == FALSE) {
-                if ($id != false)
-                    $this->data['query'] = $this->look_model->get_friend($id);
-                $this->render('friends/friends', 'admin_master');
-            } else {
-                
-                
-                $name        = $this->input->post('name');
-                $website     = $this->input->post('website');
-                $description = $this->input->post('description');
-                $status      = $this->input->post('status');
-                $tweet       = $this->input->post('tweet');
-                
-                if ($id == false) {
-                    $this->look_model->add_new_friend($name, $website, $description, $status, $tweet);
-                    $this->session->set_flashdata('message', $name . ' Added');
-                    redirect('friends/friends');
-                } else {
-                    $this->look_model->update_friend($id, $name, $website, $description, $status, $tweet);
-                    $this->session->set_flashdata('message', $name . ' Updated');
-                    redirect('friends/friends');
-                    
-                }
-            }
+            $this->data["file"] = "friends/friends";
+            $this->render($this->data["file"], 'admin_master');
+        }
+    }
+
+    public function add_friend() {
+        
+        if (!$this->ion_auth->logged_in() && !$this->ion_auth->is_admin()) {
+            show_404();
+        } else {
+            $name        = $this->input->post('name');
+            $website     = $this->input->post('website');
+            $description = $this->input->post('description');
+            $status      = $this->input->post('status');
+            $tweet       = $this->input->post('tweet');
+
+            $this->look_model->add_new_friend($name, $website, $description, $status, $tweet);
+            $data['status'] = "success";
+            $data['message'] = $name.' added!';
+            $data['message_id'] = $name.' ditambahkan!';
+            echo json_encode($data);
+        }
+    }
+
+    public function update_friend($id) {
+        
+        if (!$this->ion_auth->logged_in() && !$this->ion_auth->is_admin()) {
+            show_404();
+        } else {
+            $name        = $this->input->post('name');
+            $website     = $this->input->post('website');
+            $description = $this->input->post('description');
+            $status      = $this->input->post('status');
+            $tweet       = $this->input->post('tweet');
+            $this->look_model->update_friend($id, $name, $website, $description, $status, $tweet);
+            $data['status'] = "success";
+            $data['message'] = $name.' updated!';
+            $data['message_id'] = $name.' diperbaharui!';
+            echo json_encode($data);
         }
     }
     
     public function delete_friend($id)
     {
-        $this->load->model('look_model');
-        $this->look_model->delete_website($id);
-        $this->session->set_flashdata('message', 'a website is deleted.');
-        redirect('friends/website');
+        if (!$this->ion_auth->logged_in() && !$this->ion_auth->is_admin()) 
+        {
+            show_404();
+        } else {
+            $this->look_model->delete_website($id);
+            $data['status'] = "success";
+            $data['message'] = 'Friend deleted!';
+            $data['message_id'] = 'Teman dihapus!';
+            echo json_encode($data);
+        }
     }
     
 }

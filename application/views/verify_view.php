@@ -29,7 +29,7 @@
     <tr>
         <th>Environment</th>
     </tr>
-    </thead>
+    <thead><tbody>
     <tbody>
     <tr>
         <td>
@@ -37,13 +37,13 @@
         </td>
     </tr>
     </tbody>
-</table>
+</tbody></table>
 <table>
     <thead>
     <tr>
         <th colspan="3">Loader settings</th>
     </tr>
-    </thead>
+    <thead><tbody>
     <tbody>
     <tr>
         <th class="center">Loaded classes:</th>
@@ -80,7 +80,7 @@
         </td>
     </tr>
     </tbody>
-</table>
+</tbody></table>
 <div style="clear:both; width: 820px; margin:auto;">
 <div style="float: left;">
     <table style="width: 400px;">
@@ -88,7 +88,7 @@
         <tr>
             <th colspan="2">Configuration:</th>
         </tr>
-        </thead>
+        <thead><tbody>
         <tbody>
         <tr>
             <th>Base URL:</th>
@@ -191,7 +191,7 @@
             <td><?= $config['proxy_ips']; ?></td>
         </tr>
         </tbody>
-    </table>
+    </tbody></table>
     
 </div>
 <div style="float: right; width: 400px;">
@@ -200,7 +200,7 @@
         <tr>
             <th>Writable directories</th>
         </tr>
-        </thead>
+        <thead><tbody>
         <tbody>
         <?php
         echo ($writable_cache) ? '<tr><td>The cache directory is writable</td></tr>' : '<tr><td><span class="red">The cache directory is not writable</span></td></tr>';
@@ -208,26 +208,26 @@
         echo '<tr><td>'.$writable_uploads.'</td></tr>';
         ?>
         </tbody>
-    </table>
+    </tbody></table>
     <table style="width: 100%;">
         <thead>
         <tr>
             <th colspan="2">XSS:</th>
         </tr>
-        </thead>
+        <thead><tbody>
         <tbody>
         <tr>
             <th>Global XSS filter:</th>
             <td><?=(($config['global_xss_filtering']) ? 'TRUE' : '<span class="red">FALSE</span>'); ?></td>
         </tr>
         </tbody>
-    </table>
+    </tbody></table>
     <table style="width: 100%;">
         <thead>
         <tr>
             <th colspan="2">CSRF protection</th>
         </tr>
-        </thead>
+        <thead><tbody>
         <tbody>
         <tr>
             <th>CSRF protection:</th>
@@ -262,13 +262,13 @@
             </td>
         </tr>
         </tbody>
-    </table>
+    </tbody></table>
     <table style="width: 100%;">
         <thead>
         <tr>
             <th colspan="2">Sessions and cookies</th>
         </tr>
-        </thead>
+        <thead><tbody>
         <tbody>
         <tr>
             <th>Encryption key:</th>
@@ -319,7 +319,7 @@
             <td><?=(($config['cookie_httponly']) ? 'TRUE' : '<span class="red">FALSE</span>'); ?></td>
         </tr>
         </tbody>
-    </table>
+    </tbody></table>
 </div>
 <div style="clear:both;">
     <table>
@@ -327,7 +327,7 @@
         <tr>
             <th colspan="2">Database:<br/><?= $loaded_database; ?></th>
         </tr>
-        </thead>
+        <thead><tbody>
         <?php
         if (!empty($db_settings)) {
             ?>
@@ -426,7 +426,7 @@
         <?php
         }
         ?>
-    </table>
+    </tbody></table>
 </div>
 </div>
 </body>

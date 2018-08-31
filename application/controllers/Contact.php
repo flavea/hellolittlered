@@ -7,7 +7,6 @@ class contact extends MY_Controller
     function __construct()
     {
         parent::__construct();
-        $this->load->model('blog_model');
         $this->load->model('contact_model');
         $this->load->library('form_validation');
         $this->load->helper('form');
@@ -16,7 +15,6 @@ class contact extends MY_Controller
         $this->data['explanation'] = '';
         $this->data['image']       = '';
         
-        $this->data['categories'] = $this->blog_model->get_categories();
         $this->data['keywords']   = '';
     }
     
@@ -100,46 +98,50 @@ class contact extends MY_Controller
         }
     }
     
-    public function contacts()
+    public function emails()
     {
-        $this->load->model('contact_model');
         $user                     = $this->ion_auth->user()->row();
         $this->data['user']       = $user;
-        $this->data['page_title'] = 'Emails | Hello Little Red';
+        $this->data['current'] = 'Emails';
+        $this->data['title'] = 'Emails | Hello Little Red';
+        
+        if (!$this->ion_auth->logged_in() && !$this->ion_auth->is_admin()) {
+            show_404();
+        } else {
+            $this->data["file"] = "contact/emails";
+            $this->render($this->data["file"], 'admin_master');
+        }
+    }
+
+    public function get_emails($page) {
         
         if (!$this->ion_auth->logged_in() && !$this->ion_auth->is_admin()) {
             show_404();
         } else {
             $config                   = array();
-            $config["base_url"]       = base_url() . "contact/contacts/";
+            $config["base_url"]       = base_url() . "contact/get_emails/";
             $config["total_rows"]     = $this->contact_model->total_count_emails();
             $config["per_page"]       = 5;
             $config["uri_segment"]    = 3;
             $config['display_pages']  = TRUE;
-            $config['cur_tag_open']   = '<li class="active">';
-            $config['cur_tag_close']  = '</li>';
-            $config['num_tag_open']   = '<li class="waves-effect">';
-            $config['num_tag_close']  = '</li>';
-            $config['next_link']      = '<i class="material-icons">chevron_right</i>';
-            $config['next_tag_open']  = '<li class="waves-effect">';
-            $config['next_tag_close'] = '</li>';
-            $config['prev_link']      = '<i class="material-icons">chevron_left</i>';
-            $config['prev_tag_open']  = '<li class="waves-effect">';
-            $config['prev_tag_close'] = '</li>';
+            $config['next_link']       = '<span class="fa fa-chevron-right"></span>';
+            $config['next_tag_open']   = '<span class="button big next">';
+            $config['next_tag_close']  = '</span>';
+            $config['prev_link']       = '<span class="fa fa-chevron-left"></span>';
+            $config['prev_tag_open']   = '<span class="button big previous">';
+            $config['prev_tag_close']  = '</span>';
             $config['last_link']      = '';
             $config['first_link']     = '';
             $this->pagination->initialize($config);
-            $this->data['paginglinks'] = $this->pagination->create_links();
+            $data['paginglinks'] = $this->pagination->create_links();
             $page                      = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
-            $this->data['posts']       = $this->contact_model->get_emails($config["per_page"], $page);
-            ;
-            $this->render('contact/emails', 'admin_master');
+            $data['posts']       = $this->contact_model->get_emails($config["per_page"], $page);
+            echo json_encode($data);
         }
     }
     
     public function email_mark($id = NULL)
     {
-        $this->load->model('contact_model');
         if (!$this->ion_auth->logged_in() && !$this->ion_auth->is_admin()) {
             show_404();
         }
@@ -157,8 +159,6 @@ class contact extends MY_Controller
     
     public function questions()
     {
-        
-        $this->load->model('contact_model');
         $user                     = $this->ion_auth->user()->row();
         $this->data['user']       = $user;
         $this->data['page_title'] = 'Questions | Hello Little Red';
@@ -188,15 +188,15 @@ class contact extends MY_Controller
             $this->data['paginglinks'] = $this->pagination->create_links();
             $page                      = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
             $this->data['posts']       = $this->contact_model->get_questions(false, $config["per_page"], $page);
-            ;
-            $this->render('contact/questions', 'admin_master');
+            
+            $this->data["file"] = "contact/questions";
+            $this->render($this->data["file"], 'admin_master');
         }
     }
     
     public function answer($id = '')
     {
         
-        $this->load->model('contact_model');
         $this->data['page_title'] = 'Answer | Hello Little Red';
         $user                     = $this->ion_auth->user()->row();
         $this->data['user']       = $user;
@@ -214,7 +214,8 @@ class contact extends MY_Controller
             $this->form_validation->set_rules('answer', 'answer', 'required');
             
             if ($this->form_validation->run() == FALSE) {
-                $this->render('contact/answer', 'admin_master');
+                $this->data["file"] = "contact/answer";
+                $this->render($this->data["file"], 'admin_master');
             } else {
                 
                 $id       = $this->input->post('id');

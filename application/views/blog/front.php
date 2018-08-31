@@ -71,5 +71,3 @@
 	</center>
     <div></div>
 </div>
-
-<script src="<?= base_url('application/views/blog/front.js') ?>"></script>

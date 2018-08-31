@@ -1,12 +1,12 @@
-$(document).ready(function() {
-    $.getJSON(base_url + "site/get_front_data", loadFrontData);
+$(document).ready(() => {
+    $.getJSON(`${base_url}site/get_front_data`, loadFrontData);
 
     function loadFrontData(data) {
         if (data.posts.length > 0) {
             $('.tagged').text(lang == "id" ? 'Post Blog' : 'Blog Posts');
-            data.posts.forEach(function(d) {
+            data.posts.forEach(d => {
                 let temp = $('.tempBlog').clone().removeClass('tempBlog').addClass('mini-theme').show();
-                $('a', temp).attr('href', base_url + 'post/' + d.entry_id)
+                $('a', temp).attr('href', `${base_url}post/${d.entry_id}`)
                 $('h4', temp).text((lang == "id" && d.entry_name_id != '' && d.entry_name_id != null) ? d.entry_name_id : (d.entry_name != "" && d.entry_name != null) ? d.entry_name : d.entry_name_id);
                 $('.date', temp).text(d.entry_date);
                 $('.left').append(temp);
@@ -15,9 +15,9 @@ $(document).ready(function() {
 
         if (data.themes.length > 0) {
             $('#themes h1 span').text(lang == "id" ? 'Tema Terbaru' : 'Latest Themes');
-            data.themes.forEach(function(d) {
+            data.themes.forEach(d => {
                 let temp = $('.themeTemp').clone().removeClass('themeTemp').show();
-                $('a', temp).attr('href', base_url + 'theme/' + d.theme_id)
+                $('a', temp).attr('href', `${base_url}theme/${d.theme_id}`)
                 $('img', temp).attr('src', d.theme_image)
                 $('h6', temp).text(d.theme_name);
                 $('#themes > div').append(temp);
@@ -26,7 +26,7 @@ $(document).ready(function() {
 
         if (data.project.length > 0) {
             $('#projects h1 span').text(lang == "id" ? 'Proyek Terbaru' : 'Latest Project');
-            data.project.forEach(function(d) {
+            data.project.forEach(d => {
                 $('#project-image img').attr("src", d.img);
                 $('.inside-project h2').text(d.name);
                 $('.inside-project p').html((lang == "id" && d.exp_id != '' && d.exp_id != null) ? d.exp_id : (d.exp = "" && d.exp != null) ? d.exp : d.exp_id);
@@ -36,9 +36,9 @@ $(document).ready(function() {
 
         if (data.exp.length > 0) {
             $('#experiments h1 span').text(lang == "id" ? 'Eksperimen Terbaru' : 'Latest Experiments');
-            data.exp.forEach(function(d) {
+            data.exp.forEach(d => {
                 let temp = $('.expTemp').clone().removeClass('expTemp').show();
-                $('a', temp).attr('href', base_url + 'theme/' + d.theme_id);
+                $('a', temp).attr('href', `${base_url}theme/${d.theme_id}`);
                 $('.previewLink', temp).attr('href', d.link);
                 $('.codeLink', temp).attr('href', d.code);
                 $('img', temp).attr('src', d.image);

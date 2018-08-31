@@ -112,9 +112,4 @@
 </main>
 
 </body>
-<script>
-$(document).ready(function() {
-	$("pre, code").addClass("prettyprint")
-})
-</script>
 </html>

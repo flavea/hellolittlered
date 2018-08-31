@@ -6,9 +6,7 @@ class pages extends MY_Controller {
 	function __construct()
 	{
 		parent::__construct();
-		$this->load->model('blog_model');
 		$this->load->model('page_model');
-		$this->data['categories']  = $this->blog_model->get_categories();
 	}
 
 	public function index()
@@ -16,7 +14,8 @@ class pages extends MY_Controller {
 		$this->data['title']      = 'Pages - '.$this->config->item('site_title', 'ion_auth');
 		$this->data['pagetitle']  = 'All Pages';
 		$this->data['current']    = 'pages';
-		$this->render('pages/index','public_master');
+        $this->data["file"] = "pages/index";
+        $this->render($this->data["file"], 'public_master');
 	}
 
 	public function page($slug, $private = false)
@@ -41,7 +40,8 @@ class pages extends MY_Controller {
 					$this->data['explanation'] = substr($row->page_body, 0, 200);
 					$this->data['image']       = '';
 				}
-				$this->render('pages/page', 'public_master');
+                $this->data["file"] = "pages/page";
+                $this->render($this->data["file"], 'public_master');
 			}
 		}
 		else
@@ -65,114 +65,103 @@ class pages extends MY_Controller {
         }
     }
 
-	public function add_new_page()
+    public function get_page_by_id($id, $private = false) {
+        $get = $this->page_model->get_page_by_id($id);
+        if(($get[0]->status == 2 || $get[0]->status == 1) && $private == "" && !$this->ion_auth->logged_in())
+			show_404();
+		else if($get[0]->status == 4) show_404();
+		else if($get[0]->status == 1 && !$this->ion_auth->logged_in()) show_404();
+		else {
+			foreach ($get as $row) {
+				$data['title']       = $row->page_title;
+				$data['explanation'] = substr($row->page_body, 0, 200);
+				$data['image']       = '';
+            }
+
+            echo json_encode($get);
+        }
+    }
+
+	public function form_page($id = "")
     {
 
-        $this->load->model('page_model');
-        $this->data['page_title'] = 'Add New Page | Hello Little Red';
-        $user                     = $this->ion_auth->user()->row();
-        $this->data['user']       = $user;
+        $this->data['current'] = 'Page Form';
+        $this->data['title'] = 'Page | Hello Little Red';
         if (!$this->ion_auth->logged_in() && !$this->ion_auth->is_admin()) {
             show_404();
         } else {
-            $this->data['title'] = 'Add new entry - ' . $this->config->item('site_title', 'ion_auth');
+                $this->data["file"] = "pages/form_page";
+                $this->render($this->data["file"], 'admin_master');
+        }
+    }
 
-            $this->data['statuses'] = $this->site_model->get_data_statuses();
+    public function add_page() {
+        if (!$this->ion_auth->logged_in() && !$this->ion_auth->is_admin()) 
+        {
+            show_404();
+        } else {
+            $user   = $this->ion_auth->user()->row();
+            $title  = $this->input->post('page_title');
+            $title_id  = $this->input->post('page_title_id');
+            $body   = $this->input->post('page_body');
+            $body_id   = $this->input->post('page_body_id');
+            $slug   = $this->input->post('page_slug');
+            $status = $this->input->post('status');
+            $tweet  = $this->input->post('tweet');
 
-            $this->load->helper('form');
-            $this->load->library(array(
-                'form_validation'
-                ));
-
-
-            $this->form_validation->set_rules('page_name', 'Title', 'required');
-            $this->form_validation->set_rules('page_body', 'Content', 'required');
-            $this->form_validation->set_rules('page_slug', 'Slug', 'required');
-
-            if ($this->form_validation->run() == FALSE) {
-
-                $this->render('pages/add_new_page', 'admin_master');
-            } else {
-
-                $user   = $this->ion_auth->user()->row();
-                $title  = $this->input->post('page_name');
-                $body   = $this->input->post('page_body');
-                $body_id   = $this->input->post('page_body_id');
-                $slug   = $this->input->post('page_slug');
-                $status = $this->input->post('status');
-                $tweet  = $this->input->post('tweet');
-
-                $this->page_model->add_new_page($user->id, $title, $body, $body_id, $slug, $status, $tweet);
-                $this->session->set_flashdata('message', $title.' Added');
-                redirect('pages/add_new_page');
-            }
+            $this->page_model->add_new_page($user->id, $title, $title_id, $body, $body_id, $slug, $status, $tweet);
+            $data['status'] = "success";
+            $data['message'] = $title.' added!';
+            $data['message_id'] = $title.' ditambahkan!';
+            echo json_encode($data);
         }
     }
 
     public function manage_pages()
     {
-
-        $this->load->model('page_model');
-        $this->data['page_title'] = 'Manage Pages | Hello Little Red';
-        $user                     = $this->ion_auth->user()->row();
-        $this->data['user']       = $user;
+        $this->data['current'] = 'Manage Pages';
+        $this->data['title'] = 'Manage Pages | Hello Little Red';
         if (!$this->ion_auth->logged_in() && !$this->ion_auth->is_admin()) {
             show_404();
         } else {
-            $this->data['posts'] = $this->page_model->get_all_pages();
-            $this->render('pages/manage_pages', 'admin_master');
+            $this->data["file"] = "pages/manage_pages";
+            $this->render($this->data["file"], 'admin_master');
         }
     }
 
     public function delete_page($id)
     {
-
-        $this->load->model('page_model');
-        $this->page_model->delete_page($id);
-        $this->session->set_flashdata('message', '1 Page Deleted!');
-        redirect('pages/manage_pages');
+        if (!$this->ion_auth->logged_in() && !$this->ion_auth->is_admin()) 
+        {
+            show_404();
+        } else {
+            $this->page_model->delete_page($id);
+            $data['status'] = "success";
+            $data['message'] = 'Page deleted!';
+            $data['message_id'] = 'Halaman dihapus!';
+            echo json_encode($data);
+        }
     }
 
 
     public function update_page($id = '')
     {
-        $this->load->model('page_model');
-        $this->data['page_title'] = 'Edit Page | Hello Little Red';
-        $user                     = $this->ion_auth->user()->row();
-        $this->data['user']       = $user;
         if (!$this->ion_auth->logged_in() && !$this->ion_auth->is_admin()) {
             show_404();
         } else {
+            $title  = $this->input->post('page_title');
+            $title_id  = $this->input->post('page_title_id');
+            $body   = $this->input->post('page_body');
+            $body_id   = $this->input->post('page_body_id');
+            $slug   = $this->input->post('page_slug');
+            $status = $this->input->post('status');
+            $tweet  = $this->input->post('tweet');
 
-            $this->load->helper('form');
-            $this->load->library(array(
-                'form_validation'
-                ));
-            $this->data['query'] = $this->page_model->get_page_by_id($id);
-            $this->data['statuses'] = $this->site_model->get_data_statuses();
-
-
-            $this->form_validation->set_rules('page_name', 'Title', 'required');
-            $this->form_validation->set_rules('page_body', 'Content', 'required');
-            $this->form_validation->set_rules('page_slug', 'Slug', 'required');
-
-            if ($this->form_validation->run() == FALSE) {
-
-                $this->render('pages/add_new_page', 'admin_master');
-            } else {
-
-                $id     = $this->input->post('page_id');
-                $title  = $this->input->post('page_name');
-                $body   = $this->input->post('page_body');
-                $body_id   = $this->input->post('page_body_id');
-                $slug   = $this->input->post('page_slug');
-                $status = $this->input->post('status');
-                $tweet  = $this->input->post('tweet');
-
-                $this->page_model->update_page($id, $title, $body, $body_id, $slug, $status, $tweet);
-                $this->session->set_flashdata('message', $title.' Updated!');
-                redirect('pages/update_page/'.$id);
-            }
+            $this->page_model->update_page($id, $title, $title_id, $body, $body_id, $slug, $status, $tweet);
+            $data['status'] = "success";
+            $data['message'] = $title.' updated!';
+            $data['message_id'] = $title.' diperbaharui!';
+            echo json_encode($data);
         }
     }
 	

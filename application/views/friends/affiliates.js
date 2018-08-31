@@ -1,13 +1,13 @@
-$(document).ready(function() {
-    $.getJSON(base_url + "friends/get_friends/", loadFriends);
+$(document).ready(() => {
+    $.getJSON(`${base_url}friends/get_friends/`, loadFriends);
 
     function loadFriends(data) {
         if (data.length > 0) {
             $('.friends').empty();
             let i = 1;
-            data.forEach(function(d) {
+            data.forEach(d => {
                 let temp = $('.affTemp').clone().removeClass('affTemp').show();
-                $('.number', temp).text(i < 10 ? '0' + i.toString() : i);
+                $('.number', temp).text(i < 10 ? `0${i.toString()}` : i);
                 $('a', temp).attr('href', d.website)
                 $('a', temp).text(d.name);
                 $('span', temp).text(d.description);
