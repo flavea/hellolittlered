@@ -3,9 +3,9 @@ const theme = localStorage.getItem("theme")
 let base_url = ""
 
 if (window.location.hostname == "localhost")
-    base_url = window.location.protocol + "//" + window.location.hostname + '/helloli/'
+    base_url = `${window.location.protocol}//${window.location.hostname}/helloli/`
 else
-    base_url = window.location.protocol + "//" + window.location.hostname + '/'
+    base_url = `${window.location.protocol}//${window.location.hostname}/`
 let newloc
 
 $.getJSON(`${base_url}site/get_data`, loadData)
@@ -18,11 +18,11 @@ function loadData(data) {
         let temp = $('.menuTemp').clone().removeClass('menuTemp').show()
         let temp2 = $('.mmTemp').clone().removeClass('mmTemp').show()
         let menu_name = (lang == "id" && d.menu_id != '' && d.menu_id != null) ? d.menu_id : (d.menu_en != "" && d.menu_en != null) ? d.menu_en : d.menu_id
-        $('span', temp).text(i < 10 ? '0' + i.toString() : i)
+        $('span', temp).text(i < 10 ? `0${i.toString()}` : i)
         $('b', temp).text(menu_name)
-        $('span', temp2).text(i < 10 ? '0' + i.toString() : i)
+        $('span', temp2).text(i < 10 ? `0${i.toString()}` : i)
         $('b', temp2).text(menu_name)
-        $('div', temp2).attr('id', d.menu_en.replace(" ", "_") + "_pop")
+        $('div', temp2).attr('id', `${d.menu_en.replace(" ", "_")}_pop`)
 
         if (d.parent === "0" && d.link === "") {
             $('a', temp).attr('data-target', d.menu_en.replace(" ", "_"))
@@ -34,7 +34,7 @@ function loadData(data) {
                     data2.forEach(d2 => {
                         let menu = (lang == "id" && d2.menu_id != '' && d2.menu_id != null) ? d2.menu_id : (d.menu_en != "" && d2.menu_en != null) ? d2.menu_en : d2.menu_id
                         let a = `<a href="${base_url}${d2.link}"><span>${String.fromCharCode(ab)}. </span>${menu}</a>`
-                        $("#" + d.menu_en.replace(" ", "_") + ", #" + d.menu_en.replace(" ", "_") + "_pop").append(a)
+                        $(`#${d.menu_en.replace(" ", "_")}, #${d.menu_en.replace(" ", "_")}_pop`).append(a)
                         ab++
                     })
                 }

@@ -70,7 +70,6 @@
 	<div class="foot-container">
 		<b>Contact Me</b>
 		<a href="<?= base_url() ?>contact">Email</a>
-		<a href="<?= base_url() ?>contact/q">Quick Questions</a>
 		<a href="<?= base_url() ?>commission">Hire Me?</a>
 		<p>
 			<br>
@@ -102,14 +101,11 @@
 	</div>
 </div>
 <footer>
-
 	<center>
-		© hellolittlered 2013-
-		<?= date("Y"); ?>
+		© hellolittlered 2013-<?= date("Y"); ?>
 	</center>
 	</div>
 </footer>
 </main>
-
 </body>
 </html>

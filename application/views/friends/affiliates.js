@@ -16,6 +16,7 @@ $(document).ready(() => {
             });
             $('#bg, #container').show();
             $('#loader').hide();
+            document.querySelectorAll("pre, code").forEach(_element => _element.classList.add("prettyprint"));
         } else $('.friends').html("<center>Data not found</center>");
 
         $('#friends-loader').hide();

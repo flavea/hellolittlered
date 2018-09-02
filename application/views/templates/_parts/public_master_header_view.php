@@ -90,7 +90,6 @@
             ", "
             _ ", $current); ?>");
         document.querySelectorAll('#info p').forEach(_element2 => _element2.innerHTML = exp);
-        $("pre, code").addClass("prettyprint");
     }).wait();
 </script>
 

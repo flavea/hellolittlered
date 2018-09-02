@@ -24,5 +24,6 @@ $(document).ready(() => {
         }
         $('#bg, #container').show();
         $('#loader').hide();
+        document.querySelectorAll("pre, code").forEach(_element => _element.classList.add("prettyprint"));
     }
 });

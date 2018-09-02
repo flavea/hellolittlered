@@ -1,3 +1,7 @@
+:root {
+    word-wrap: break-word;
+}
+
 ::-webkit-scrollbar {
     width: 15px;
 }
@@ -29,7 +33,6 @@ a {
 
 pre,
 code {
-    word-wrap: break-word;
     max-width: 100%;
 }
 
@@ -544,7 +547,7 @@ footer {
 }
 
 #info {
-    padding: 0% 4em;
+    width: calc(100% - 350px - 12em);
     margin: 5% auto;
 }
 
@@ -1193,32 +1196,6 @@ iframe {
     }
 }
 
-@media (max-width: 425px) {
-    .dark main {
-        border: 1em solid #6d0000;
-    }
-    .dark #bigmenu {
-        border: 1em solid #6d0000;
-    }
-    .dark .post {
-        border-bottom: 1px solid #6d0000;
-    }
-    h1 a:not(.not),
-    h2 a:not(.not),
-    h3 a:not(.not),
-    h4 a:not(.not),
-    h1 span:not(.not),
-    h2 span:not(.not),
-    h3 span:not(.not),
-    h4 span:not(.not) {
-        color: #333;
-        border-bottom: 8px solid #6d0000;
-        height: 1.2em;
-        display: inline-block;
-        text-shadow: 2px 2px 0px #ffffff;
-    }
-}
-
 .dark #bg {
     background: url(https://i.imgur.com/F3hObul.jpg) top no-repeat #000;
     background-size: 100% auto;
@@ -1514,7 +1491,7 @@ iframe {
     }
 }
 
-@media (max-width: 800px) {
+@media (max-width: 767px) {
     main {
         border: 1em solid #6d0000;
         width: 100%
@@ -1600,6 +1577,7 @@ iframe {
     }
     #projects-real section {
         border: none;
+        margin-left: 4em;
         padding: 0
     }
     .content-real .mini-theme,
@@ -1617,22 +1595,26 @@ iframe {
     }
 }
 
-@media (max-width: 425px) {
-    .flipswitch {
-        transform: scale(.8) rotate(90deg);
+@media (max-width: 426px) {
+    #projects-real .number,
+    .affiliate .number {
+        font-size: 2.2em;
+        width: 2em;
+        left: -2.5em
+    }
+    #theme-changer {
         left: -1em;
         bottom: 45%;
-        margin-top: 130px;
+        top: 40%;
     }
     .content-real {
         padding: 1em;
     }
     #bg {
-        padding: 1em;
-        background-position: center;
+        background-position: top;
     }
     .dark #bg {
-        background-position: center;
+        background-position: top;
     }
     .left>div:nth-child(2) {
         display: none
@@ -1697,6 +1679,7 @@ iframe {
         display: block;
     }
     #info {
+        width: 100%;
         padding: 0
     }
     .album {
@@ -1756,6 +1739,29 @@ iframe {
     }
     #info h2 span::before {
         content: 'c://hlr/'
+    }
+    .dark main {
+        border: 1em solid #6d0000;
+    }
+    .dark #bigmenu {
+        border: 1em solid #6d0000;
+    }
+    .dark .post {
+        border-bottom: 1px solid #6d0000;
+    }
+    h1 a:not(.not),
+    h2 a:not(.not),
+    h3 a:not(.not),
+    h4 a:not(.not),
+    h1 span:not(.not),
+    h2 span:not(.not),
+    h3 span:not(.not),
+    h4 span:not(.not) {
+        color: #333;
+        border-bottom: 8px solid #6d0000;
+        height: 1.2em;
+        display: inline-block;
+        text-shadow: 2px 2px 0px #ffffff;
     }
 }
 

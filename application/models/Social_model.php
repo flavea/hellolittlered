@@ -5,10 +5,10 @@ if (!defined('BASEPATH'))
 class social_model extends CI_Model {
     
     function post_tweet($message) {
-        $consumer            = "HE0MLJMYsy5Yt5N499rHdxDcQ";
-        $consumer_secret     = "z5eLl6ye3k9KXuSvjMKoBecWouGF0z9PpgJx5mgutDyHpXUXOK";
-        $access_token        = '578015754-7b1DhTEVKIGf2ew8iSM3M7xciWwIzyfHlJ0Qqdaz';
-        $access_token_secret = 'm8Ic3hRR4qEeItTyjBSJsyrj1zlhRCe6LGz4HpWb2rmuB';
+        $consumer            = "";
+        $consumer_secret     = "";
+        $access_token        = '';
+        $access_token_secret = '';
         
         $this->load->library('twitteroauth');
         $connection = $this->twitteroauth->create($consumer, $consumer_secret, $access_token, $access_token_secret);
@@ -25,7 +25,7 @@ class social_model extends CI_Model {
     }
     
     function get_latest_flickr() {
-        $api_key = '5b1c8692421ef44b7247bb7d97ab96f8';
+        $api_key = '';
         
         $user    = '113411780@N03';
         $perPage = 9;
@@ -42,7 +42,7 @@ class social_model extends CI_Model {
     }
     
     function get_latest_instagram() {
-        $token = '744320566.d3275fc.7aac8b9f84f24415a47a313d79b565b1';
+        $token = '';
         
         $perPage = 9;
         $url     = 'https://api.instagram.com/v1/users/self/media/recent/';
@@ -55,8 +55,8 @@ class social_model extends CI_Model {
     }
     
     function get_latest_lastfm() {
-        $api    = 'a25573a1905bb755bbe3e4d2d1894d7c';
-        $secret = '293355ec39bfce6244b657d02c47f71a';
+        $api    = '';
+        $secret = '';
         
         $perPage = 1;
         $url     = 'http://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=iBear2&format=json';
@@ -75,7 +75,7 @@ class social_model extends CI_Model {
                 'header' => 'Accept: application/xml'
             )
         ));
-        $url     = 'https://www.goodreads.com/review/list/3593336?format=xml&key=yRYcVx1lTLk6aU5s1gTqqQ&v=2&shelf=read&per_page=1';
+        $url     = '';
         $xml     = file_get_contents($url, false, $context);
         $xml     = simplexml_load_string($xml);
         $xml     = (array) $xml->reviews->review->book;
@@ -85,7 +85,7 @@ class social_model extends CI_Model {
     }
     
     function get_tumblr_posts($perPage = 3, $username = "gyuseu", $tag = false) {
-        $api_key = 'fak3IzisOoJlGleXVohBwKYpgWBEt7jMZJ7qr6kePzzwh1NQYy';
+        $api_key = '';
         
         $url = 'http://api.tumblr.com/v2/blog/' . $username . '.tumblr.com/posts';
         $url .= '?api_key=' . $api_key;
