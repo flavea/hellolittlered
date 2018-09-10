@@ -1,6 +1,6 @@
 $(document).ready(() => {
     $('#bg, #container, #table').show()
-    $('#load').hide()
+    $('#load, #loader').hide()
     let mode = "add"
     let id = 0
     $.getJSON(`${base_url}admin/get_statuses/`, loadStatuses)
@@ -14,7 +14,7 @@ $(document).ready(() => {
                 $('#statuses').append(temp)
             })
             $('#bg, #container, #table').show()
-            $('#load').hide()
+            $('#load, #loader').hide()
         } else $('#table').hide()
     }
 
@@ -40,7 +40,7 @@ $(document).ready(() => {
             $('.paginate_button').removeClass('paginate_button').addClass('button')
             $('#table_wrapper').addClass('post')
             $('#bg, #container, #table').show()
-            $('#load').hide()
+            $('#load, #loader').hide()
         }
     }
 

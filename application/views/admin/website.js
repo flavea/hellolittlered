@@ -12,10 +12,9 @@ $(document).ready(() => {
                 $('#statuses').append(temp)
             })
             $('#bg, #container').show()
-            $('#loader').hide()
-        } else $('#theme').html("<center>Data not found</center>")
+            $('#load, #loader').hide()
+        }
 
-        $('#friends-loader').hide()
     }
 
     function checkData() {
@@ -38,7 +37,7 @@ $(document).ready(() => {
             $('.paginate_button').removeClass('paginate_button').addClass('button')
             $('#table_wrapper').addClass('post')
             $('#bg, #container, #table').show()
-            $('#load').hide()
+            $('#load, #loader').hide()
         }
     }
 

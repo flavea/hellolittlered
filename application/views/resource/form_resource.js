@@ -30,7 +30,7 @@ $(document).ready(() => {
                 $('#labels').append(temp)
             })
             $('#bg, #container, #table').show()
-            $('#load').hide()
+            $('#load, #loader').hide()
         }
     }
 

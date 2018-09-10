@@ -1,33 +1,33 @@
 $(document).ready(() => {
     function checkData() {
         if (typeof site_data === "undefined") {
-            setTimeout(checkData, 50);
+            setTimeout(checkData, 50)
         } else {
             site_data.sns.forEach(d => {
                 $("#codepen").val(d.codepen)
                 $("#behance").val(d.behance)
-                $("#deviantart").val(d.deviantart);
+                $("#deviantart").val(d.deviantart)
                 $("#facebook").val(d.facebook)
                 $("#flickr").val(d.flickr)
-                $("#github").val(d.github);
+                $("#github").val(d.github)
                 $("#instagram").val(d.instagram)
                 $("#linkedin").val(d.linkedin)
-                $("#soundcloud").val(d.soundcloud);
-                $("#tumblr").val(d.tumblr);
-                $("#twitter").val(d.twitter);
-                $("#youtube").val(d.youtube);
-            });
+                $("#soundcloud").val(d.soundcloud)
+                $("#tumblr").val(d.tumblr)
+                $("#twitter").val(d.twitter)
+                $("#youtube").val(d.youtube)
+            })
 
-            $('#bg, #container, #table').show();
-            $('#load').hide();
+            $('#bg, #container, #table').show()
+            $('#load, #loader').hide()
         }
     }
 
-    checkData();
+    checkData()
 
     $("#btnSubmit").click(function(e) {
-        $(this).hide();
-        $("#load").show();
+        $(this).hide()
+        $("#load").show()
         let data = {
             codepen: $("#codepen").val(),
             behance: $("#behance").val(),
@@ -49,10 +49,10 @@ $(document).ready(() => {
             dataType: "JSON",
             success(ret) {
                 showAlert(ret.status, lang == "id" ? ret.message_id : ret.message)
-                $("#load").hide();
-                $("#btnSubmit").show();
+                $("#load").hide()
+                $("#btnSubmit").show()
             }
         })
 
-    });
+    })
 })

@@ -1,8 +1,10 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');?>
+<style>
+#info {
+	margin: 9%;
+}
+</style>
 <article class="post">
-    <h2>
-        <span>Login</span>
-    </h2>
     <?= form_open('admin/login',array('class'=>'login-form'));?>
 
         <?= form_label('Username','username');?>

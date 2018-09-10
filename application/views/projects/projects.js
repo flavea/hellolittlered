@@ -40,7 +40,7 @@ $(document).ready(() => {
             $('.paginate_button').removeClass('paginate_button').addClass('button')
             $('#table_wrapper').addClass('post')
             $('#bg, #container, #table').show()
-            $('#load').hide()
+            $('#load, #loader').hide()
         } else $('.post').html("<center>Data not found</center>")
     }
 

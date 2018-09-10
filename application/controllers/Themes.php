@@ -69,7 +69,7 @@ class themes extends MY_Controller {
         $this->load->helper('file');
         $data['cat']   = $this->themes_model->get_related_categories($id);
         $data['theme'] = $this->themes_model->get_theme($id);
-        $data['code']  = read_file(FCPATH . 'preview/' . $id . '.html');
+        $data['code']  = $this->themes_model->get_preview_code($id);
         echo json_encode($data);
     }
     

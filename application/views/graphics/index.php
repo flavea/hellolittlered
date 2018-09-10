@@ -1,4 +1,9 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
+<style>
+#info {
+	margin: 9%;
+}
+</style>
 <div class="content-real">
 	<center>
 		<h2><a href="http://gyuseu.tumblr.com">From My Tumblr</a></h2>

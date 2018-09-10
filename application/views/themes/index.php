@@ -10,6 +10,11 @@ $LAB.script("http://static.tumblr.com/twte3d7/H8Glm663z/masonry.js").wait().scri
 	});
   });
 </script>
+<style>
+#info {
+	margin: 9%;
+}
+</style>
 <div class="content-real">
 	<div class="post featured">
 		<div class="title">

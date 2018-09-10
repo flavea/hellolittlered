@@ -262,6 +262,7 @@ header {
     display: none;
     border-left: 1px solid #6d0000;
     padding-left: 1em;
+    z-index: 999999999999999;
     background: #fff
 }
 

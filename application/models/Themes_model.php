@@ -133,6 +133,20 @@ class themes_model extends CI_Model {
             return FALSE;
     }
     
+    function get_preview_code($id) {
+        $this->db->select('theme_preview');
+        $this->db->from('theme');
+        $this->db->where('theme_id', $id);
+        $query = $this->db->get();
+        if ($query->num_rows() !== 0) {
+            foreach ($query->result() as $row) {
+                $a = read_file(FCPATH . 'preview/' . $row->theme_preview);
+                return $a;
+            }
+        } else
+            return FALSE;
+    }
+    
     function add_new_category($name, $slug) {
         $i          = 0;
         $slug_taken = FALSE;
@@ -267,7 +281,6 @@ class themes_model extends CI_Model {
         $this->db->update('theme', $data);
         
         $my_file = $id . '.html';
-        $data    = 'Some file data';
         write_file(FCPATH . 'preview/' . $my_file, $preview);
         
         $data = array(

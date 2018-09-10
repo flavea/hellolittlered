@@ -34,6 +34,7 @@ class Site extends MY_Controller {
         $this->load->model('themes_model');
         $this->load->model('resources_model');
         $this->load->model('menu_model');
+        $this->load->model('social_model');
         $data['resources']        = $this->resources_model->get_types();
         $data['basic']            = $this->site_model->get_data();
         $data['websites']         = $this->look_model->get_websites();
@@ -44,6 +45,8 @@ class Site extends MY_Controller {
         $data['sns']              = $this->look_model->get_socmeds();
         $data['friends']          = $this->look_model->get_friends(5);
         $data['menu']             = $this->menu_model->get_parents();
+        //$data['music']            = $this->social_model->get_latest_lastfm();
+        //$data['book']             = $this->social_model->get_latest_read();
         echo json_encode($data);
     }
     

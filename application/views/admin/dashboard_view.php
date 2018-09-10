@@ -17,7 +17,7 @@
 		};
 	}(window, document, 'script'));
 </script>
-<script src="//cdn.ckeditor.com/4.6.2/full/ckeditor.js"></script>
+
 <article class="post">
 	<h5 style="margin: .7em 0 1em 0" class="red-text text-darken-4">Update Site Information</h5>
 	<div class="input-field">

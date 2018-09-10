@@ -105,12 +105,19 @@ class Blog_model extends CI_Model {
     }
     
     function get_post($id) {
+        $arr = array(
+            'status' => 3,
+            'entry_id' => $id
+        );
+        $arr2 = array(
+            'status' => 2,
+            'entry_id' => $id
+        );
         if (!$this->ion_auth->logged_in()) {
-            $this->db->where('status', '3');
+            $this->db->where($arr);
         } else {
-            $this->db->where('status', '3')->or_where('status', '2');
+            $this->db->where($arr)->or_where($arr2);
         }
-        $this->db->where('entry_id', $id);
         $query = $this->db->get('entry');
         if ($query->num_rows() !== 0)
             return $query->result();

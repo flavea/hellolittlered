@@ -160,7 +160,7 @@ class resources_model extends CI_Model {
     
     function delete_type($id) {
         $this->db->delete('resources_types', array(
-            'resource_id' => $id
+            'type_id' => $id
         ));
         $status_data = array(
             'author_id' => 1,

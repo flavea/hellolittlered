@@ -1,6 +1,6 @@
 $(document).ready(() => {
     $('#bg, #container, #table').show()
-    $('#load').hide()
+    $('#load, #loader').hide()
     let mode = "add"
     let id = 0
     let url = window.location.href
@@ -19,7 +19,7 @@ $(document).ready(() => {
                 $('#statuses').append(temp)
             })
             $('#bg, #container').show()
-            $('#load').hide()
+            $('#load, #loader').hide()
         } else $('#theme').html("<center>Data not found</center>")
     }
 
@@ -43,7 +43,7 @@ $(document).ready(() => {
             $('.paginate_button').removeClass('paginate_button').addClass('button')
             $('#table_wrapper').addClass('post')
             $('#table').show()
-            $('#load').hide()
+            $('#load, #loader').hide()
         } else $('#table').hide()
     }
 

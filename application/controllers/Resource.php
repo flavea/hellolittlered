@@ -207,7 +207,7 @@ class resource extends MY_Controller {
         }
     }
     
-    public function delete_resource_category($id) {
+    public function delete_category($id) {
         if (!$this->ion_auth->logged_in() && !$this->ion_auth->is_admin()) {
             show_404();
         } else {

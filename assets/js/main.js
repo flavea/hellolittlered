@@ -142,6 +142,9 @@ function loadData(data) {
         $(".pages").append(temp)
     })
 
+    $('.music').text(site_data.music)
+    $('.book').text(site_data.book)
+
     $("#friends").append(`<a href="${base_url}friends">All Affiliates</a>`)
     $("#friends").append(`<a href="${base_url}friends/apply">Apply</a>`)
 }
@@ -206,10 +209,11 @@ $(document).ready(() => {
 
     $('html').on('click', 'a[data-target]', function(event) {
         const data_id = $(this).attr('data-target')
+        $(`#main-menu li div:not(#${data_id})`).hide()
         $(`#${data_id}`).toggle()
     })
 
-    $('html').on('click', 'a[href]', function(event) {
+    $('html').on('click', 'a[href]:not(.cke_button)', function(event) {
         event.preventDefault()
         newloc = $(this).attr("href")
         $('body').fadeOut(1000, newpage)

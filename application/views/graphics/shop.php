@@ -1,4 +1,9 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
+<style>
+#info {
+	margin: 9%;
+}
+</style>
 <article class="mini-theme shopTemp" style="display: none">
 	<img width="100%" />
 

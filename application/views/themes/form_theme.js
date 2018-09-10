@@ -45,7 +45,6 @@ $(document).ready(() => {
                 data.theme.forEach(d => {
                     $("#theme_name").val(d.theme_name)
                     $("#theme_image").val(d.theme_image)
-                    $("#theme_preview").val(d.theme_preview)
                     $("#theme_code").val(d.theme_code)
                     $("#theme_body").val(d.theme_body)
                     $("#theme_body_id").val(d.theme_body_id)
@@ -57,6 +56,8 @@ $(document).ready(() => {
                         $('.checkbox[value="' + d.category_id + '"]').attr("checked", true)
                     })
                 }
+
+                $("#theme_preview").val(data.code)
             } else {
                 $('#posts').html("<center>Data not found</center>")
             }

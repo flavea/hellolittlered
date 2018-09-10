@@ -1,5 +1,5 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
-<script src="//cdn.ckeditor.com/4.6.2/full/ckeditor.js"></script>
+
 
 <div class="post">
 
