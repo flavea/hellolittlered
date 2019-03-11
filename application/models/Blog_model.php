@@ -29,7 +29,6 @@ class Blog_model extends CI_Model {
     function get_posts_simplified($limit = false, $start = false) {
         if ($limit != false || $start != false) {
             $this->db->limit($limit, $start);
-            
         }
         
         $this->db->select('entry_id, entry_name, entry_name_id, entry_date');
@@ -39,6 +38,7 @@ class Blog_model extends CI_Model {
         } else {
             $this->db->where('status', '3')->or_where('status', '2');
         }
+        
         $this->db->order_by('entry_date', 'desc');
         $query = $this->db->get();
         if ($query->num_rows() > 0) {
@@ -89,13 +89,18 @@ class Blog_model extends CI_Model {
             'status' => 'Posted a new blog post: "' . $name . '" check it out here ' . base_url() . 'post/' . $id
         );
         $this->db->insert('statuses', $status_data);
+
+        $prev_cat_id = 0;
         
         foreach ($categories as $category) {
-            $relationship = array(
-                'object_id' => $id,
-                'category_id' => $category
-            );
-            $this->db->insert('entry_relationships', $relationship);
+            if($prev_cat_id != $category) {
+                $relationship = array(
+                    'object_id' => $id,
+                    'category_id' => $category
+                );
+                $this->db->insert('entry_relationships', $relationship);
+                $prev_cat_id = $category;
+            }
         }
         
         if ($status == 3 && $tweet == 1) {

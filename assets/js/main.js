@@ -51,7 +51,7 @@ function loadData(data) {
                 if (d.menu_en == "Blog") {
                     site_data.categories.forEach(d => {
                         let temp = `<a href='${base_url}category/${d.slug}'><span>${String.fromCharCode(ab)}. </span>${d.category_name}</a>`
-                        $("#Blog, #Blog_pop").append(temp)
+                        $("#linkage #Blog, #Blog_pop").append(temp)
                         ab++
                     })
                 }
@@ -72,8 +72,6 @@ function loadData(data) {
                     })
                 }
             })
-
-
             $("#leftmenu").append(temp2)
         } else {
             $('a', temp).attr('href', `${base_url}${d.link}`)

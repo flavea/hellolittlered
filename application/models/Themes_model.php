@@ -84,13 +84,17 @@ class themes_model extends CI_Model {
         );
         $this->db->insert('statuses', $status_data);
         
+        $prev_cat_id = 0;
         
         foreach ($categories as $category) {
-            $relationship = array(
-                'object_id' => $id,
-                'category_id' => $category
-            );
-            $this->db->insert('theme_relationships', $relationship);
+            if($prev_cat_id != $category) {
+                $relationship = array(
+                    'object_id' => $id,
+                    'category_id' => $category
+                );
+                $this->db->insert('theme_relationships', $relationship);
+                $prev_cat_id = $category;
+            }
         }
         
         if ($status == 3 && $tweet == 1) {
